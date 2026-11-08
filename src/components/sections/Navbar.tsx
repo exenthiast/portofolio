@@ -52,7 +52,7 @@ export function Navbar({ onOpenCv }: NavbarProps) {
         className={`pointer-events-auto flex items-center justify-between transition-all duration-300 ease-out ${
           isScrolled
             ? 'max-w-4xl lg:max-w-5xl w-full bg-[#ffffff]/70 backdrop-blur-md border border-slate-200/90 shadow-md shadow-slate-900/5 rounded-full h-14 sm:h-16 px-4 sm:px-6'
-            : 'w-full bg-[#ffffff] border-b border-slate-200/80 rounded-none shadow-none h-16 sm:h-20 px-4 sm:px-6 lg:px-8 max-w-7xl'
+            : 'w-full max-w-none bg-[#ffffff] border-b border-slate-200/80 rounded-none shadow-none h-16 sm:h-20 px-6 sm:px-12 lg:px-16'
         }`}
       >
         {/* Left: Brand Identity */}
