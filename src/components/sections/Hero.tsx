@@ -10,7 +10,7 @@ export function Hero() {
   return (
     <section
       id="overview"
-      className="relative min-h-[calc(100vh-5rem)] flex flex-col justify-center items-center px-4 sm:px-6 lg:px-8 pt-24 sm:pt-28 pb-16 lg:pb-20 overflow-hidden bg-[var(--bg)]"
+      className="relative min-h-[calc(100vh-5rem)] flex flex-col justify-center items-center px-4 sm:px-6 lg:px-8 pt-24 sm:pt-28 pb-16 lg:pb-20 overflow-hidden bg-transparent"
     >
       {/* ======================================================== */}
       {/* DESKTOP QUAD NEOFETCH CARDS (Absolute 4-Corners)         */}
