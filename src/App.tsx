@@ -16,7 +16,7 @@ export default function App() {
         <Hero />
 
         {/* Section Anchors for Next Phases */}
-        <section id="about" className="py-20 px-6 max-w-5xl mx-auto w-full">
+        <section id="about" className="py-28 px-6 max-w-5xl mx-auto w-full min-h-[60vh] flex flex-col justify-center">
           <div className="p-8 rounded-2xl bg-[var(--surface-terminal)] text-[var(--ink-terminal)] border border-[var(--surface-terminal-header)]">
             <span className="text-xs font-mono text-[var(--ink-terminal-muted)]">
               ~/alfiz/about — coming in Phase 5
@@ -24,7 +24,7 @@ export default function App() {
           </div>
         </section>
 
-        <section id="projects" className="py-20 px-6 max-w-5xl mx-auto w-full">
+        <section id="projects" className="py-28 px-6 max-w-5xl mx-auto w-full min-h-[60vh] flex flex-col justify-center">
           <div className="p-8 rounded-2xl bg-[var(--surface)] border border-slate-200">
             <span className="text-xs font-mono text-[var(--ink-secondary)]">
               ~/projects — coming in Phase 6
@@ -32,7 +32,7 @@ export default function App() {
           </div>
         </section>
 
-        <section id="experience" className="py-20 px-6 max-w-5xl mx-auto w-full">
+        <section id="experience" className="py-28 px-6 max-w-5xl mx-auto w-full min-h-[60vh] flex flex-col justify-center">
           <div className="p-8 rounded-2xl bg-[var(--surface)] border border-slate-200">
             <span className="text-xs font-mono text-[var(--ink-secondary)]">
               ~/experience — coming in Phase 7
@@ -40,7 +40,7 @@ export default function App() {
           </div>
         </section>
 
-        <section id="badges" className="py-20 px-6 max-w-5xl mx-auto w-full">
+        <section id="badges" className="py-28 px-6 max-w-5xl mx-auto w-full min-h-[60vh] flex flex-col justify-center">
           <div className="p-8 rounded-2xl bg-[var(--surface)] border border-slate-200">
             <span className="text-xs font-mono text-[var(--ink-secondary)]">
               ~/badges — coming in Phase 7
@@ -48,7 +48,7 @@ export default function App() {
           </div>
         </section>
 
-        <section id="contact" className="py-20 px-6 max-w-5xl mx-auto w-full">
+        <section id="contact" className="py-28 px-6 max-w-5xl mx-auto w-full min-h-[60vh] flex flex-col justify-center">
           <div className="p-8 rounded-2xl bg-[var(--surface-terminal)] text-[var(--ink-terminal)] border border-[var(--surface-terminal-header)]">
             <span className="text-xs font-mono text-[var(--ink-terminal-muted)]">
               ~/contact — coming in Phase 8
