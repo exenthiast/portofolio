@@ -12,7 +12,7 @@ export function Navbar() {
   useEffect(() => {
     const handleScroll = () => {
       const scrollY = window.scrollY
-      setIsScrolled(scrollY > 30)
+      setIsScrolled(scrollY > 20)
 
       // Active section detection by offset
       const sectionIds = ['contact', 'badges', 'experience', 'projects', 'about', 'overview']
@@ -40,17 +40,15 @@ export function Navbar() {
 
   return (
     <header
-      className={`fixed z-50 transition-all duration-300 ease-out ${
-        isScrolled
-          ? 'top-3 sm:top-4 inset-x-0 flex justify-center px-4 pointer-events-none'
-          : 'top-0 left-0 right-0 bg-[#ffffff] border-b border-slate-200/80'
+      className={`fixed inset-x-0 z-50 flex flex-col items-center pointer-events-none transition-all duration-300 ease-out ${
+        isScrolled ? 'top-3 sm:top-4 px-4' : 'top-0 px-0'
       }`}
     >
       <div
-        className={`transition-all duration-300 ease-out flex items-center justify-between ${
+        className={`pointer-events-auto flex items-center justify-between transition-all duration-300 ease-out ${
           isScrolled
-            ? 'pointer-events-auto max-w-4xl lg:max-w-5xl w-full bg-[#ffffff]/95 backdrop-blur-md border border-slate-200/90 shadow-md shadow-slate-900/5 rounded-full h-14 sm:h-16 px-4 sm:px-6'
-            : 'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 w-full'
+            ? 'max-w-4xl lg:max-w-5xl w-full bg-[#ffffff]/70 backdrop-blur-md border border-slate-200/90 shadow-md shadow-slate-900/5 rounded-full h-14 sm:h-16 px-4 sm:px-6'
+            : 'w-full bg-[#ffffff] border-b border-slate-200/80 rounded-none shadow-none h-16 sm:h-20 px-4 sm:px-6 lg:px-8 max-w-7xl'
         }`}
       >
         {/* Left: Brand Identity */}
@@ -119,8 +117,9 @@ export function Navbar() {
             GitHub
           </Button>
 
+          {/* LinkedIn Button: Black with white text */}
           <Button
-            variant="secondary"
+            variant="primary"
             size="sm"
             href={profileData.socialLinks.linkedin.url}
             target="_blank"
@@ -161,10 +160,10 @@ export function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.2 }}
-            className={`sm:hidden bg-[#ffffff] px-5 py-4 space-y-2 border border-slate-200/80 shadow-lg ${
+            className={`pointer-events-auto sm:hidden bg-[#ffffff]/95 backdrop-blur-md border border-slate-200/80 shadow-lg px-5 py-4 space-y-2 w-full ${
               isScrolled
-                ? 'pointer-events-auto max-w-sm mx-auto mt-2 rounded-2xl'
-                : 'border-b'
+                ? 'max-w-sm mx-auto mt-2 rounded-2xl'
+                : 'border-t-0 border-x-0 border-b border-slate-200/80'
             }`}
           >
             <div className="flex flex-col space-y-1">
@@ -206,7 +205,7 @@ export function Navbar() {
                 GitHub
               </Button>
               <Button
-                variant="outline"
+                variant="primary"
                 size="sm"
                 href={profileData.socialLinks.linkedin.url}
                 target="_blank"
