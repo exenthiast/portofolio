@@ -3,7 +3,8 @@ import { useEffect, useRef } from 'react'
 const CELL_SIZE = 14
 const CELL_GAP = 4
 const STEP = CELL_SIZE + CELL_GAP // 18px
-const FADE_DURATION = 1200 // ms
+const MAX_ACTIVE_CELLS = 5 // User constraint: maximum 5 squares on screen
+const FADE_DURATION = 600 // ms - snappy, concise trail
 
 // Authentic GitHub Contribution Graph Palette
 const GITHUB_GREENS = [
@@ -115,6 +116,19 @@ export function GithubGridBackground() {
       const cellY = row * STEP + offsetY
       const key = `${col},${row}`
 
+      // Don't re-trigger if already active
+      if (activeCells.has(key)) return
+
+      // Strict enforcement: keep trail short, maximum 5 squares visible at any time
+      while (activeCells.size >= MAX_ACTIVE_CELLS) {
+        const oldestKey = activeCells.keys().next().value
+        if (oldestKey) {
+          activeCells.delete(oldestKey)
+        } else {
+          break
+        }
+      }
+
       const randomGreen = GITHUB_GREENS[Math.floor(Math.random() * GITHUB_GREENS.length)]
 
       activeCells.set(key, {
@@ -131,13 +145,13 @@ export function GithubGridBackground() {
       const currentPos = { x: e.clientX, y: e.clientY }
 
       if (lastMousePos) {
-        // Interpolate points between previous and current mouse move to prevent gaps
         const dx = currentPos.x - lastMousePos.x
         const dy = currentPos.y - lastMousePos.y
         const distance = Math.hypot(dx, dy)
-        const steps = Math.min(Math.ceil(distance / (STEP / 2)), 8)
+        // Keep interpolation steps compact (max 2 steps)
+        const steps = Math.min(Math.ceil(distance / STEP), 2)
 
-        for (let i = 0; i <= steps; i++) {
+        for (let i = 1; i <= steps; i++) {
           const interpX = lastMousePos.x + dx * (i / steps)
           const interpY = lastMousePos.y + dy * (i / steps)
           activateCellAt(interpX, interpY)
