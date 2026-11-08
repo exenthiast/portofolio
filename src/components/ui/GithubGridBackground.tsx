@@ -33,10 +33,6 @@ export function GithubGridBackground() {
 
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
-    // Offscreen canvas for fast pre-rendered resting grid
-    let offscreenCanvas: HTMLCanvasElement | null = document.createElement('canvas')
-    let offscreenCtx = offscreenCanvas.getContext('2d')
-
     const activeCells = new Map<string, ActiveCell>()
     let animationFrameId: number | null = null
     let lastMousePos: { x: number; y: number } | null = null
@@ -44,42 +40,6 @@ export function GithubGridBackground() {
     let width = window.innerWidth
     let height = window.innerHeight
     let dpr = Math.min(window.devicePixelRatio || 1, 2)
-
-    // Render static resting GitHub cells to offscreen canvas
-    const updateOffscreenGrid = () => {
-      if (!offscreenCanvas || !offscreenCtx) return
-
-      offscreenCanvas.width = width * dpr
-      offscreenCanvas.height = height * dpr
-      offscreenCtx.scale(dpr, dpr)
-
-      // Background ground: #fafbff
-      offscreenCtx.fillStyle = '#fafbff'
-      offscreenCtx.fillRect(0, 0, width, height)
-
-      // Calculate grid offset so squares are neatly centered
-      const cols = Math.ceil(width / STEP) + 1
-      const rows = Math.ceil(height / STEP) + 1
-      const offsetX = (width % STEP) / 2
-      const offsetY = (height % STEP) / 2
-
-      // Draw resting GitHub contribution cells (Level 0)
-      for (let c = 0; c < cols; c++) {
-        for (let r = 0; r < rows; r++) {
-          const x = c * STEP + offsetX
-          const y = r * STEP + offsetY
-
-          offscreenCtx.fillStyle = '#f1f3f8'
-          offscreenCtx.strokeStyle = 'rgba(226, 232, 240, 0.75)'
-          offscreenCtx.lineWidth = 1
-
-          offscreenCtx.beginPath()
-          offscreenCtx.roundRect(x, y, CELL_SIZE, CELL_SIZE, 2.5)
-          offscreenCtx.fill()
-          offscreenCtx.stroke()
-        }
-      }
-    }
 
     const resize = () => {
       width = window.innerWidth
@@ -91,24 +51,20 @@ export function GithubGridBackground() {
       ctx.setTransform(1, 0, 0, 1, 0, 0)
       ctx.scale(dpr, dpr)
 
-      offscreenCanvas = document.createElement('canvas')
-      offscreenCtx = offscreenCanvas.getContext('2d')
-      updateOffscreenGrid()
       render()
     }
 
     const render = () => {
-      if (!ctx || !offscreenCanvas) return
+      if (!ctx) return
 
       const now = performance.now()
 
-      // 1. Draw cached resting grid
+      // Canvas stays completely plain and transparent when not hovered
       ctx.clearRect(0, 0, width, height)
-      ctx.drawImage(offscreenCanvas, 0, 0, width, height)
 
-      // 2. Draw active green cells with fade decay
       let hasActive = false
 
+      // Draw active green GitHub contribution squares with smooth fade decay
       activeCells.forEach((cell, key) => {
         const elapsed = now - cell.startTime
         const progress = elapsed / FADE_DURATION
@@ -209,8 +165,6 @@ export function GithubGridBackground() {
       if (animationFrameId) {
         cancelAnimationFrame(animationFrameId)
       }
-      offscreenCanvas = null
-      offscreenCtx = null
     }
   }, [])
 
