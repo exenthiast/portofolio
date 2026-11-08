@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Download, X } from 'lucide-react'
+import { Download } from 'lucide-react'
 import { profileData } from '../../data/profile'
 import { TrafficLightDots } from './TrafficLightDots'
 
@@ -61,8 +61,9 @@ export function CvModal({ isOpen, onClose }: CvModalProps) {
                 <button
                   type="button"
                   onClick={onClose}
-                  className="group flex items-center gap-1.5 focus-visible:outline-2 focus-visible:outline-[var(--accent)] rounded p-0.5 cursor-pointer"
+                  className="group flex items-center gap-1.5 focus-visible:outline-2 focus-visible:outline-[var(--accent)] rounded p-1 -m-1 cursor-pointer"
                   aria-label="Close CV Modal"
+                  title="Close (Esc)"
                 >
                   <TrafficLightDots size="sm" />
                 </button>
@@ -79,20 +80,11 @@ export function CvModal({ isOpen, onClose }: CvModalProps) {
                 <a
                   href={profileData.resumeUrl}
                   download="CV-Alfiz-Desta-Ariant-Permana.pdf"
-                  className="inline-flex items-center gap-1 px-3 py-1 text-xs font-medium text-[var(--ink)] bg-[var(--surface)] hover:bg-slate-100 rounded-full border border-slate-200/80 transition-colors shadow-2xs focus-visible:outline-2 focus-visible:outline-[var(--accent)] cursor-pointer"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-[var(--ink)] bg-[var(--surface)] hover:bg-slate-100 rounded-full border border-slate-200/80 transition-colors shadow-2xs focus-visible:outline-2 focus-visible:outline-[var(--accent)] cursor-pointer"
                 >
                   <Download className="w-3.5 h-3.5 text-[var(--accent)]" />
-                  <span className="hidden sm:inline">Download</span>
+                  <span>Download PDF</span>
                 </a>
-
-                <button
-                  type="button"
-                  onClick={onClose}
-                  className="p-1 text-slate-400 hover:text-[var(--ink)] hover:bg-slate-200/60 rounded-full transition-colors focus-visible:outline-2 focus-visible:outline-[var(--accent)] cursor-pointer"
-                  aria-label="Close modal"
-                >
-                  <X className="w-4 h-4" />
-                </button>
               </div>
             </div>
 
