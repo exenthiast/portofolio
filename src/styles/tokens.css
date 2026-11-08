@@ -1,0 +1,55 @@
+:root {
+  /* Ground & Surfaces (from DESIGN.md) */
+  --bg: #fafbff;
+  --bg-subtle: #f4f5fa;
+  --surface: #ffffff;
+  --surface-raised: #f1f2f8;
+  --surface-terminal: #0c0d12;
+  --surface-terminal-header: #181920;
+
+  /* Ink Hierarchy */
+  --ink: #09090b;
+  --ink-secondary: #52525b;
+  --ink-terminal: #e4e4e7;
+  --ink-terminal-muted: #a1a1aa;
+
+  /* The One Accent (< 5% screen area) */
+  --accent: #059669;
+  --accent-ink: #ffffff;
+
+  /* macOS Traffic Light Controls */
+  --mac-close: #ff5f56;
+  --mac-minimize: #ffbd2e;
+  --mac-maximize: #27c93f;
+
+  /* Strict 5-Step Type Scale */
+  --step-display: clamp(2.75rem, 1.5rem + 5.5vw, 6rem);
+  --step-head: clamp(1.875rem, 1.25rem + 2.5vw, 3.25rem);
+  --step-lead: clamp(1.125rem, 1rem + 0.5vw, 1.5rem);
+  --step-body: clamp(1rem, 0.95rem + 0.2vw, 1.125rem);
+  --step-small: clamp(0.8125rem, 0.78rem + 0.15vw, 0.875rem);
+}
+
+@theme {
+  --color-bg: var(--bg);
+  --color-bg-subtle: var(--bg-subtle);
+  --color-surface: var(--surface);
+  --color-surface-raised: var(--surface-raised);
+  --color-surface-terminal: var(--surface-terminal);
+  --color-surface-terminal-header: var(--surface-terminal-header);
+
+  --color-ink: var(--ink);
+  --color-ink-secondary: var(--ink-secondary);
+  --color-ink-terminal: var(--ink-terminal);
+  --color-ink-terminal-muted: var(--ink-terminal-muted);
+
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+
+  --color-mac-close: var(--mac-close);
+  --color-mac-minimize: var(--mac-minimize);
+  --color-mac-maximize: var(--mac-maximize);
+
+  --font-sans: 'Geist Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'Geist Mono', 'SF Mono', Menlo, Monaco, Consolas, monospace;
+}
