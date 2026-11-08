@@ -1,11 +1,18 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import type { Transition } from 'framer-motion'
 import { ArrowUpRight, Menu, X } from 'lucide-react'
 import { profileData } from '../../data/profile'
 import { Button } from '../ui/Button'
 
 interface NavbarProps {
   onOpenCv?: () => void
+}
+
+const navbarSpring: Transition = {
+  type: 'spring',
+  stiffness: 300,
+  damping: 30,
 }
 
 export function Navbar({ onOpenCv }: NavbarProps) {
@@ -42,18 +49,56 @@ export function Navbar({ onOpenCv }: NavbarProps) {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
+  // Animated style values driven by isScrolled state
+  const headerAnimateValues = useMemo(() => ({
+    top: isScrolled ? 14 : 0,
+    paddingLeft: isScrolled ? 16 : 0,
+    paddingRight: isScrolled ? 16 : 0,
+  }), [isScrolled])
+
+  const navbarAnimateValues = useMemo(() =>
+    isScrolled
+      ? {
+          borderRadius: 9999,
+          maxWidth: 1024,
+          height: 56,
+          paddingLeft: 24,
+          paddingRight: 24,
+          backgroundColor: 'rgba(255, 255, 255, 0.70)',
+          boxShadow: '0 4px 6px -1px rgba(15, 23, 42, 0.05), 0 2px 4px -2px rgba(15, 23, 42, 0.05)',
+          borderColor: 'rgba(226, 232, 240, 0.9)',
+          borderWidth: 1,
+        }
+      : {
+          borderRadius: 0,
+          maxWidth: 9999,
+          height: 72,
+          paddingLeft: 48,
+          paddingRight: 48,
+          backgroundColor: 'rgba(255, 255, 255, 1)',
+          boxShadow: '0 0px 0px 0px rgba(0, 0, 0, 0)',
+          borderColor: 'rgba(241, 242, 248, 0.8)',
+          borderWidth: 0,
+        },
+  [isScrolled])
+
   return (
-    <header
-      className={`fixed inset-x-0 z-50 flex flex-col items-center pointer-events-none transition-all duration-300 ease-out ${
-        isScrolled ? 'top-3 sm:top-4 px-4' : 'top-0 px-0'
-      }`}
+    <motion.header
+      animate={headerAnimateValues}
+      transition={navbarSpring}
+      className="fixed inset-x-0 z-50 flex flex-col items-center pointer-events-none"
     >
-      <div
-        className={`pointer-events-auto flex items-center justify-between transition-all duration-300 ease-out ${
-          isScrolled
-            ? 'max-w-4xl lg:max-w-5xl w-full bg-[#ffffff]/70 backdrop-blur-md border border-slate-200/90 shadow-md shadow-slate-900/5 rounded-full h-14 sm:h-16 px-4 sm:px-6'
-            : 'w-full max-w-none bg-[#ffffff] border-b border-slate-200/80 rounded-none shadow-none h-16 sm:h-20 px-6 sm:px-12 lg:px-16'
+      <motion.div
+        animate={navbarAnimateValues}
+        transition={navbarSpring}
+        className={`pointer-events-auto flex items-center justify-between w-full ${
+          isScrolled ? 'backdrop-blur-md' : ''
         }`}
+        style={{
+          borderStyle: 'solid',
+          borderBottomWidth: isScrolled ? undefined : 1,
+          borderBottomColor: isScrolled ? undefined : 'rgba(241, 242, 248, 0.8)',
+        }}
       >
         {/* Left: Brand Identity */}
         <a
@@ -155,7 +200,7 @@ export function Navbar({ onOpenCv }: NavbarProps) {
             {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
         </div>
-      </div>
+      </motion.div>
 
       {/* Mobile Drawer Navigation Menu */}
       <AnimatePresence>
@@ -223,6 +268,6 @@ export function Navbar({ onOpenCv }: NavbarProps) {
           </motion.div>
         )}
       </AnimatePresence>
-    </header>
+    </motion.header>
   )
 }
