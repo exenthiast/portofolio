@@ -1,12 +1,16 @@
 import { useLenis } from './hooks/useLenis'
 import { Navbar } from './components/sections/Navbar'
 import { Hero } from './components/sections/Hero'
+import { GithubContributionCursor } from './components/ui/GithubContributionCursor'
 
 export default function App() {
   useLenis()
 
   return (
     <div className="min-h-screen bg-[var(--bg)] text-[var(--ink)] flex flex-col font-sans selection:bg-[var(--accent)] selection:text-white">
+      {/* GitHub Contribution Squares Cursor Follower */}
+      <GithubContributionCursor />
+
       {/* Top Navbar */}
       <Navbar />
 
