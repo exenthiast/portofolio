@@ -53,7 +53,7 @@ export const profileData: Profile = {
     {
       id: 'card-badges',
       path: '~/badges/alfiz',
-      metric: '10 Credly Badges',
+      metric: '30+ Credly Badges',
       desc: 'Google Cloud & Security Verified',
       stack: ['GKE', 'AI', 'DevOps', 'CI/CD Pipeline'],
       rotation: 4,

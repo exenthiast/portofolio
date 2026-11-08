@@ -106,7 +106,7 @@ export function Hero() {
             iconRight={<ArrowUpRight className="w-4 h-4" />}
             className="w-full sm:w-auto"
           >
-            Download CV
+            View CV
           </Button>
         </motion.div>
 

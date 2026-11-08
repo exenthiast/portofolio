@@ -104,31 +104,31 @@ export function HeroCard({ card, variant = 'desktop', className = '' }: HeroCard
           </p>
         </div>
 
-        {/* Stack Box / Division Focus Box */}
-        <div className="p-2 rounded-lg bg-[var(--bg-subtle)] border border-slate-200/60 transition-colors group-hover:border-[var(--accent)]/30">
+        {/* Stack Box / Interactive Focus Box */}
+        <div
+          onMouseLeave={() => setHoveredStackIndex(null)}
+          className="p-2 rounded-lg bg-[var(--bg-subtle)] border border-slate-200/60 transition-colors group-hover:border-[var(--accent)]/30"
+        >
           <div className="flex flex-wrap items-center gap-1.5">
             {card.stack.map((item, index) => {
-              const isDivisionCard = card.id === 'card-experience'
               const isHovered = hoveredStackIndex === index
               const isAnyHovered = hoveredStackIndex !== null
 
               let textColorClass = 'text-[var(--accent)] font-medium'
-              if (isDivisionCard) {
-                if (isHovered) {
-                  textColorClass = 'text-[var(--ink)] font-bold'
-                } else if (isAnyHovered) {
-                  textColorClass = 'text-slate-400 font-normal'
-                } else {
-                  textColorClass = 'text-[var(--ink-secondary)] font-medium'
-                }
+              if (isHovered) {
+                textColorClass = 'text-[var(--ink)] font-bold'
+              } else if (isAnyHovered) {
+                textColorClass = 'text-slate-400 font-normal'
+              } else {
+                textColorClass = 'text-[var(--accent)] font-medium'
               }
 
               return (
                 <span
                   key={index}
-                  onMouseEnter={() => isDivisionCard && setHoveredStackIndex(index)}
-                  onMouseLeave={() => isDivisionCard && setHoveredStackIndex(null)}
-                  className={`text-[11px] font-mono transition-colors duration-150 inline-flex items-center gap-1 ${textColorClass}`}
+                  onMouseEnter={() => setHoveredStackIndex(index)}
+                  onMouseLeave={() => setHoveredStackIndex(null)}
+                  className={`text-[11px] font-mono transition-colors duration-150 inline-flex items-center gap-1 cursor-default ${textColorClass}`}
                 >
                   {item}
                   {index < card.stack.length - 1 && (
