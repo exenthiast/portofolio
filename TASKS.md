@@ -26,8 +26,8 @@
 ---
 
 ## Phase 2: Data Architecture & Types (Single Source of Truth)
-- [ ] **Task 2.1:** Buat TypeScript interface murni di `src/types/` (`project.ts`, `badge.ts`, `experience.ts`, `terminal.ts`).
-- [ ] **Task 2.2:** Buat file data konten di `src/data/`:
+- [x] **Task 2.1:** Buat TypeScript interface murni di `src/types/` (`project.ts`, `badge.ts`, `experience.ts`, `terminal.ts`, `profile.ts`).
+- [x] **Task 2.2:** Buat file data konten di `src/data/`:
   - `profile.ts` (Bio, kontak, social links, headline)
   - `projects.ts` (SIM Pondok Tahfidz, SIA UGN, Bimbel Lazuardy)
   - `badges.ts` (10 Credly badges metadata)
@@ -36,8 +36,8 @@
 ---
 
 ## Phase 3: Base UI Primitives & Navbar
-- [ ] **Task 3.1:** Buat komponen atomik di `src/components/ui/` (Button, TrafficLightDots, Toast, Modal).
-- [ ] **Task 3.2:** Buat komponen Navbar minimalis:
+- [x] **Task 3.1:** Buat komponen atomik di `src/components/ui/` (Button, TrafficLightDots).
+- [x] **Task 3.2:** Buat komponen Navbar minimalis:
   - Logo inisial + nama "Alfiz Desta" + subtitle "Software Engineer".
   - Navigasi link (Overview, About, Projects, Experience, Badges, Contact).
   - Quick action buttons (GitHub & LinkedIn).
@@ -45,16 +45,16 @@
 ---
 
 ## Phase 4: Hero Section & Quad Neofetch Cards
-- [ ] **Task 4.1:** Buat layout Hero Desktop (1440px):
+- [x] **Task 4.1:** Buat layout Hero Desktop (1440px):
   - Status badge penanda lokasi: `Available for work / Yogyakarta, ID`.
   - Nama display besar 2 baris: `Alfiz Desta` / `Ariant Permana`.
   - Action buttons: "See What I've Built" & "Download CV".
-- [ ] **Task 4.2:** Implementasi 4 Neofetch Cards di 4 sudut:
+- [x] **Task 4.2:** Implementasi 4 Neofetch Cards di 4 sudut:
   - Card 1: `~/project/2025-2026`
   - Card 2: `~/badges/alfiz`
   - Card 3: `~/experience/2024-2026`
   - Card 4: `~/alfiz/portfolio`
-- [ ] **Task 4.3:** Responsive handling Mobile (390px): Transformasi 4 sudut menjadi 2x2 bento grid.
+- [x] **Task 4.3:** Responsive handling Mobile (390px): Transformasi 4 sudut menjadi 2x2 bento grid.
 
 ---
 
