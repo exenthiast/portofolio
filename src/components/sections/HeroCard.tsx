@@ -31,9 +31,12 @@ export function HeroCard({ card, variant = 'desktop', className = '' }: HeroCard
         className={`group p-3.5 sm:p-4 rounded-xl bg-[var(--surface)] border border-slate-200/80 shadow-2xs hover:shadow-sm hover:border-[var(--accent)]/40 flex flex-col justify-between transition-all select-none ${className}`}
       >
         <div className="flex items-center justify-between mb-2">
-          <span className="text-[10px] sm:text-xs font-mono text-[var(--ink-secondary)]">
-            {card.path.replace('/2025-2026', '').replace('/2024-2026', '')}
-          </span>
+          <div className="flex items-center gap-2">
+            <TrafficLightDots size="sm" />
+            <span className="text-[10px] sm:text-xs font-mono text-[var(--ink-secondary)]">
+              {card.path.replace('/2025-2026', '').replace('/2024-2026', '')}
+            </span>
+          </div>
           <ArrowUpRight className="w-3.5 h-3.5 text-slate-400 group-hover:text-[var(--accent)] transition-colors" />
         </div>
 
