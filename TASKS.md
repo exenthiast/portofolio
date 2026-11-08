@@ -17,11 +17,11 @@
 ---
 
 ## Phase 1: Project Initialization & Design Tokens Setup
-- [ ] **Task 1.1:** Inisialisasi project React 19 + TypeScript + Vite.
+- [x] **Task 1.1:** Inisialisasi project React 19 + TypeScript + Vite.
   - Setup git repo lokal, buat branch `dev`, dan buat branch `feature/init-project`.
-- [ ] **Task 1.2:** Konfigurasi Tailwind CSS v4 & load font `Geist Sans` + `Geist Mono`.
-- [ ] **Task 1.3:** Setup design tokens CSS variables di `src/styles/tokens.css` sesuai Section 3 [`DESIGN.md`](file:///Users/pizzparker/Downloads/DESIGN.md).
-- [ ] **Task 1.4:** Integrasi Lenis Smooth Scroll di `src/main.tsx`.
+- [x] **Task 1.2:** Konfigurasi Tailwind CSS v4 & load font `Geist Sans` + `Geist Mono`.
+- [x] **Task 1.3:** Setup design tokens CSS variables di `src/styles/tokens.css` sesuai Section 3 [`DESIGN.md`](file:///Users/pizzparker/Downloads/DESIGN.md).
+- [x] **Task 1.4:** Integrasi Lenis Smooth Scroll di `src/main.tsx`.
 
 ---
 
