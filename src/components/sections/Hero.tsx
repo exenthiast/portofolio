@@ -4,7 +4,11 @@ import { profileData } from '../../data/profile'
 import { Button } from '../ui/Button'
 import { HeroCard } from './HeroCard'
 
-export function Hero() {
+interface HeroProps {
+  onOpenCv?: () => void
+}
+
+export function Hero({ onOpenCv }: HeroProps) {
   const [card1, card2, card3, card4] = profileData.heroCards
 
   return (
@@ -101,8 +105,9 @@ export function Hero() {
           <Button
             variant="secondary"
             size="lg"
-            href={profileData.resumeUrl}
-            target="_blank"
+            onClick={onOpenCv}
+            href={onOpenCv ? undefined : profileData.resumeUrl}
+            target={onOpenCv ? undefined : '_blank'}
             iconRight={<ArrowUpRight className="w-4 h-4" />}
             className="w-full sm:w-auto"
           >

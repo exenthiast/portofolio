@@ -4,7 +4,11 @@ import { ArrowUpRight, Menu, X } from 'lucide-react'
 import { profileData } from '../../data/profile'
 import { Button } from '../ui/Button'
 
-export function Navbar() {
+interface NavbarProps {
+  onOpenCv?: () => void
+}
+
+export function Navbar({ onOpenCv }: NavbarProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
   const [activeSection, setActiveSection] = useState('#overview')
@@ -134,8 +138,9 @@ export function Navbar() {
           <Button
             variant="secondary"
             size="sm"
-            href={profileData.resumeUrl}
-            target="_blank"
+            onClick={onOpenCv}
+            href={onOpenCv ? undefined : profileData.resumeUrl}
+            target={onOpenCv ? undefined : '_blank'}
             iconRight={<ArrowUpRight className="w-3 h-3" />}
           >
             CV

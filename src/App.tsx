@@ -1,9 +1,12 @@
+import { useState } from 'react'
 import { useLenis } from './hooks/useLenis'
 import { Navbar } from './components/sections/Navbar'
 import { Hero } from './components/sections/Hero'
 import { GithubGridBackground } from './components/ui/GithubGridBackground'
+import { CvModal } from './components/ui/CvModal'
 
 export default function App() {
+  const [isCvOpen, setIsCvOpen] = useState(false)
   useLenis()
 
   return (
@@ -11,13 +14,16 @@ export default function App() {
       {/* Interactive GitHub Contribution Grid Background */}
       <GithubGridBackground />
 
+      {/* In-Page CV Modal Viewer */}
+      <CvModal isOpen={isCvOpen} onClose={() => setIsCvOpen(false)} />
+
       {/* Top Navbar */}
-      <Navbar />
+      <Navbar onOpenCv={() => setIsCvOpen(true)} />
 
       {/* Main Content Areas */}
       <main className="flex-1 flex flex-col">
         {/* Phase 4: Hero Section & Quad Neofetch Cards */}
-        <Hero />
+        <Hero onOpenCv={() => setIsCvOpen(true)} />
 
         {/* Section Anchors for Next Phases */}
         <section id="about" className="py-28 px-6 max-w-5xl mx-auto w-full min-h-[60vh] flex flex-col justify-center">
