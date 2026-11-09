@@ -165,7 +165,7 @@ export function Hero({ onOpenCv, isAboutExpanded = false }: HeroProps) {
           <motion.div
             ref={card4Ref}
             layoutId="about-terminal-window"
-            transition={{ type: 'spring', stiffness: 140, damping: 24 }}
+            transition={{ type: 'spring', stiffness: 120, damping: 20, mass: 0.8 }}
             style={{ scale: c4Scale, filter: c4Filter }}
             className="absolute bottom-12 right-6 xl:right-12 pointer-events-auto z-40"
           >

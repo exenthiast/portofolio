@@ -46,7 +46,7 @@ export function About({ isExpanded = false }: AboutProps) {
           {isExpanded && (
             <motion.div
               layoutId="about-terminal-window"
-              transition={{ type: 'spring', stiffness: 140, damping: 24 }}
+              transition={{ type: 'spring', stiffness: 120, damping: 20, mass: 0.8 }}
               className="w-full flex justify-center"
             >
               <AboutTerminal />

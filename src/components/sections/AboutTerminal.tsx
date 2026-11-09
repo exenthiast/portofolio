@@ -59,8 +59,13 @@ export function AboutTerminal({ className = '', isEmbedded = false }: AboutTermi
         </div>
       </div>
 
-      {/* ─── Terminal Body ─── */}
-      <div className="p-5 sm:p-8 lg:p-10 flex flex-col lg:flex-row gap-8 lg:gap-12">
+      {/* ─── Terminal Body (Fades in smoothly during morph to prevent text reflow) ─── */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.35, delay: 0.1, ease: 'easeOut' }}
+        className="p-5 sm:p-8 lg:p-10 flex flex-col lg:flex-row gap-8 lg:gap-12"
+      >
         {/* ─── Left Column: Command prompt + Profile Portrait Card ─── */}
         <div className="w-full lg:w-[340px] xl:w-[360px] shrink-0 flex flex-col">
           {/* Shell command line */}
@@ -151,7 +156,7 @@ export function AboutTerminal({ className = '', isEmbedded = false }: AboutTermi
             </div>
           </div>
         </div>
-      </div>
+      </motion.div>
     </div>
   )
 }

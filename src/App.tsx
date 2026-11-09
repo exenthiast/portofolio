@@ -14,14 +14,25 @@ export default function App() {
   // Track scroll position for seamless Card 4 -> About Terminal morph
   useEffect(() => {
     const onScroll = () => {
-      const y = window.scrollY
-      setIsAboutExpanded((prev) => {
-        // Expand when scrolled past hero card stacking threshold (260px)
-        if (!prev && y > 260) return true
-        // Collapse back when scrolling up into hero overview (180px)
-        if (prev && y < 180) return false
-        return prev
-      })
+      const aboutEl = document.getElementById('about')
+      if (aboutEl) {
+        const rect = aboutEl.getBoundingClientRect()
+        // Trigger morph when About section enters comfortable viewport threshold
+        const isNear = rect.top <= window.innerHeight * 0.72
+        const isFar = rect.top > window.innerHeight * 0.85
+        setIsAboutExpanded((prev) => {
+          if (!prev && isNear) return true
+          if (prev && isFar) return false
+          return prev
+        })
+      } else {
+        const y = window.scrollY
+        setIsAboutExpanded((prev) => {
+          if (!prev && y > 300) return true
+          if (prev && y < 200) return false
+          return prev
+        })
+      }
     }
     window.addEventListener('scroll', onScroll, { passive: true })
     onScroll()
