@@ -7,6 +7,7 @@ import { HeroCard } from './HeroCard'
 
 interface HeroProps {
   onOpenCv?: () => void
+  isAboutExpanded?: boolean
 }
 
 /** Position delta between elements measured via static layout offset */
@@ -19,7 +20,7 @@ interface PositionDelta {
 const STACK_START = 0.0
 const STACK_END = 0.35
 
-export function Hero({ onOpenCv }: HeroProps) {
+export function Hero({ onOpenCv, isAboutExpanded = false }: HeroProps) {
   const [card1, card2, card3, card4] = profileData.heroCards
 
   // ─── Refs for scroll-linked card stacking (desktop only) ───
@@ -111,8 +112,6 @@ export function Hero({ onOpenCv }: HeroProps) {
 
   // Card 4 (bottom-right: ~/alfiz/portfolio) -> target, on top of deck (z-40) with enhanced shadow
   const c4Scale = useTransform(scrollYProgress, [STACK_START, STACK_END], [1, 1.02])
-  // Hands off smoothly to About section's expanding terminal as user scrolls past Hero
-  const c4Opacity = useTransform(scrollYProgress, [STACK_END, 0.75], [1, 0])
   const c4Filter = useTransform(
     scrollYProgress,
     [STACK_START, STACK_END],
@@ -161,13 +160,24 @@ export function Hero({ onOpenCv }: HeroProps) {
         </motion.div>
 
         {/* Bottom Right Card - Portfolio (z-40: TOP of stack) */}
-        <motion.div
-          ref={card4Ref}
-          style={{ scale: c4Scale, filter: c4Filter, opacity: c4Opacity }}
-          className="absolute bottom-12 right-6 xl:right-12 pointer-events-auto z-40"
-        >
-          <HeroCard card={card4} variant="desktop" />
-        </motion.div>
+        {/* When isAboutExpanded is true, this top card morphs via layoutId into Section About */}
+        {!isAboutExpanded ? (
+          <motion.div
+            ref={card4Ref}
+            layoutId="about-terminal-window"
+            transition={{ type: 'spring', stiffness: 140, damping: 24 }}
+            style={{ scale: c4Scale, filter: c4Filter }}
+            className="absolute bottom-12 right-6 xl:right-12 pointer-events-auto z-40"
+          >
+            <HeroCard card={card4} variant="desktop" />
+          </motion.div>
+        ) : (
+          /* Invisible placeholder so layout metrics remain stable */
+          <div
+            ref={card4Ref}
+            className="absolute bottom-12 right-6 xl:right-12 pointer-events-none opacity-0 w-[290px] lg:w-[310px] h-[180px]"
+          />
+        )}
       </div>
 
       {/* ======================================================== */}

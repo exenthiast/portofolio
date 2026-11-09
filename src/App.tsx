@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useLenis } from './hooks/useLenis'
 import { Navbar } from './components/sections/Navbar'
 import { Hero } from './components/sections/Hero'
@@ -8,7 +8,25 @@ import { CvModal } from './components/ui/CvModal'
 
 export default function App() {
   const [isCvOpen, setIsCvOpen] = useState(false)
+  const [isAboutExpanded, setIsAboutExpanded] = useState(false)
   useLenis()
+
+  // Track scroll position for seamless Card 4 -> About Terminal morph
+  useEffect(() => {
+    const onScroll = () => {
+      const y = window.scrollY
+      setIsAboutExpanded((prev) => {
+        // Expand when scrolled past hero card stacking threshold (260px)
+        if (!prev && y > 260) return true
+        // Collapse back when scrolling up into hero overview (180px)
+        if (prev && y < 180) return false
+        return prev
+      })
+    }
+    window.addEventListener('scroll', onScroll, { passive: true })
+    onScroll()
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
 
   return (
     <div className="min-h-screen bg-[var(--bg)] text-[var(--ink)] flex flex-col font-sans selection:bg-[var(--accent)] selection:text-white relative">
@@ -23,11 +41,11 @@ export default function App() {
 
       {/* Main Content Areas */}
       <main className="flex-1 flex flex-col">
-        {/* Phase 4 & 5: Hero Section & Scrollytelling Card Morph into About */}
-        <Hero onOpenCv={() => setIsCvOpen(true)} />
+        {/* Phase 4 & 5: Hero Section with Card Stacking & Morph */}
+        <Hero isAboutExpanded={isAboutExpanded} onOpenCv={() => setIsCvOpen(true)} />
 
-        {/* Phase 5: About Section (Mobile / Fallback presentation) */}
-        <About />
+        {/* Phase 5: About Section (Terminal window expands from top card) */}
+        <About isExpanded={isAboutExpanded} />
 
         {/* Section Anchors for Next Phases */}
 

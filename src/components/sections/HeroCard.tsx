@@ -71,7 +71,6 @@ export function HeroCard({ card, variant = 'desktop', className = '' }: HeroCard
   // Desktop Angled Neofetch Card
   return (
     <motion.div
-      layoutId={card.isMorphTarget ? 'about-window' : undefined}
       initial={{ opacity: 0, rotate: card.rotation, scale: 0.95 }}
       animate={{ opacity: 1, rotate: card.rotation, scale: 1 }}
       whileHover={{
