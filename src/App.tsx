@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useLenis } from './hooks/useLenis'
 import { Navbar } from './components/sections/Navbar'
 import { Hero } from './components/sections/Hero'
@@ -8,7 +8,36 @@ import { CvModal } from './components/ui/CvModal'
 
 export default function App() {
   const [isCvOpen, setIsCvOpen] = useState(false)
+  const [isAboutExpanded, setIsAboutExpanded] = useState(false)
   useLenis()
+
+  // Track scroll position for seamless Card 4 -> About Terminal morph
+  useEffect(() => {
+    const onScroll = () => {
+      const aboutEl = document.getElementById('about')
+      if (aboutEl) {
+        const rect = aboutEl.getBoundingClientRect()
+        // Trigger morph when About section approaches viewport
+        const isNear = rect.top <= window.innerHeight * 0.85
+        const isFar = rect.top > window.innerHeight * 0.95
+        setIsAboutExpanded((prev) => {
+          if (!prev && isNear) return true
+          if (prev && isFar) return false
+          return prev
+        })
+      } else {
+        const y = window.scrollY
+        setIsAboutExpanded((prev) => {
+          if (!prev && y > 250) return true
+          if (prev && y < 150) return false
+          return prev
+        })
+      }
+    }
+    window.addEventListener('scroll', onScroll, { passive: true })
+    onScroll()
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
 
   return (
     <div className="min-h-screen bg-[var(--bg)] text-[var(--ink)] flex flex-col font-sans selection:bg-[var(--accent)] selection:text-white relative">
@@ -23,14 +52,13 @@ export default function App() {
 
       {/* Main Content Areas */}
       <main className="flex-1 flex flex-col">
-        {/* Phase 4 & 5: Hero Scrollytelling (Overview -> Stacking -> Terminal Morph & Sticky Hold) */}
-        <Hero onOpenCv={() => setIsCvOpen(true)} />
+        {/* Phase 4 & 5: Hero Section with Card Stacking & Morph */}
+        <Hero isAboutExpanded={isAboutExpanded} onOpenCv={() => setIsCvOpen(true)} />
 
-        {/* Phase 5: About Section (Mobile & Reduced-Motion touch-friendly fallback) */}
-        <About />
+        {/* Phase 5: About Section (Terminal window expands from top card) */}
+        <About isExpanded={isAboutExpanded} />
 
         {/* Section Anchors for Next Phases */}
-
         <section id="projects" className="py-28 px-6 max-w-5xl mx-auto w-full min-h-[60vh] flex flex-col justify-center">
           <div className="p-8 rounded-2xl bg-[var(--surface)] border border-slate-200">
             <span className="text-xs font-mono text-[var(--ink-secondary)]">
