@@ -59,11 +59,11 @@ export function AboutTerminal({ className = '', isEmbedded = false }: AboutTermi
         </div>
       </div>
 
-      {/* ─── Terminal Body (Fades in smoothly during morph to prevent text reflow) ─── */}
+      {/* ─── Terminal Body (Fades in smoothly as heavy terminal settles) ─── */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 0.35, delay: 0.1, ease: 'easeOut' }}
+        transition={{ duration: 0.5, delay: 0.25, ease: 'easeOut' }}
         className="p-5 sm:p-8 lg:p-10 flex flex-col lg:flex-row gap-8 lg:gap-12"
       >
         {/* ─── Left Column: Command prompt + Profile Portrait Card ─── */}

@@ -16,9 +16,9 @@ interface PositionDelta {
   y: number
 }
 
-// Stacking starts right as user scrolls down and completes by 35% of Hero section scroll
+// Stacking starts right as user scrolls down and completes by 45% of Hero section scroll for a more deliberate, weighted feel
 const STACK_START = 0.0
-const STACK_END = 0.35
+const STACK_END = 0.45
 
 export function Hero({ onOpenCv, isAboutExpanded = false }: HeroProps) {
   const [card1, card2, card3, card4] = profileData.heroCards
@@ -165,7 +165,7 @@ export function Hero({ onOpenCv, isAboutExpanded = false }: HeroProps) {
           <motion.div
             ref={card4Ref}
             layoutId="about-terminal-window"
-            transition={{ type: 'spring', stiffness: 120, damping: 20, mass: 0.8 }}
+            transition={{ type: 'spring', stiffness: 70, damping: 24, mass: 2.0 }}
             style={{ scale: c4Scale, filter: c4Filter }}
             className="absolute bottom-12 right-6 xl:right-12 pointer-events-auto z-40"
           >
