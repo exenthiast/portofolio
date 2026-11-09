@@ -110,7 +110,9 @@ export function Hero({ onOpenCv }: HeroProps) {
   const c3Rotate = useTransform(scrollYProgress, [STACK_START, STACK_END], [0, -1])
 
   // Card 4 (bottom-right: ~/alfiz/portfolio) -> target, on top of deck (z-40) with enhanced shadow
-  const c4Scale = useTransform(scrollYProgress, [STACK_START, STACK_END, 0.7], [1, 1.02, 1.08])
+  const c4Scale = useTransform(scrollYProgress, [STACK_START, STACK_END], [1, 1.02])
+  // Hands off smoothly to About section's expanding terminal as user scrolls past Hero
+  const c4Opacity = useTransform(scrollYProgress, [STACK_END, 0.75], [1, 0])
   const c4Filter = useTransform(
     scrollYProgress,
     [STACK_START, STACK_END],
@@ -161,7 +163,7 @@ export function Hero({ onOpenCv }: HeroProps) {
         {/* Bottom Right Card - Portfolio (z-40: TOP of stack) */}
         <motion.div
           ref={card4Ref}
-          style={{ scale: c4Scale, filter: c4Filter }}
+          style={{ scale: c4Scale, filter: c4Filter, opacity: c4Opacity }}
           className="absolute bottom-12 right-6 xl:right-12 pointer-events-auto z-40"
         >
           <HeroCard card={card4} variant="desktop" />
