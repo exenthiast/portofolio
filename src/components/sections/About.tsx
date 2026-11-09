@@ -37,33 +37,37 @@ export function About({ isExpanded = false }: AboutProps) {
   return (
     <section
       id="about"
-      className="relative py-20 sm:py-28 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full min-h-[700px] flex flex-col justify-center items-center"
+      className="relative w-full lg:h-[185vh] flex flex-col items-center"
     >
-      {/* ─── DESKTOP SCROLL-LINKED CARD MORPH VIA LAYOUT-ID ─── */}
+      {/* ─── DESKTOP STICKY SCROLL HOLD TRACK (185vh hold gives a weighty, deliberate scroll feel) ─── */}
       {isDesktop && !reducedMotion ? (
-        <div className="w-full max-w-6xl min-h-[580px] flex items-center justify-center">
-          {/* Only mounted when user scrolls to About; animates directly from Card 4 in Hero */}
-          {isExpanded && (
-            <motion.div
-              layoutId="about-terminal-window"
-              transition={{ type: 'spring', stiffness: 70, damping: 24, mass: 2.0 }}
-              className="w-full flex justify-center"
-            >
-              <AboutTerminal />
-            </motion.div>
-          )}
+        <div className="sticky top-0 h-screen w-full flex flex-col justify-center items-center px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto overflow-hidden">
+          <div className="w-full max-w-6xl min-h-[580px] flex items-center justify-center">
+            {/* Animates directly from Card 4 in Hero with heavy, slow inertia */}
+            {isExpanded && (
+              <motion.div
+                layoutId="about-terminal-window"
+                transition={{ type: 'spring', stiffness: 70, damping: 24, mass: 2.0 }}
+                className="w-full flex justify-center"
+              >
+                <AboutTerminal />
+              </motion.div>
+            )}
+          </div>
         </div>
       ) : (
         /* ─── MOBILE / REDUCED-MOTION: CLEAN RESPONSIVE FADE-IN ─── */
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-60px' }}
-          transition={{ duration: 0.5, ease: 'easeOut' }}
-          className="w-full flex justify-center"
-        >
-          <AboutTerminal />
-        </motion.div>
+        <div className="py-20 sm:py-28 px-4 sm:px-6 w-full max-w-7xl mx-auto flex justify-center">
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-60px' }}
+            transition={{ duration: 0.5, ease: 'easeOut' }}
+            className="w-full flex justify-center"
+          >
+            <AboutTerminal />
+          </motion.div>
+        </div>
       )}
     </section>
   )
