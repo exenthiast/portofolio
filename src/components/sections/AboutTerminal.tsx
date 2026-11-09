@@ -64,7 +64,7 @@ export function AboutTerminal({ className = '', isEmbedded = false }: AboutTermi
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5, delay: 0.25, ease: 'easeOut' }}
-        className="p-5 sm:p-8 lg:p-10 flex flex-col lg:flex-row gap-8 lg:gap-12"
+        className="p-5 sm:p-7 lg:p-8 xl:p-9 flex flex-col lg:flex-row gap-6 lg:gap-10"
       >
         {/* ─── Left Column: Command prompt + Profile Portrait Card ─── */}
         <div className="w-full lg:w-[340px] xl:w-[360px] shrink-0 flex flex-col">
