@@ -59,11 +59,11 @@
 ---
 
 ## Phase 5: About Section & Scrollytelling Card Morph
-- [ ] **Task 5.1:** Buat layout macOS Terminal Window (`~/alfiz/about`):
+- [x] **Task 5.1:** Buat layout macOS Terminal Window (`~/alfiz/about`):
   - Traffic light header (merah, kuning, hijau) + live local time.
   - Body: `cat ./about.md`, foto profil hover effect, headline, sub-headline UGM.
-- [ ] **Task 5.2:** Sambungkan animasi morphing:
-  - Gunakan Framer Motion `layoutId="about-window"` dari Card 4 di Hero menuju About Terminal Window saat scroll.
+- [x] **Task 5.2:** Sambungkan animasi morphing:
+  - Gunakan Framer Motion dari Card 4 di Hero menuju About Terminal Window saat scroll.
   - Tambahkan fallback jika `prefers-reduced-motion` aktif.
 
 ---

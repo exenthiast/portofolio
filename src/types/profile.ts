@@ -21,6 +21,27 @@ export interface HeroCardData {
   isMorphTarget?: boolean
 }
 
+export interface TechSpecItem {
+  category: string
+  items: string
+}
+
+export interface AboutData {
+  terminalPath: string
+  command: string
+  headline: string
+  subHeadline: string
+  bio: string
+  photo: {
+    name: string
+    location: string
+    tag: string
+    imageAlt: string
+  }
+  specsHeader: string
+  specs: TechSpecItem[]
+}
+
 export interface Profile {
   firstName: string
   lastName: string
@@ -40,4 +61,5 @@ export interface Profile {
   }
   navLinks: NavLink[]
   heroCards: HeroCardData[]
+  about: AboutData
 }

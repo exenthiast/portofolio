@@ -1,16 +1,17 @@
 interface TrafficLightDotsProps {
   className?: string
-  size?: 'sm' | 'md'
+  size?: 'sm' | 'md' | 'lg'
 }
 
 export function TrafficLightDots({ className = '', size = 'sm' }: TrafficLightDotsProps) {
-  const dotSize = size === 'sm' ? 'w-2 h-2' : 'w-2.5 h-2.5'
+  const dotSize =
+    size === 'lg' ? 'w-3 h-3' : size === 'md' ? 'w-2.5 h-2.5' : 'w-2 h-2'
 
   return (
-    <div className={`flex items-center gap-1.5 ${className}`} aria-hidden="true">
-      <span className={`${dotSize} rounded-full bg-[var(--mac-close,#ff5f56)] inline-block shadow-xs`} />
-      <span className={`${dotSize} rounded-full bg-[var(--mac-minimize,#ffbd2e)] inline-block shadow-xs`} />
-      <span className={`${dotSize} rounded-full bg-[var(--mac-maximize,#27c93f)] inline-block shadow-xs`} />
+    <div className={`flex items-center gap-2 ${className}`} aria-hidden="true">
+      <span className={`${dotSize} rounded-full bg-[var(--mac-close,#ff5f56)] inline-block shadow-2xs hover:opacity-80 transition-opacity`} />
+      <span className={`${dotSize} rounded-full bg-[var(--mac-minimize,#ffbd2e)] inline-block shadow-2xs hover:opacity-80 transition-opacity`} />
+      <span className={`${dotSize} rounded-full bg-[var(--mac-maximize,#27c93f)] inline-block shadow-2xs hover:opacity-80 transition-opacity`} />
     </div>
   )
 }

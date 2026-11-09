@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useLenis } from './hooks/useLenis'
 import { Navbar } from './components/sections/Navbar'
 import { Hero } from './components/sections/Hero'
+import { About } from './components/sections/About'
 import { GithubGridBackground } from './components/ui/GithubGridBackground'
 import { CvModal } from './components/ui/CvModal'
 
@@ -22,17 +23,13 @@ export default function App() {
 
       {/* Main Content Areas */}
       <main className="flex-1 flex flex-col">
-        {/* Phase 4: Hero Section & Quad Neofetch Cards */}
+        {/* Phase 4 & 5: Hero Section & Scrollytelling Card Morph into About */}
         <Hero onOpenCv={() => setIsCvOpen(true)} />
 
+        {/* Phase 5: About Section (Mobile / Fallback presentation) */}
+        <About />
+
         {/* Section Anchors for Next Phases */}
-        <section id="about" className="py-28 px-6 max-w-5xl mx-auto w-full min-h-[60vh] flex flex-col justify-center">
-          <div className="p-8 rounded-2xl bg-[var(--surface-terminal)] text-[var(--ink-terminal)] border border-[var(--surface-terminal-header)]">
-            <span className="text-xs font-mono text-[var(--ink-terminal-muted)]">
-              ~/alfiz/about — coming in Phase 5
-            </span>
-          </div>
-        </section>
 
         <section id="projects" className="py-28 px-6 max-w-5xl mx-auto w-full min-h-[60vh] flex flex-col justify-center">
           <div className="p-8 rounded-2xl bg-[var(--surface)] border border-slate-200">
