@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useLenis } from './hooks/useLenis'
 import { Navbar } from './components/sections/Navbar'
 import { Hero } from './components/sections/Hero'
@@ -8,38 +8,7 @@ import { CvModal } from './components/ui/CvModal'
 
 export default function App() {
   const [isCvOpen, setIsCvOpen] = useState(false)
-  const [isAboutExpanded, setIsAboutExpanded] = useState(false)
   useLenis()
-
-  // Track scroll position for seamless Card 4 -> About Terminal morph
-  useEffect(() => {
-    const onScroll = () => {
-      const aboutEl = document.getElementById('about')
-      if (aboutEl) {
-        const rect = aboutEl.getBoundingClientRect()
-        const vh = window.innerHeight
-        // Morph into About terminal when entering About (60% threshold)
-        const isNear = rect.top <= vh * 0.60
-        // Morph back to Hero stack as soon as scrolling up into Hero (70% threshold, tight 10% hysteresis)
-        const isFar = rect.top > vh * 0.70
-        setIsAboutExpanded((prev) => {
-          if (!prev && isNear) return true
-          if (prev && isFar) return false
-          return prev
-        })
-      } else {
-        const y = window.scrollY
-        setIsAboutExpanded((prev) => {
-          if (!prev && y > 300) return true
-          if (prev && y < 220) return false
-          return prev
-        })
-      }
-    }
-    window.addEventListener('scroll', onScroll, { passive: true })
-    onScroll()
-    return () => window.removeEventListener('scroll', onScroll)
-  }, [])
 
   return (
     <div className="min-h-screen bg-[var(--bg)] text-[var(--ink)] flex flex-col font-sans selection:bg-[var(--accent)] selection:text-white relative">
@@ -54,11 +23,11 @@ export default function App() {
 
       {/* Main Content Areas */}
       <main className="flex-1 flex flex-col">
-        {/* Phase 4 & 5: Hero Section with Card Stacking & Morph */}
-        <Hero isAboutExpanded={isAboutExpanded} onOpenCv={() => setIsCvOpen(true)} />
+        {/* Phase 4 & 5: Hero Scrollytelling (Overview -> Stacking -> Continuous Morph -> Sticky Hold) */}
+        <Hero onOpenCv={() => setIsCvOpen(true)} />
 
-        {/* Phase 5: About Section (Terminal window expands from top card) */}
-        <About isExpanded={isAboutExpanded} />
+        {/* Phase 5: About Section (Mobile & Reduced-Motion touch-friendly fallback) */}
+        <About />
 
         {/* Section Anchors for Next Phases */}
         <section id="projects" className="py-28 px-6 max-w-5xl mx-auto w-full min-h-[60vh] flex flex-col justify-center">
