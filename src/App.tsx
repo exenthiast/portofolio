@@ -17,9 +17,11 @@ export default function App() {
       const aboutEl = document.getElementById('about')
       if (aboutEl) {
         const rect = aboutEl.getBoundingClientRect()
-        // Trigger morph when About section approaches viewport
-        const isNear = rect.top <= window.innerHeight * 0.85
-        const isFar = rect.top > window.innerHeight * 0.95
+        const vh = window.innerHeight
+        // Morph into About terminal when entering About (60% threshold)
+        const isNear = rect.top <= vh * 0.60
+        // Morph back to Hero stack as soon as scrolling up into Hero (70% threshold, tight 10% hysteresis)
+        const isFar = rect.top > vh * 0.70
         setIsAboutExpanded((prev) => {
           if (!prev && isNear) return true
           if (prev && isFar) return false
@@ -28,8 +30,8 @@ export default function App() {
       } else {
         const y = window.scrollY
         setIsAboutExpanded((prev) => {
-          if (!prev && y > 250) return true
-          if (prev && y < 150) return false
+          if (!prev && y > 300) return true
+          if (prev && y < 220) return false
           return prev
         })
       }

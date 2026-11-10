@@ -6,12 +6,12 @@ interface AboutProps {
   isExpanded?: boolean
 }
 
-// Spring physics: deliberate, slow, weighted inertia matching Hero's morph spring
+// Spring physics: tuned inertia matching Hero's morph spring
 const MORPH_SPRING = {
   type: 'spring' as const,
-  stiffness: 45,
-  damping: 20,
-  mass: 2.2,
+  stiffness: 85,
+  damping: 22,
+  mass: 1.1,
 }
 
 export function About({ isExpanded = false }: AboutProps) {

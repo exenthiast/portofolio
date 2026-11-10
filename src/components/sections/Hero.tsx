@@ -20,12 +20,12 @@ interface PositionDelta {
 const STACK_START = 0.0
 const STACK_END = 0.40
 
-// Spring physics: deliberate, slow, weighted inertia for card morph
+// Spring physics: tuned inertia for smooth, zero-delay card morph
 const MORPH_SPRING = {
   type: 'spring' as const,
-  stiffness: 45,
-  damping: 20,
-  mass: 2.2,
+  stiffness: 85,
+  damping: 22,
+  mass: 1.1,
 }
 
 export function Hero({ onOpenCv, isAboutExpanded = false }: HeroProps) {
