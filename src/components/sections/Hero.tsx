@@ -159,23 +159,23 @@ export function Hero({ onOpenCv }: HeroProps) {
   const c1Y = useTransform(scrollYProgress, [STACK_START, STACK_END], [0, deltas.card1.y - 18])
   const c1Scale = useTransform(scrollYProgress, [STACK_START, STACK_END], [1, 0.94])
   const c1Rotate = useTransform(scrollYProgress, [STACK_START, STACK_END], [card1.rotation, -3])
-  const c1Opacity = useTransform(scrollYProgress, [MORPH_START, 0.40], [1, 0])
+  const c1Opacity = useTransform(scrollYProgress, [MORPH_START, 0.42], [1, 0])
 
   const c2X = useTransform(scrollYProgress, [STACK_START, STACK_END], [0, deltas.card2.x + 10])
   const c2Y = useTransform(scrollYProgress, [STACK_START, STACK_END], [0, deltas.card2.y - 12])
   const c2Scale = useTransform(scrollYProgress, [STACK_START, STACK_END], [1, 0.96])
   const c2Rotate = useTransform(scrollYProgress, [STACK_START, STACK_END], [card2.rotation, 2])
-  const c2Opacity = useTransform(scrollYProgress, [MORPH_START, 0.40], [1, 0])
+  const c2Opacity = useTransform(scrollYProgress, [MORPH_START, 0.42], [1, 0])
 
   const c3X = useTransform(scrollYProgress, [STACK_START, STACK_END], [0, deltas.card3.x - 6])
   const c3Y = useTransform(scrollYProgress, [STACK_START, STACK_END], [0, deltas.card3.y - 6])
   const c3Scale = useTransform(scrollYProgress, [STACK_START, STACK_END], [1, 0.98])
   const c3Rotate = useTransform(scrollYProgress, [STACK_START, STACK_END], [card3.rotation, -1])
-  const c3Opacity = useTransform(scrollYProgress, [MORPH_START, 0.40], [1, 0])
+  const c3Opacity = useTransform(scrollYProgress, [MORPH_START, 0.42], [1, 0])
 
-  // Center text fades out gently as user begins scrolling down
-  const heroTextOpacity = useTransform(scrollYProgress, [0.06, 0.22], [1, 0])
-  const heroTextY = useTransform(scrollYProgress, [0.06, 0.22], [0, -32])
+  // Center text stays 100% visible during card stacking (0.00 -> 0.28), then fades out as Card 4 glides to center
+  const heroTextOpacity = useTransform(scrollYProgress, [0.26, 0.40], [1, 0])
+  const heroTextY = useTransform(scrollYProgress, [0.26, 0.40], [0, -32])
 
   // ─── Direct Scroll-Driven Morph & Sticky Hold Phase ───
   // Card 4 translation from bottom-right towards center (100% tied to user scroll wheel)
@@ -202,9 +202,9 @@ export function Hero({ onOpenCv }: HeroProps) {
   )
   const c4Rotate = useTransform(scrollYProgress, [0.0, STACK_END], [card4.rotation, 0])
 
-  // Content crossfade: compact card preview -> full macOS Terminal Window
-  const compactContentOpacity = useTransform(scrollYProgress, [MORPH_START, 0.40], [1, 0])
-  const terminalContentOpacity = useTransform(scrollYProgress, [0.38, MORPH_END], [0, 1])
+  // Content crossfade: seamless sum-of-opacities = 1.0, zero blank/white frames
+  const compactContentOpacity = useTransform(scrollYProgress, [MORPH_START, 0.48], [1, 0])
+  const terminalContentOpacity = useTransform(scrollYProgress, [MORPH_START, 0.48], [0, 1])
 
   // Interactive state: terminal is interactive once fully expanded and holding
   const [isHolding, setIsHolding] = useState(false)
@@ -381,7 +381,7 @@ export function Hero({ onOpenCv }: HeroProps) {
                 opacity: terminalContentOpacity,
                 pointerEvents: isHolding ? 'auto' : 'none',
               }}
-              className="relative w-full h-full flex flex-col bg-[var(--surface)] z-20 overflow-hidden"
+              className="absolute inset-0 flex flex-col bg-[var(--surface)] z-20 overflow-hidden"
             >
               <AboutTerminal isEmbedded className="w-full h-full" />
             </motion.div>
