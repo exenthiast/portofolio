@@ -25,7 +25,7 @@ export function AboutTerminal({ className = '', isEmbedded = false }: AboutTermi
         second: '2-digit',
         hour12: false,
       })
-      setTimeString(`${formatter.format(now)} WIB (GMT+7)`)
+      setTimeString(`${formatter.format(now)} WIB`)
     }
 
     updateClock()
@@ -40,22 +40,22 @@ export function AboutTerminal({ className = '', isEmbedded = false }: AboutTermi
   return (
     <div className={containerClasses}>
       {/* ─── macOS Terminal Window Header ─── */}
-      <div className="h-11 px-4 sm:px-5 bg-slate-100/90 border-b border-slate-200 flex items-center justify-between select-none">
+      <div className="h-[52px] sm:h-14 px-5 sm:px-6 bg-slate-100/95 border-b border-slate-200/90 flex items-center justify-between select-none shrink-0">
         {/* Left: Traffic Light Dots */}
-        <div className="flex items-center gap-2">
-          <TrafficLightDots size="lg" />
+        <div className="flex items-center gap-2.5">
+          <TrafficLightDots size="xl" />
         </div>
 
         {/* Center: Window Title with icon */}
-        <div className="flex items-center gap-1.5 font-mono text-xs sm:text-[13px] text-slate-700 font-medium">
-          <Terminal className="w-3.5 h-3.5 text-[var(--accent)]" />
+        <div className="flex items-center gap-2 font-mono text-xs sm:text-sm text-slate-800 font-semibold tracking-tight">
+          <Terminal className="w-4 h-4 text-[var(--accent)]" />
           <span>{about.terminalPath} — zsh</span>
         </div>
 
-        {/* Right: Live Local Clock (WIB) */}
-        <div className="hidden sm:flex items-center gap-1.5 font-mono text-xs text-slate-500">
-          <Clock className="w-3.5 h-3.5 text-slate-400" />
-          <span>{timeString || '00:00:00 WIB (GMT+7)'}</span>
+        {/* Right: Live Local Clock (WIB only) */}
+        <div className="hidden sm:flex items-center gap-2 font-mono text-xs sm:text-[13px] text-slate-600 font-medium">
+          <Clock className="w-4 h-4 text-slate-400" />
+          <span>{timeString || '00:00:00 WIB'}</span>
         </div>
       </div>
 
