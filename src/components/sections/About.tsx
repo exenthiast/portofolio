@@ -38,7 +38,7 @@ export function About() {
   return (
     <section
       id="about"
-      className="pt-8 pb-16 sm:pt-10 sm:pb-20 md:pt-12 md:pb-20 px-4 sm:px-6 w-full max-w-5xl xl:max-w-6xl mx-auto flex justify-center"
+      className="py-12 md:py-14 lg:py-24 px-4 sm:px-6 w-full max-w-7xl mx-auto flex justify-center"
     >
       <motion.div
         initial={{ opacity: 0, y: 24 }}
