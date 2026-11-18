@@ -23,3 +23,9 @@ Portofolio-Alfiz.figcraft
 *.njsproj
 *.sln
 *.sw?
+
+# Environment & deploy
+.env
+.env.*
+!.env.example
+.vercel

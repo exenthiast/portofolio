@@ -1,4 +1,6 @@
 import { useEffect } from 'react'
+import { useMediaQuery } from '../../hooks/useMediaQuery'
+import { track } from '../../lib/analytics'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Download } from 'lucide-react'
 import { profileData } from '../../data/profile'
@@ -9,7 +11,14 @@ interface CvModalProps {
   onClose: () => void
 }
 
-export function CvModal({ isOpen, onClose }: CvModalProps) {
+export default function CvModal({ isOpen, onClose }: CvModalProps) {
+  // Mobile Safari/Chrome render embedded PDFs poorly (first page only / blank) → offer open/download instead.
+  const canEmbedPdf = useMediaQuery('(min-width: 768px) and (pointer: fine)')
+
+  useEffect(() => {
+    if (isOpen) track('cv_open')
+  }, [isOpen])
+
   useEffect(() => {
     if (!isOpen) return
 
@@ -68,7 +77,7 @@ export function CvModal({ isOpen, onClose }: CvModalProps) {
                   <TrafficLightDots size="sm" />
                 </button>
                 <span className="text-xs font-mono text-[var(--ink-secondary)] hidden sm:inline">
-                  ~/cv/CV-ALFIZ REAL.pdf
+                  ~/cv/alfiz-desta-cv.pdf
                 </span>
               </div>
 
@@ -80,6 +89,7 @@ export function CvModal({ isOpen, onClose }: CvModalProps) {
                 <a
                   href={profileData.resumeUrl}
                   download="CV-Alfiz-Desta-Ariant-Permana.pdf"
+                  onClick={() => track('cv_download')}
                   className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-[var(--ink)] bg-[var(--surface)] hover:bg-slate-100 rounded-full border border-slate-200/80 transition-colors shadow-2xs focus-visible:outline-2 focus-visible:outline-[var(--accent)] cursor-pointer"
                 >
                   <Download className="w-3.5 h-3.5 text-[var(--accent)]" />
@@ -90,11 +100,26 @@ export function CvModal({ isOpen, onClose }: CvModalProps) {
 
             {/* Modal Body: Embedded PDF In-Page Preview */}
             <div className="flex-1 w-full h-full bg-slate-100 relative">
-              <iframe
-                src={`${profileData.resumeUrl}#toolbar=0&navpanes=0`}
-                title="Curriculum Vitae Alfiz Desta Ariant Permana"
-                className="w-full h-full border-none"
-              />
+              {canEmbedPdf ? (
+                <iframe
+                  src={`${profileData.resumeUrl}#toolbar=0&navpanes=0`}
+                  title="Curriculum Vitae Alfiz Desta Ariant Permana"
+                  className="w-full h-full border-none"
+                />
+              ) : (
+                <div className="flex h-full flex-col items-center justify-center gap-4 p-6 text-center">
+                  <p className="text-[length:var(--step-body)] text-[var(--ink-secondary)]">PDF preview works best on a larger screen.</p>
+                  <a
+                    href={profileData.resumeUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => track('cv_download')}
+                    className="inline-flex h-12 items-center gap-2 rounded-full bg-[var(--surface-terminal)] px-6 font-medium text-white"
+                  >
+                    Open CV (PDF)
+                  </a>
+                </div>
+              )}
             </div>
           </motion.div>
         </div>

@@ -1,79 +1,61 @@
-import { useState } from 'react'
+import { lazy, Suspense, useEffect, useState } from 'react'
 import { useLenis } from './hooks/useLenis'
+import { useMediaQuery } from './hooks/useMediaQuery'
+import { on } from './lib/events'
+import { track } from './lib/analytics'
 import { Navbar } from './components/sections/Navbar'
 import { Hero } from './components/sections/Hero'
+import { About } from './components/sections/About'
+import { Shell } from './components/sections/Shell'
+import { Projects } from './components/sections/Projects'
+import { Experience } from './components/sections/Experience'
+import { Badges } from './components/sections/Badges'
+import { Contact } from './components/sections/Contact'
+import { Footer } from './components/sections/Footer'
+import { BootScreen } from './components/sections/BootScreen'
+import { NotFound } from './components/sections/NotFound'
 import { GithubGridBackground } from './components/ui/GithubGridBackground'
-import { CvModal } from './components/ui/CvModal'
+
+const CvModal = lazy(() => import('./components/ui/CvModal'))
+
+const isKnownRoute = (path: string) => path === '/' || path === '/index.html'
 
 export default function App() {
   const [isCvOpen, setIsCvOpen] = useState(false)
+  // The cursor-follow grid only makes sense with a precise pointer (no touch devices).
+  const hasFinePointer = useMediaQuery('(pointer: fine)')
   useLenis()
+
+  useEffect(() => on('open-cv', () => setIsCvOpen(true)), [])
+  useEffect(() => track('page_view'), [])
+
+  if (!isKnownRoute(window.location.pathname)) return <NotFound />
+
+  const openCv = () => setIsCvOpen(true)
 
   return (
     <div className="min-h-screen bg-[var(--bg)] text-[var(--ink)] flex flex-col font-sans selection:bg-[var(--accent)] selection:text-white relative">
-      {/* Interactive GitHub Contribution Grid Background */}
-      <GithubGridBackground />
+      <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[300] focus:rounded-full focus:bg-[var(--surface-terminal)] focus:px-4 focus:py-2 focus:text-white">
+        Skip to content
+      </a>
+      <BootScreen />
+      {hasFinePointer && <GithubGridBackground />}
 
-      {/* In-Page CV Modal Viewer */}
-      <CvModal isOpen={isCvOpen} onClose={() => setIsCvOpen(false)} />
+      <Suspense fallback={null}>{isCvOpen && <CvModal isOpen={isCvOpen} onClose={() => setIsCvOpen(false)} />}</Suspense>
 
-      {/* Top Navbar */}
-      <Navbar onOpenCv={() => setIsCvOpen(true)} />
+      <Navbar onOpenCv={openCv} />
 
-      {/* Main Content Areas */}
-      <main className="flex-1 flex flex-col">
-        {/* Phase 4: Hero Section & Quad Neofetch Cards */}
-        <Hero onOpenCv={() => setIsCvOpen(true)} />
-
-        {/* Section Anchors for Next Phases */}
-        <section id="about" className="py-28 px-6 max-w-5xl mx-auto w-full min-h-[60vh] flex flex-col justify-center">
-          <div className="p-8 rounded-2xl bg-[var(--surface-terminal)] text-[var(--ink-terminal)] border border-[var(--surface-terminal-header)]">
-            <span className="text-xs font-mono text-[var(--ink-terminal-muted)]">
-              ~/alfiz/about — coming in Phase 5
-            </span>
-          </div>
-        </section>
-
-        <section id="projects" className="py-28 px-6 max-w-5xl mx-auto w-full min-h-[60vh] flex flex-col justify-center">
-          <div className="p-8 rounded-2xl bg-[var(--surface)] border border-slate-200">
-            <span className="text-xs font-mono text-[var(--ink-secondary)]">
-              ~/projects — coming in Phase 6
-            </span>
-          </div>
-        </section>
-
-        <section id="experience" className="py-28 px-6 max-w-5xl mx-auto w-full min-h-[60vh] flex flex-col justify-center">
-          <div className="p-8 rounded-2xl bg-[var(--surface)] border border-slate-200">
-            <span className="text-xs font-mono text-[var(--ink-secondary)]">
-              ~/experience — coming in Phase 7
-            </span>
-          </div>
-        </section>
-
-        <section id="badges" className="py-28 px-6 max-w-5xl mx-auto w-full min-h-[60vh] flex flex-col justify-center">
-          <div className="p-8 rounded-2xl bg-[var(--surface)] border border-slate-200">
-            <span className="text-xs font-mono text-[var(--ink-secondary)]">
-              ~/badges — coming in Phase 7
-            </span>
-          </div>
-        </section>
-
-        <section id="contact" className="py-28 px-6 max-w-5xl mx-auto w-full min-h-[60vh] flex flex-col justify-center">
-          <div className="p-8 rounded-2xl bg-[var(--surface-terminal)] text-[var(--ink-terminal)] border border-[var(--surface-terminal-header)]">
-            <span className="text-xs font-mono text-[var(--ink-terminal-muted)]">
-              ~/contact — coming in Phase 8
-            </span>
-          </div>
-        </section>
+      <main id="main" className="relative flex-1 flex flex-col">
+        <Hero onOpenCv={openCv} />
+        <About />
+        <Shell />
+        <Projects />
+        <Experience />
+        <Badges />
+        <Contact />
       </main>
 
-      {/* Footer Minimal */}
-      <footer className="py-8 text-center text-xs text-[var(--ink-secondary)] font-mono border-t border-slate-200/60 bg-[var(--surface)]">
-        <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
-          <span>Alfiz Desta Ariant Permana · Universitas Gadjah Mada</span>
-          <span>© 2026 Alfiz Desta. All rights reserved.</span>
-        </div>
-      </footer>
+      <Footer />
     </div>
   )
 }

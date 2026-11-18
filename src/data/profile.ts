@@ -1,37 +1,30 @@
-import type { Profile } from '../types'
+import type { Profile, SocialLink } from '../types'
+import { content } from './content'
+
+const { socialLinks, ...identity } = content.profile
+const projects = content.projects
+const badges = content.badges
+const experiences = content.experiences
+
+const toLink = (id: string): SocialLink => {
+  const link = socialLinks.find((s) => s.id === id)
+  return link
+    ? { name: link.name, label: `${link.name} ↗`, url: link.url, handle: link.handle }
+    : { name: id, label: id, url: '#' }
+}
+
+const organizationNames = experiences
+  .filter((e) => e.category !== 'training')
+  .map((e) => e.organization.replace(/\s*\(.*\)$/, '').replace(/\s+UGM$/, ''))
 
 export const profileData: Profile = {
-  firstName: 'Alfiz Desta',
-  lastName: 'Ariant Permana',
-  title: 'Software Engineer',
-  subtitle: 'Software Engineer · Backend & Distributed Systems @ UGM',
-  bio: 'Software Engineering student at Universitas Gadjah Mada (UGM). Passionate about crafting robust backend architectures, distributed APIs, and developer-native web experiences.',
-  affiliation: 'Universitas Gadjah Mada (UGM)',
-  location: 'Yogyakarta, ID',
-  availableForWork: true,
-  statusText: 'Available for work / Yogyakarta, ID',
-  email: 'alfizdestaap@gmail.com',
-  resumeUrl: '/cv/CV-ALFIZ REAL.pdf',
+  ...identity,
   socialLinks: {
-    github: {
-      name: 'GitHub',
-      label: 'GitHub ↗',
-      url: 'https://github.com/exenthiast',
-      handle: '/exenthiast',
-    },
-    linkedin: {
-      name: 'LinkedIn',
-      label: 'LinkedIn ↗',
-      url: 'https://www.linkedin.com/in/alfiz-desta-0a0318326/',
-      handle: '/alfizdesta',
-    },
-    instagram: {
-      name: 'Instagram',
-      label: 'Instagram ↗',
-      url: 'https://instagram.com/d.destaz',
-      handle: '/d.destaz',
-    },
+    github: toLink('github'),
+    linkedin: toLink('linkedin'),
+    instagram: toLink('instagram'),
   },
+  socialLinkList: socialLinks.map((s) => toLink(s.id)),
   navLinks: [
     { label: 'Overview', href: '#overview' },
     { label: 'About', href: '#about' },
@@ -40,39 +33,40 @@ export const profileData: Profile = {
     { label: 'Badges', href: '#badges' },
     { label: 'Contact', href: '#contact' },
   ],
+  // Metrics are derived from content so the hero never contradicts the sections below.
   heroCards: [
     {
       id: 'card-projects',
       path: '~/project/2025-2026',
-      metric: '3 Active Projects',
+      metric: `${projects.length} Active Projects`,
       desc: 'Backend & Fullstack Architecture',
-      stack: ['Simpondok', 'SIA', 'Lazuardy Bimbel'],
+      stack: projects.map((p) => p.title),
       rotation: -4,
       href: '#projects',
     },
     {
       id: 'card-badges',
       path: '~/badges/alfiz',
-      metric: '30+ Credly Badges',
-      desc: 'Google Cloud & Security Verified',
-      stack: ['GKE', 'AI', 'DevOps', 'CI/CD Pipeline'],
+      metric: `${badges.length} Credly Badges`,
+      desc: `${[...new Set(badges.map((b) => b.issuer))].join(' & ')} Verified`,
+      stack: [...new Set(badges.flatMap((b) => b.skills))].slice(0, 4),
       rotation: 4,
       href: '#badges',
     },
     {
       id: 'card-experience',
       path: '~/experience/2024-2026',
-      metric: 'UGM Leadership',
-      desc: 'Committees & Organization Head',
-      stack: ['KMTEDI UGM', 'BKLASS', 'TED', 'BLASTOUT'],
+      metric: `${experiences.length} Experiences`,
+      desc: 'Organizations, Committees & Training',
+      stack: [...new Set(organizationNames)].slice(0, 4),
       rotation: -3,
       href: '#experience',
     },
     {
       id: 'card-portfolio',
       path: '~/alfiz/portfolio',
-      metric: 'Software Engineer',
-      desc: 'Universitas Gadjah Mada (UGM)',
+      metric: identity.title,
+      desc: identity.affiliation,
       stack: ['Backend Systems', 'AI', 'DevOps'],
       rotation: 3,
       href: '#about',

@@ -1,6 +1,22 @@
 @import "tailwindcss";
 @import "./styles/tokens.css";
 
+@font-face {
+  font-family: 'Geist';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('/fonts/geist.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Geist Mono';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('/fonts/geist-mono.woff2') format('woff2');
+}
+
 html,
 body {
   background-color: var(--bg);
@@ -45,4 +61,49 @@ html.lenis body {
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+}
+
+/* Dialog keyframes (Radix data-state driven) */
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes pop-in {
+  from { opacity: 0; transform: translate(-50%, calc(-50% + 12px)) scale(0.97); }
+  to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+
+@layer base {
+/* Clear keyboard focus for every interactive element (AGENTS.md §5.3) */
+:where(a, button, [role='tab'], input, textarea, select, summary):focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Every heading is clamped to 2 lines (DESIGN.md anti-slop rule) */
+:where(h1, h2, h3, h4, h5, h6) {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+}
+}
+
+/* Terminal caret */
+@keyframes caret-blink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+.caret {
+  animation: caret-blink 1s steps(1) infinite;
+}
+
+/* Static SEO fallback inside #root (replaced by React on boot) */
+.seo-fallback {
+  max-width: 48rem;
+  margin: 0 auto;
+  padding: 6rem 1.5rem;
+  line-height: 1.6;
 }
