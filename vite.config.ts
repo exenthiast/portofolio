@@ -4,6 +4,7 @@ import tailwindcss from '@tailwindcss/vite'
 import path from 'path'
 import { fileURLToPath } from 'url'
 import { seoPlugin } from './scripts/seo-plugin.ts'
+import { contentSyncPlugin } from './scripts/content-sync-plugin.ts'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
@@ -22,7 +23,7 @@ function adminRewrite(): Plugin {
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [adminRewrite(), react(), tailwindcss(), seoPlugin(__dirname)],
+  plugins: [adminRewrite(), contentSyncPlugin(), react(), tailwindcss(), seoPlugin(__dirname)],
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),

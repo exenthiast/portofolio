@@ -97,6 +97,7 @@ export const experienceSchema = z.object({
   role: z.string().trim().min(1),
   organization: z.string().trim().min(1),
   period: z.string().trim().min(1),
+  logo: imageSchema.optional(),
   description: z.string().trim().min(1),
   division: z.string().trim().optional(),
   skills: z.array(z.string().trim().min(1)).optional(),
