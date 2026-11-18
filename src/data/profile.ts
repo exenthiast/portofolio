@@ -1,5 +1,6 @@
 import type { Profile, SocialLink } from '../types'
 import { content } from './content'
+import { aboutContent } from './about'
 
 const { socialLinks, ...identity } = content.profile
 const projects = content.projects
@@ -75,25 +76,16 @@ export const profileData: Profile = {
   ],
   about: {
     terminalPath: '~/alfiz/about',
-    command: 'alfizdesta:~$ cat ./about.md',
-    headline: `Hi, I'm ${identity.firstName} ${identity.lastName}`,
-    subHeadline: `${identity.title} @ ${identity.affiliation}`,
-    bio: identity.bio,
+    prompt: 'alfizdesta:~$',
+    command: 'cat ./about.md',
+    headline: `Hi, I'm ${identity.firstName}`,
+    subHeadline: identity.title,
+    bio: identity.aboutBio ?? aboutContent.defaultBio,
     photo: {
       name: `${identity.firstName} ${identity.lastName}`,
-      location: `📍 ${identity.location} · ${identity.affiliation}`,
-      tag: '@exenthiast · Software Engineering 2024-2028',
-      imageAlt: `${identity.firstName} ${identity.lastName} Portrait`,
+      location: identity.location,
+      image: identity.photo,
     },
-    specsHeader: 'SYSTEM SPECIFICATIONS & TECH MATRIX',
-    specs: [
-      { category: 'Languages', items: 'TypeScript, PHP 8.3, Python 3.12, SQL, Go' },
-      { category: 'Frameworks', items: 'Laravel 13, Next.js, Express, Vue 3 + Vite' },
-      { category: 'Databases', items: 'PostgreSQL, Redis (Caching), MySQL' },
-      { category: 'Architecture', items: 'Clean Architecture, RESTful API, Concurrency' },
-      { category: 'DevOps & Tools', items: 'Docker, Postman, Git, CI/CD Actions, Linux' },
-      { category: 'Interests', items: 'DevOps Automation, Computer Vision' },
-      { category: 'Availability', items: identity.statusText },
-    ],
+    projectsLink: aboutContent.projectsLink,
   },
 }

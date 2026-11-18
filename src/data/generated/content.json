@@ -77,6 +77,36 @@
       ]
     },
     {
+      "id": "katalog-pustaka",
+      "slug": "katalog-pustaka",
+      "title": "Katalog Pustaka",
+      "category": "Full-stack & DevOps",
+      "role": "Developer · Academic Project",
+      "description": "A book catalog application developed through weekly coursework in Software Construction and Evolution, covering book records, stock, and token-based authentication. The project grows alongside my DevOps practice, with containerized services, automated testing and image publishing, and infrastructure monitoring.",
+      "techStack": [
+        "PHP 8.4",
+        "Laravel 13",
+        "Vue 3",
+        "PostgreSQL 16",
+        "GitHub Actions",
+        "PHPUnit",
+        "Prometheus",
+        "Grafana",
+        "Docker"
+      ],
+      "githubUrl": "https://github.com/exenthiast/uts-pl-543220",
+      "architecture": {
+        "overview": "A Vue 3 SPA communicates with a Laravel 13 REST API through an Nginx reverse proxy. The API uses Sanctum authentication and PostgreSQL, with FrankenPHP serving the backend. Docker Compose defines the application and monitoring services. GitHub Actions runs tests and builds before publishing commit-tagged images to GHCR, while Prometheus and Grafana provide container and host monitoring.",
+        "keyDecisions": [
+          "Separate frontend and API containers behind an Nginx reverse proxy.",
+          "Protect book-management endpoints with Sanctum bearer tokens.",
+          "Persist PostgreSQL data using a named Docker volume.",
+          "Publish commit-tagged container images after backend tests and frontend builds.",
+          "Version Grafana dashboards and Prometheus configuration alongside application code."
+        ]
+      }
+    },
+    {
       "id": "sia-ugn",
       "slug": "sia-ugn",
       "title": "SIA UGN",

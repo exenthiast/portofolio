@@ -222,15 +222,15 @@ export function Hero({ onOpenCv }: HeroProps) {
       {/* Anchor for Navbar link '#overview' */}
       <div id="overview" className="absolute top-0 left-0 w-full h-px pointer-events-none" />
 
-      {/* Anchor for Navbar link '#about' on desktop (lands directly on the held terminal at 65% scroll) */}
-      {isDesktop && (
-        <div id="about" className="absolute top-[65%] left-0 w-full h-px pointer-events-none" />
+      {/* Anchor at 65% of the scrollable track, inside the terminal's interactive hold. */}
+      {isDesktop && !reducedMotion && (
+        <div id="about" className="absolute top-[calc(65%_-_65vh)] left-0 w-full h-px pointer-events-none" />
       )}
 
       {/* ======================================================== */}
       {/* DESKTOP VIEWPORT: STICKY SCROLLYTELLING HOLD TRACK       */}
       {/* ======================================================== */}
-      <div className="hidden lg:flex sticky top-0 h-screen w-full flex-col justify-center items-center overflow-hidden">
+      <div className={`${reducedMotion ? 'hidden' : 'hidden lg:flex'} sticky top-0 h-screen w-full flex-col justify-center items-center overflow-hidden`}>
         <div
           ref={containerRef}
           className="relative w-full max-w-[1440px] h-full flex items-center justify-center"
@@ -327,7 +327,7 @@ export function Hero({ onOpenCv }: HeroProps) {
               height: c4Height,
               rotate: c4Rotate,
             }}
-            className="absolute bottom-12 right-6 xl:right-12 rounded-2xl bg-[var(--surface)] border border-slate-200/90 shadow-2xl overflow-hidden flex flex-col z-40 will-change-transform pointer-events-auto"
+            className="absolute bottom-12 right-6 xl:right-12 rounded-2xl bg-[var(--surface)] overflow-hidden flex flex-col z-40 will-change-transform pointer-events-auto"
           >
             {/* View A: Compact Card 4 Preview (Fades out as card expands) */}
             <motion.div
@@ -393,7 +393,7 @@ export function Hero({ onOpenCv }: HeroProps) {
       {/* MOBILE / TABLET VIEWPORT (< 1024px)                      */}
       {/* Standard touch-friendly non-pinned document flow         */}
       {/* ======================================================== */}
-      <div className="lg:hidden flex flex-col items-center px-4 pt-24 pb-12 w-full max-w-xl mx-auto text-center">
+      <div className={`${reducedMotion ? '' : 'lg:hidden'} flex flex-col items-center px-4 pt-24 pb-12 w-full max-w-xl mx-auto text-center`}>
         {/* Status Pill */}
         <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-[var(--surface)] border border-slate-200/80 shadow-2xs mb-6 select-none">
           <span className="relative flex h-2 w-2" aria-hidden="true">

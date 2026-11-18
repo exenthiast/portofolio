@@ -136,9 +136,11 @@ No intermediate mushy sizes. Each step is clearly distinct:
   * If `prefers-reduced-motion` is active: Instant crossfade without positional travel.
 
 ### 5.3 About Section: The macOS Terminal Console
-* **Window Frame:** Solid obsidian `#0c0d12` with traffic light buttons (`#ff5f56`, `#ffbd2e`, `#27c93f`), centered path `~/alfiz/about`, and live time stamp.
-* **Left Column:** `alfizdesta:~$ cat ./about.md` with interactive developer profile portrait.
-* **Right Column:** High-contrast statement typography detailing education at Universitas Gadjah Mada (UGM) and backend engineering passions.
+* **Window Frame:** White `--surface` body and a solid grey `--surface-raised` header, as specified in the PRD. Keep the traffic light dots, centered path `~/alfiz/about`, and live WIB clock. No resting shadow or nested outlined panels.
+* **Command:** `alfizdesta:~$ cat ./about.md` spans the body above the two columns. Monospace stays in the shell command and terminal path; narrative copy uses Geist Sans.
+* **Left Column:** A single portrait from the admin **Profile photo** field, with explicit dimensions and alt text. Name and location sit below it. A brief hover wobble respects reduced motion. Removing the photo in admin removes this column.
+* **Right Column:** A short greeting, role, and readable paragraphs describing education and named projects. The admin **About story** field controls this narrative and the VFS `about.md` file. Keep the System Specifications / Tech Matrix panel removed; technical details belong with their projects.
+* **Mobile:** Stack the portrait and story in document flow. Keep the shell command and WIB time readable without horizontal overflow.
 * **Scroll Departure:** Profile picture slides and stacks as the project cards prepare to scatter into the next section.
 
 ### 5.4 Projects Section: The Engineering Ledger & Modal Drawer

@@ -50,7 +50,7 @@ export function buildVfs(): VFSDir {
     .join('\n')
 
   return dir('~', [
-    file('about.md', `# ${p.firstName} ${p.lastName}\n${p.title} · ${p.affiliation} · ${p.location}\n\n${p.bio}`, () => scrollToSection('about')),
+    file('about.md', `# ${p.firstName} ${p.lastName}\n${p.title} · ${p.affiliation} · ${p.location}\n\n${p.about.bio}`, () => scrollToSection('about')),
     file(
       'contact.txt',
       [`email:     ${p.email}`, ...p.socialLinkList.map((s) => `${s.name.toLowerCase().padEnd(10)} ${s.url}`)].join('\n'),

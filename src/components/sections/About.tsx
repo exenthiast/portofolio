@@ -41,7 +41,7 @@ export function About() {
       className="py-12 md:py-14 lg:py-24 px-4 sm:px-6 w-full max-w-7xl mx-auto flex justify-center"
     >
       <motion.div
-        initial={{ opacity: 0, y: 24 }}
+        initial={reducedMotion ? false : { opacity: 0, y: 24 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: '-60px' }}
         transition={{ duration: 0.5, ease: 'easeOut' }}

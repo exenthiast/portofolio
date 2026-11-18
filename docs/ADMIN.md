@@ -64,6 +64,15 @@ Without Supabase variables everything still builds: `pull-content` validates the
 
 Keyboard: `⌘K` / `Ctrl+K` command palette · `⌘S` / `Ctrl+S` save in editors.
 
+In **Profile & CV**, **About story** controls the paragraphs in the About window
+and the terminal's `cat ./about.md` output. Use a blank line between paragraphs.
+Older profiles start with the story in `src/data/about.ts`; **Short bio** remains
+the separate summary used elsewhere. **Profile photo** supplies the About portrait:
+choose an existing image or upload a new one (converted to WebP), fill in its alt
+text, then **Save profile**. **Remove** hides the portrait. Publish when ready to
+update production. Both fields use the existing profile JSONB and media pipeline;
+no database migration is needed.
+
 Experience entries have an optional **Organization logo** image field below
 **Period**. Choose an existing image or upload a new one, provide meaningful alt
 text, then save. The logo appears below the period in both the editor preview
