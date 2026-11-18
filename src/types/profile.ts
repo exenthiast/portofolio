@@ -1,3 +1,5 @@
+import type { ProfileContent } from '../schemas/content'
+
 export interface SocialLink {
   name: string
   label: string
@@ -21,23 +23,10 @@ export interface HeroCardData {
   isMorphTarget?: boolean
 }
 
-export interface Profile {
-  firstName: string
-  lastName: string
-  title: string
-  subtitle: string
-  bio: string
-  affiliation: string
-  location: string
-  availableForWork: boolean
-  statusText: string
-  email: string
-  resumeUrl: string
-  socialLinks: {
-    github: SocialLink
-    linkedin: SocialLink
-    instagram: SocialLink
-  }
+/** Editable profile content + derived site configuration. */
+export interface Profile extends Omit<ProfileContent, 'socialLinks'> {
+  socialLinks: Record<'github' | 'linkedin' | 'instagram', SocialLink>
+  socialLinkList: SocialLink[]
   navLinks: NavLink[]
   heroCards: HeroCardData[]
 }

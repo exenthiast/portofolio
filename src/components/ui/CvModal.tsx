@@ -68,7 +68,7 @@ export function CvModal({ isOpen, onClose }: CvModalProps) {
                   <TrafficLightDots size="sm" />
                 </button>
                 <span className="text-xs font-mono text-[var(--ink-secondary)] hidden sm:inline">
-                  ~/cv/CV-ALFIZ REAL.pdf
+                  ~/cv/alfiz-desta-cv.pdf
                 </span>
               </div>
 
