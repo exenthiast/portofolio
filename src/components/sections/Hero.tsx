@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from 'react'
-import { motion, useScroll, useTransform } from 'framer-motion'
+import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion'
 import { ArrowDown, ArrowUpRight } from 'lucide-react'
 import { profileData } from '../../data/profile'
 import { Button } from '../ui/Button'
@@ -21,6 +21,8 @@ const STACK_END = 0.35
 
 export function Hero({ onOpenCv }: HeroProps) {
   const [card1, card2, card3, card4] = profileData.heroCards
+  // Reduced motion: cards stay put instead of travelling into the deck on scroll.
+  const reduce = useReducedMotion()
 
   // ─── Refs for scroll-linked card stacking (desktop only) ───
   const sectionRef = useRef<HTMLElement>(null)
@@ -134,7 +136,7 @@ export function Hero({ onOpenCv }: HeroProps) {
         {/* Top Left Card - Projects (z-10: bottom of stack) */}
         <motion.div
           ref={card1Ref}
-          style={{ x: c1X, y: c1Y, scale: c1Scale, rotate: c1Rotate }}
+          style={reduce ? undefined : { x: c1X, y: c1Y, scale: c1Scale, rotate: c1Rotate }}
           className="absolute top-24 left-6 xl:left-12 pointer-events-auto z-10"
         >
           <HeroCard card={card1} variant="desktop" />
@@ -143,7 +145,7 @@ export function Hero({ onOpenCv }: HeroProps) {
         {/* Top Right Card - Badges (z-20: middle layer) */}
         <motion.div
           ref={card2Ref}
-          style={{ x: c2X, y: c2Y, scale: c2Scale, rotate: c2Rotate }}
+          style={reduce ? undefined : { x: c2X, y: c2Y, scale: c2Scale, rotate: c2Rotate }}
           className="absolute top-24 right-6 xl:right-12 pointer-events-auto z-20"
         >
           <HeroCard card={card2} variant="desktop" />
@@ -152,7 +154,7 @@ export function Hero({ onOpenCv }: HeroProps) {
         {/* Bottom Left Card - Experience (z-30: just under top card) */}
         <motion.div
           ref={card3Ref}
-          style={{ x: c3X, y: c3Y, scale: c3Scale, rotate: c3Rotate }}
+          style={reduce ? undefined : { x: c3X, y: c3Y, scale: c3Scale, rotate: c3Rotate }}
           className="absolute bottom-12 left-6 xl:left-12 pointer-events-auto z-30"
         >
           <HeroCard card={card3} variant="desktop" />
@@ -161,7 +163,7 @@ export function Hero({ onOpenCv }: HeroProps) {
         {/* Bottom Right Card - Portfolio (z-40: TOP of stack) */}
         <motion.div
           ref={card4Ref}
-          style={{ scale: c4Scale, filter: c4Filter }}
+          style={reduce ? undefined : { scale: c4Scale, filter: c4Filter }}
           className="absolute bottom-12 right-6 xl:right-12 pointer-events-auto z-40"
         >
           <HeroCard card={card4} variant="desktop" />

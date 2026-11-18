@@ -42,6 +42,7 @@ export const profileSchema = z.object({
   statusText: z.string().trim().min(1),
   email: z.string().trim().email(),
   resumeUrl: assetPath,
+  photo: imageSchema.optional(),
   socialLinks: z.array(socialLinkSchema),
 })
 
