@@ -28,6 +28,13 @@ export default function App() {
 
   useEffect(() => on('open-cv', () => setIsCvOpen(true)), [])
   useEffect(() => track('page_view'), [])
+  useEffect(() => {
+    const hot = import.meta.hot
+    if (!hot) return
+    const reloadContent = () => window.location.reload()
+    hot.on('portfolio:content-updated', reloadContent)
+    return () => hot.off('portfolio:content-updated', reloadContent)
+  }, [])
 
   if (!isKnownRoute(window.location.pathname)) return <NotFound />
 

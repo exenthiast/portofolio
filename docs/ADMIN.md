@@ -17,12 +17,20 @@ Public site: 100% static; no Supabase SDK in the public bundle
 ## 1. Supabase
 
 1. Create a project at supabase.com (region: Singapore is closest to Yogyakarta).
-2. **SQL Editor** → run `supabase/migrations/20261118000000_portfolio_cms.sql`.
+2. **SQL Editor** → run every SQL file in `supabase/migrations/` in filename order:
+   - `20261118000000_portfolio_cms.sql` creates the schema and RLS policies (run once).
+   - `20261118010000_grant_cms_access.sql` grants the API roles table access; RLS still limits rows and writes.
 3. Run `supabase/seed.sql` (regenerate any time with `npm run seed:sql`).
 4. Allow-list the owner:
    ```sql
    insert into public.admins (email) values ('alfizdestaap@gmail.com');
    ```
+
+For an existing installation showing `permission denied for table ...`, run only
+`20261118010000_grant_cms_access.sql`, then refresh the admin. Do not rerun the
+initial schema or seed: the permission migration preserves existing content and
+can be safely rerun. Before applying it, save existing table/sequence ACLs if a
+rollback is needed; restore those ACLs to undo only the newly added privileges.
 
 ## 2. Google OAuth
 
@@ -55,6 +63,33 @@ Without Supabase variables everything still builds: `pull-content` validates the
 4. The build pulls published content, validates it with the same zod schemas, and deploys (~1 min).
 
 Keyboard: `⌘K` / `Ctrl+K` command palette · `⌘S` / `Ctrl+S` save in editors.
+
+Experience entries have an optional **Organization logo** image field below
+**Period**. Choose an existing image or upload a new one, provide meaningful alt
+text, then save. The logo appears below the period in both the editor preview
+and the public entry. Use **Remove** to clear it; existing entries need no logo
+and no database migration is required because the image is stored in `data` JSONB.
+
+### Local preview after saving
+
+Save writes to Supabase. While `npm run dev` is running, the admin then asks the
+Vite server to refresh the public snapshot. Open portfolio tabs reload
+automatically; admin forms stay open without a terminal command or manual refresh.
+
+1. Save the item with status **published**; drafts are excluded from the public snapshot.
+2. The local server pulls and validates published content automatically after
+   saves, status changes, deletions, and reordering (including profile saves).
+3. If the pull fails, the admin reports that the Supabase save succeeded but the
+   local preview failed. Check the Vite terminal, fix the issue, and save again.
+
+`npm run content:pull` remains available for changes made outside this local admin,
+such as edits directly in Supabase. The automatic sync endpoint exists only in
+development, accepts same-origin POST requests, and reads published content with
+the public key; it never accepts content from the browser or writes to Supabase.
+
+`npm run build` also pulls the latest published content automatically. If using
+`npm run preview`, rebuild before refreshing. Updating the hosted website requires
+a deployment; the Publish button needs Vercel Functions and a configured Deploy Hook.
 
 ## 5. Security notes
 

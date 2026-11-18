@@ -122,6 +122,7 @@ const experiences: CollectionDef<Experience> = {
     { path: 'organization', label: 'Organization', type: 'text' },
     { path: 'division', label: 'Division', type: 'text' },
     { path: 'period', label: 'Period', type: 'text', hint: 'e.g. Okt 2024 – Okt 2025' },
+    { path: 'logo', label: 'Organization logo', type: 'image', hint: 'Optional organization or event logo, displayed below the period.' },
     { path: 'description', label: 'Description', type: 'textarea' },
     { path: 'skills', label: 'Skills', type: 'tags' },
     { path: 'photos', label: 'Documentation photos', type: 'images' },

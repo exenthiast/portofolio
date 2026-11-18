@@ -9,7 +9,17 @@ const Lightbox = lazy(() => import('../ui/Lightbox'))
 export function ExperienceEntry({ item, onOpenPhoto }: { item: ExperienceItem; onOpenPhoto?: (photos: ExperiencePhoto[], index: number) => void }) {
   return (
     <li className="grid gap-3 rounded-2xl bg-[var(--surface)] p-5 sm:grid-cols-[180px_1fr] sm:gap-8 sm:p-7">
-      <p className="text-[length:var(--step-small)] font-medium tabular-nums text-[var(--ink-secondary)]">{item.period}</p>
+      <div className="flex flex-col items-start gap-4">
+        <p className="text-[length:var(--step-small)] font-medium tabular-nums text-[var(--ink-secondary)]">{item.period}</p>
+        {item.logo && (
+          <SmartImage
+            key={item.logo.src}
+            image={item.logo}
+            fallbackLabel={item.organization}
+            className="h-20 w-28 object-contain object-left sm:h-24 sm:w-32"
+          />
+        )}
+      </div>
       <div className="flex min-w-0 flex-col gap-3">
         <div>
           <h3 className="text-[length:var(--step-lead)] font-semibold leading-tight tracking-tight">{item.role}</h3>

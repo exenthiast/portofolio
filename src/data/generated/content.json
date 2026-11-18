@@ -11,6 +11,12 @@
     "statusText": "Available for work / Yogyakarta, ID",
     "email": "alfizdestaap@gmail.com",
     "resumeUrl": "/cv/alfiz-desta-cv.pdf",
+    "photo": {
+      "src": "https://jxguhdwifjfnjxxgcjvz.supabase.co/storage/v1/object/public/media/2026/78802d65-confident-portrait-in-geometric-light.webp",
+      "alt": "confident portrait in geometric light",
+      "width": 1038,
+      "height": 1516
+    },
     "socialLinks": [
       {
         "id": "github",
@@ -34,13 +40,28 @@
   },
   "projects": [
     {
+      "id": "sim-pondok-tahfidz",
       "slug": "sim-pondok-tahfidz",
       "title": "SIM Pondok Tahfidz",
       "category": "Backend Developer",
       "role": "Lead Backend Developer",
       "description": "Sistem Informasi Manajemen Pondok Tahfidz modern untuk tata kelola santri, kurikulum hafalan Al-Qur’an, pencatatan keuangan syariah, dan pelaporan wali santri secara real-time.",
+      "techStack": [
+        "PHP 8.3",
+        "Laravel 13",
+        "PostgreSQL",
+        "Sanctum",
+        "Docker",
+        "Vercel"
+      ],
       "liveDemoUrl": "https://simpondokk.vercel.app/",
       "githubUrl": "https://github.com/exenthiast/SIMPondok-Tahfidz-BE",
+      "preview": {
+        "src": "/projects/project1.webp",
+        "alt": "SIM Pondok Tahfidz interface screenshot",
+        "width": 1600,
+        "height": 1000
+      },
       "architecture": {
         "overview": "Modular monolithic architecture with strictly typed service-repository pattern, isolated tenant scopes, and atomic database transactions.",
         "keyDecisions": [
@@ -53,31 +74,30 @@
         "Pelacakan setoran hafalan harian dan rekap musabaqah santri.",
         "Sistem penagihan iuran syahriah otomatis dengan notifikasi.",
         "Dashboard statistik perkembangan santri untuk asatidz dan wali."
-      ],
-      "id": "sim-pondok-tahfidz",
-      "techStack": [
-        "PHP 8.3",
-        "Laravel 13",
-        "PostgreSQL",
-        "Sanctum",
-        "Docker",
-        "Vercel"
-      ],
-      "preview": {
-        "src": "/projects/project1.webp",
-        "alt": "SIM Pondok Tahfidz interface screenshot",
-        "width": 1600,
-        "height": 1000
-      }
+      ]
     },
     {
+      "id": "sia-ugn",
       "slug": "sia-ugn",
       "title": "SIA UGN",
       "category": "Backend Developer",
       "role": "Backend Systems Engineer",
       "description": "Sistem Informasi Akademik perguruan tinggi berkapasitas konkurensi tinggi untuk rencana studi mahasiswa, penjadwalan ruang kuliah otomatis, dan transkrip nilai terenkripsi.",
+      "techStack": [
+        "Node.js",
+        "Express",
+        "MongoDB",
+        "Redis",
+        "Docker"
+      ],
       "liveDemoUrl": "https://sia.trisuladana.com",
       "githubUrl": "https://github.com/exenthiast/SIA-UGN-BE",
+      "preview": {
+        "src": "/projects/project2.webp",
+        "alt": "SIA UGN interface screenshot",
+        "width": 1600,
+        "height": 1000
+      },
       "architecture": {
         "overview": "High-throughput RESTful API designed with Redis caching layer and optimistic concurrency locks for KRS traffic surges.",
         "keyDecisions": [
@@ -90,30 +110,30 @@
         "Pengisian Kartu Rencana Studi (KRS) real-time dengan validasi prasyarat matakuliah.",
         "Algoritma penjadwalan kelas bebas bentrok dosen dan ruangan.",
         "API gateway terisolasi untuk integrasi data kelembagaan."
-      ],
-      "id": "sia-ugn",
-      "techStack": [
-        "Node.js",
-        "Express",
-        "MongoDB",
-        "Redis",
-        "Docker"
-      ],
-      "preview": {
-        "src": "/projects/project2.webp",
-        "alt": "SIA UGN interface screenshot",
-        "width": 1600,
-        "height": 1000
-      }
+      ]
     },
     {
+      "id": "bimbel-lazuardy",
       "slug": "bimbel-lazuardy",
       "title": "Bimbel Lazuardy",
       "category": "Frontend Developer",
       "role": "Lead Frontend Developer",
       "description": "Platform pembelajaran interaktif dan bimbingan belajar berbasis web dengan visualisasi progres siswa, tryout ujian berkala, dan modul interaktif.",
+      "techStack": [
+        "Vue 3",
+        "Vite",
+        "Pinia",
+        "Tailwind CSS",
+        "TypeScript"
+      ],
       "liveDemoUrl": "https://lazuardy.trpl.space",
       "githubUrl": "https://github.com/exenthiast/PAD-LAZUARDY-FRONTEND",
+      "preview": {
+        "src": "/projects/project3.webp",
+        "alt": "Bimbel Lazuardy interface screenshot",
+        "width": 1600,
+        "height": 1000
+      },
       "architecture": {
         "overview": "Composition API-driven Single Page Application with centralized Pinia reactive state stores and custom responsive design system tokens.",
         "keyDecisions": [
@@ -126,216 +146,222 @@
         "Simulasi tryout dengan timer otomatis dan anti-kecurangan tab tracking.",
         "Analisis butir soal dan grafik penguasaan materi per siswa.",
         "Antarmuka ramah mobile untuk akses materi belajar di mana saja."
-      ],
-      "id": "bimbel-lazuardy",
-      "techStack": [
-        "Vue 3",
-        "Vite",
-        "Pinia",
-        "Tailwind CSS",
-        "TypeScript"
-      ],
-      "preview": {
-        "src": "/projects/project3.webp",
-        "alt": "Bimbel Lazuardy interface screenshot",
-        "width": 1600,
-        "height": 1000
-      }
+      ]
     }
   ],
   "badges": [
     {
-      "id": "badge-1",
-      "title": "Google Cloud Computing Foundations: Cloud Computing Fundamentals",
+      "id": "badge-10",
+      "title": "Build Real World AI Applications with Gemini and Imagen Skill Badge",
       "issuer": "Google Cloud",
-      "issueDate": "2024",
-      "credlyUrl": "https://www.credly.com/users/alfiz-desta",
-      "skills": [
-        "Cloud Computing",
-        "Google Cloud Platform",
-        "Cloud Architecture"
-      ],
-      "description": "Verifies knowledge of core infrastructure concepts, cloud storage, networking, and virtualization principles.",
+      "issueDate": "Aug 24, 2026",
+      "credentialId": "81532c52-82c0-4fb3-a727-8d2ac746da7b",
+      "credlyUrl": "https://www.credly.com/earner/earned/badge/81532c52-82c0-4fb3-a727-8d2ac746da7b",
       "image": {
-        "src": "/badges/badge1.webp",
-        "alt": "Google Cloud Computing Foundations: Cloud Computing Fundamentals badge",
-        "width": 340,
-        "height": 340
-      }
+        "src": "https://jxguhdwifjfnjxxgcjvz.supabase.co/storage/v1/object/public/media/2026/9198c4a2-build-real-world-ai-applications-with-ge.webp",
+        "alt": "build real world ai applications with ge",
+        "width": 2000,
+        "height": 2000
+      },
+      "skills": [
+        "Vertex AI",
+        "Gemini",
+        "Imagen",
+        "Natural Language Processing (NLP)"
+      ],
+      "description": "Complete the introductory Build Real World AI Applications with Gemini and Imagen skill badge to demonstrate skills in the following: image recognition, natural language processing, image generation using Google's powerful Gemini and Imagen models, deploying applications on the Vertex AI platform."
+    },
+    {
+      "id": "badge-1",
+      "title": "Implement CI/CD Pipelines on Google Cloud Skill Badge",
+      "issuer": "Google Cloud",
+      "issueDate": "Aug 18, 2026",
+      "credentialId": "d383138a-541f-4145-bf38-65842bdc65aa",
+      "credlyUrl": "https://www.credly.com/earner/earned/badge/d383138a-541f-4145-bf38-65842bdc65aa",
+      "image": {
+        "src": "https://jxguhdwifjfnjxxgcjvz.supabase.co/storage/v1/object/public/media/2026/2cbb2fd7-implement-ci-cd-pipelines-on-google-clou.webp",
+        "alt": "implement ci cd pipelines on google clou",
+        "width": 680,
+        "height": 680
+      },
+      "skills": [
+        "Artifact Registry",
+        "CI/CD",
+        "Cloud Build",
+        "Cloud Deploy"
+      ],
+      "description": "Earn the intermediate skill badge by completing the Implement CI/CD Pipelines on Google Cloud course where you will learn how to use Artifact Registry, Cloud Build, and Cloud Deploy. You will interact with the Cloud console, Google Cloud CLI, Cloud Run, and GKE. This course will teach you how to build continuous integration pipelines, store and secure artifacts, scan for vulnerabilities, attest to the validity of approved releases."
     },
     {
       "id": "badge-2",
-      "title": "Google Cloud Computing Foundations: Infrastructure in Google Cloud",
+      "title": "Manage Kubernetes in Google Cloud Skill Badge",
       "issuer": "Google Cloud",
-      "issueDate": "2024",
-      "credlyUrl": "https://www.credly.com/users/alfiz-desta",
-      "skills": [
-        "Compute Engine",
-        "VPC Networks",
-        "Cloud IAM"
-      ],
-      "description": "Demonstrates ability to configure virtual machines, VPC firewalls, and resource access management.",
+      "issueDate": "Aug 4, 2026",
+      "credentialId": "53067b9a-611f-49c5-9aec-75a1c5ee06db",
+      "credlyUrl": "https://www.credly.com/earner/earned/badge/53067b9a-611f-49c5-9aec-75a1c5ee06db",
       "image": {
-        "src": "/badges/badge2.webp",
-        "alt": "Google Cloud Computing Foundations: Infrastructure in Google Cloud badge",
-        "width": 340,
-        "height": 340
-      }
-    },
-    {
-      "id": "badge-3",
-      "title": "Google Cloud Computing Foundations: Networking & Security in Google Cloud",
-      "issuer": "Google Cloud",
-      "issueDate": "2024",
-      "credlyUrl": "https://www.credly.com/users/alfiz-desta",
+        "src": "https://jxguhdwifjfnjxxgcjvz.supabase.co/storage/v1/object/public/media/2026/a47b0dbe-manage-kubernetes-in-google-cloud-skill-.webp",
+        "alt": "manage kubernetes in google cloud skill",
+        "width": 680,
+        "height": 680
+      },
       "skills": [
-        "Cloud Security",
-        "VPC Peering",
-        "Load Balancing"
-      ],
-      "description": "Covers secure network perimeters, cloud NAT, SSL policies, and DDoS mitigation practices.",
-      "image": {
-        "src": "/badges/badge3.webp",
-        "alt": "Google Cloud Computing Foundations: Networking & Security in Google Cloud badge",
-        "width": 340,
-        "height": 340
-      }
-    },
-    {
-      "id": "badge-4",
-      "title": "Google Cloud Computing Foundations: Data, ML, and AI in Google Cloud",
-      "issuer": "Google Cloud",
-      "issueDate": "2024",
-      "credlyUrl": "https://www.credly.com/users/alfiz-desta",
-      "skills": [
-        "BigQuery",
-        "Machine Learning",
-        "Vertex AI"
-      ],
-      "description": "Validates fundamentals of data warehousing, BigQuery SQL queries, and ML model deployment pipelines.",
-      "image": {
-        "src": "/badges/badge4.webp",
-        "alt": "Google Cloud Computing Foundations: Data, ML, and AI in Google Cloud badge",
-        "width": 340,
-        "height": 340
-      }
-    },
-    {
-      "id": "badge-5",
-      "title": "Build and Secure Networks in Google Cloud",
-      "issuer": "Google Cloud",
-      "issueDate": "2024",
-      "credlyUrl": "https://www.credly.com/users/alfiz-desta",
-      "skills": [
-        "Network Security",
-        "Cloud Armor",
-        "Firewall Rules"
-      ],
-      "description": "Hands-on skill badge verifying multi-region network configuration and ingress defense.",
-      "image": {
-        "src": "/badges/badge5.webp",
-        "alt": "Build and Secure Networks in Google Cloud badge",
-        "width": 340,
-        "height": 340
-      }
-    },
-    {
-      "id": "badge-6",
-      "title": "Set Up an App Dev Environment on Google Cloud",
-      "issuer": "Google Cloud",
-      "issueDate": "2024",
-      "credlyUrl": "https://www.credly.com/users/alfiz-desta",
-      "skills": [
-        "Cloud Run",
-        "App Engine",
-        "Artifact Registry"
-      ],
-      "description": "Hands-on validation of containerized microservices deployment on serverless runtimes.",
-      "image": {
-        "src": "/badges/badge6.webp",
-        "alt": "Set Up an App Dev Environment on Google Cloud badge",
-        "width": 340,
-        "height": 340
-      }
-    },
-    {
-      "id": "badge-7",
-      "title": "Deploy Kubernetes Applications on GKE",
-      "issuer": "Google Cloud",
-      "issueDate": "2024",
-      "credlyUrl": "https://www.credly.com/users/alfiz-desta",
-      "skills": [
-        "Kubernetes",
+        "Docker",
         "GKE",
-        "Pod Autoscaling",
-        "Helm"
+        "Kubetcl",
+        "Kubernetes"
       ],
-      "description": "Demonstrates proficiency in creating GKE clusters, managing deployments, and configuring cluster autoscalers.",
-      "image": {
-        "src": "/badges/badge7.webp",
-        "alt": "Deploy Kubernetes Applications on GKE badge",
-        "width": 340,
-        "height": 340
-      }
+      "description": "Complete the intermediate Manage Kubernetes in Google Cloud skill badge to demonstrate skills in the following: configure and build images to run and debug Docker containers, build Kubernetes Engine clusters, and manage them with kubectl, deploy Kubernetes applications using deployments and continuous delivery techniques."
     },
     {
       "id": "badge-8",
-      "title": "Implement DevOps Workflows in Google Cloud",
+      "title": "Connecting Cloud Networks with NCC",
       "issuer": "Google Cloud",
-      "issueDate": "2024",
-      "credlyUrl": "https://www.credly.com/users/alfiz-desta",
+      "issueDate": "Aug 3, 2026",
+      "credentialId": "afa699e6-67f7-409a-94f9-b9407e728f6f",
+      "credlyUrl": "https://www.credly.com/earner/earned/badge/afa699e6-67f7-409a-94f9-b9407e728f6f",
+      "image": {
+        "src": "https://jxguhdwifjfnjxxgcjvz.supabase.co/storage/v1/object/public/media/2026/3349efe5-connecting-cloud-networks-with-ncc.webp",
+        "alt": "connecting cloud networks with ncc",
+        "width": 1080,
+        "height": 1080
+      },
+      "skills": [
+        "Cloud Infrastucture",
+        "Cloud Services",
+        "Computer Network Infrastucture",
+        "Computer Networking",
+        "Google Cloud Networking",
+        "Multi Cloud",
+        "Network Management Systems",
+        "Network Service"
+      ],
+      "description": "Earn the intermediate Skill Badge by completing the Connecting Cloud Networks with NCC where you will learn how to use the Network Connectivity Center to connect your on-premises, cloud enterprise networks, and hybrid networks, and manage them as spokes through a single, centralized hub on Google Cloud."
+    },
+    {
+      "id": "badge-5",
+      "title": "Deploy Multi-Agent Architectures",
+      "issuer": "Google Cloud",
+      "issueDate": "Aug 2, 2026",
+      "credentialId": "c43130be-6ff0-46b6-9d0f-3c53e22cb76d",
+      "credlyUrl": "https://www.credly.com/earner/earned/badge/c43130be-6ff0-46b6-9d0f-3c53e22cb76d",
+      "image": {
+        "src": "https://jxguhdwifjfnjxxgcjvz.supabase.co/storage/v1/object/public/media/2026/0a73fe06-deploy-multi-agent-architectures.webp",
+        "alt": "deploy multi agent architectures",
+        "width": 680,
+        "height": 680
+      },
+      "skills": [
+        "AI Agents",
+        "Agent Development Kit",
+        "Authentication Protocols",
+        "Model Context Protocol"
+      ],
+      "description": "Complete the Deploy Multi-Agent Architectures skill badge to demonstrate skills in the following: building multi-agent systems with ADK, connecting agents with the Agent-to-Agent (A2A) protocol, integrating external tools using the Model Context Protocol (MCP), and deploying a complete multi-agent solution to Agent Engine."
+    },
+    {
+      "id": "badge-3",
+      "title": "Orchestrate Multi-agent Workflows with Gemini Enterprise",
+      "issuer": "Google Cloud",
+      "issueDate": "Jul 28, 2026",
+      "credentialId": "054d6bd4-9844-46d8-ac73-432bf4d1fb44",
+      "credlyUrl": "https://www.credly.com/earner/earned/badge/054d6bd4-9844-46d8-ac73-432bf4d1fb44",
+      "image": {
+        "src": "https://jxguhdwifjfnjxxgcjvz.supabase.co/storage/v1/object/public/media/2026/ee6beff5-orchestrate-multi-agent-workflows-with-g.webp",
+        "alt": "orchestrate multi agent workflows with g",
+        "width": 1080,
+        "height": 1080
+      },
+      "skills": [
+        "AI Agents",
+        "Gemini Enterprise",
+        "Multi-agents"
+      ],
+      "description": "Complete the Orchestrate Multi-Agent Workflows with Gemini Enterprise skill badge to demonstrate skills in the following: using agentic assistants powered by Gemini Enterprise to unify data across first- and third-party sources, develop multimedia marketing materials, and automate business actions across systems."
+    },
+    {
+      "id": "badge-4",
+      "title": "Engineer AI Agents with Agent Development Kit (ADK)",
+      "issuer": "Google Cloud",
+      "issueDate": "Jul 26, 2026",
+      "credentialId": "7199c1b7-aa99-4afe-b537-df6f4f65e53a",
+      "credlyUrl": "https://www.credly.com/earner/earned/badge/7199c1b7-aa99-4afe-b537-df6f4f65e53a",
+      "image": {
+        "src": "https://jxguhdwifjfnjxxgcjvz.supabase.co/storage/v1/object/public/media/2026/38166be9-engineer-ai-agents-with-agent-developmen.webp",
+        "alt": "engineer ai agents with agent developmen",
+        "width": 680,
+        "height": 680
+      },
+      "skills": [
+        "AI Agents",
+        "Agent Development Kit",
+        "Large Language Models Fine-Tuning",
+        "Model Training",
+        "Pretraining Large Language Models",
+        "Tokenization"
+      ],
+      "description": "Complete the Engineer AI Agents with Agent Development Kit (ADK) skill badge to demonstrate skills in the following: formulating real-world language model research problems; building a simple tokenizer; preparing a dataset for training a transformer language model; running the training loop of a small language model."
+    },
+    {
+      "id": "badge-7",
+      "title": "Build a Data Warehouse with BigQuery Skill Badge",
+      "issuer": "Google Cloud",
+      "issueDate": "Jul 25, 2026",
+      "credentialId": "873aea22-5f6a-4979-b55e-aa023d211a92",
+      "credlyUrl": "https://www.credly.com/earner/earned/badge/873aea22-5f6a-4979-b55e-aa023d211a92",
+      "image": {
+        "src": "https://jxguhdwifjfnjxxgcjvz.supabase.co/storage/v1/object/public/media/2026/a967e845-build-a-data-warehouse-with-bigquery-ski.webp",
+        "alt": "build a data warehouse with bigquery ski",
+        "width": 680,
+        "height": 680
+      },
+      "skills": [
+        "BigQuery",
+        "Data Ingestion",
+        "Data Model",
+        "Data Warehouse"
+      ],
+      "description": "Complete the Build a Data Warehouse with BigQuery skill badge to demonstrate skills in the following: joining data to create new tables, troubleshooting joins, appending data with unions, creating date-partitioned tables, and working with JSON, arrays, and structs in BigQuery."
+    },
+    {
+      "id": "badge-6",
+      "title": "Secure Software Delivery Skill Badge",
+      "issuer": "Google Cloud",
+      "issueDate": "Jul 23, 2026",
+      "credentialId": "f6598bae-0c88-41bd-aecc-f87f0e28021a",
+      "credlyUrl": "https://www.credly.com/earner/earned/badge/f6598bae-0c88-41bd-aecc-f87f0e28021a",
+      "image": {
+        "src": "https://jxguhdwifjfnjxxgcjvz.supabase.co/storage/v1/object/public/media/2026/1be20be1-secure-software-delivery-skill-badge.webp",
+        "alt": "secure software delivery skill badge",
+        "width": 680,
+        "height": 680
+      },
       "skills": [
         "Cloud Build",
-        "CI/CD",
-        "DevOps",
-        "Terraform"
+        "DevSecOps",
+        "GKE"
       ],
-      "description": "Verifies continuous integration and automated deployment pipelines with Infrastructure as Code.",
-      "image": {
-        "src": "/badges/badge8.webp",
-        "alt": "Implement DevOps Workflows in Google Cloud badge",
-        "width": 340,
-        "height": 340
-      }
+      "description": "Complete the intermediate Secure Software Delivery skill badge to demonstrate your proficiency in proactively integrating security into the software development lifecycle (SDLC) with DevSecOps principles. You'll learn how to utilize Google Kubernetes Engine (GKE) and Cloud Run for secure container image deployment, implement automated vulnerability scanning to proactively identify risks, and streamline application development with Artifact Registry while maintaining a focus on security."
     },
     {
       "id": "badge-9",
-      "title": "Automating Infrastructure on Google Cloud with Terraform",
+      "title": "Build Infrastructure with Terraform on Google Cloud Skill Badge",
       "issuer": "Google Cloud",
-      "issueDate": "2024",
-      "credlyUrl": "https://www.credly.com/users/alfiz-desta",
+      "issueDate": "Jul 23, 2026",
+      "credentialId": "5b0509ee-66ca-48cd-9807-8779bd7b3041",
+      "credlyUrl": "https://www.credly.com/earner/earned/badge/5b0509ee-66ca-48cd-9807-8779bd7b3041",
+      "image": {
+        "src": "https://jxguhdwifjfnjxxgcjvz.supabase.co/storage/v1/object/public/media/2026/c8677e68-build-infrastructure-with-terraform-on-g.webp",
+        "alt": "build infrastructure with terraform on g",
+        "width": 680,
+        "height": 680
+      },
       "skills": [
         "Terraform",
-        "HCL",
-        "Infrastructure as Code"
+        "Google Cloud Platform (GCP)",
+        "Infrastucture as Code (IaC)"
       ],
-      "description": "Hands-on provisioning of modular cloud architecture using HashiCorp Terraform state.",
-      "image": {
-        "src": "/badges/badge9.webp",
-        "alt": "Automating Infrastructure on Google Cloud with Terraform badge",
-        "width": 340,
-        "height": 340
-      }
-    },
-    {
-      "id": "badge-10",
-      "title": "Inspect Rich Documents with Gemini Multimodal and Vertex AI",
-      "issuer": "Google Cloud",
-      "issueDate": "2024",
-      "credlyUrl": "https://www.credly.com/users/alfiz-desta",
-      "skills": [
-        "Generative AI",
-        "Gemini API",
-        "Prompt Engineering",
-        "Vertex AI"
-      ],
-      "description": "Hands-on skill badge utilizing Gemini multimodal foundation models for structured document extraction.",
-      "image": {
-        "src": "/badges/badge10.webp",
-        "alt": "Inspect Rich Documents with Gemini Multimodal and Vertex AI badge",
-        "width": 340,
-        "height": 340
-      }
+      "description": "Complete the Build Infrastructure with Terraform on Google Cloud skill badge to demonstrate skills in the following: Infrastructure as Code (IaC) principles using Terraform, provisioning and managing Google Cloud resources with Terraform configurations, effective state management (local and remote), and modularizing Terraform code for reusability and organization."
     }
   ],
   "experiences": [
@@ -345,8 +371,14 @@
       "role": "Anggota Divisi Minat dan Bakat",
       "organization": "KMTEDI UGM (Keluarga Mahasiswa Teknologi Rekayasa Perangkat Lunak)",
       "period": "2024 – Sekarang",
+      "logo": {
+        "src": "https://jxguhdwifjfnjxxgcjvz.supabase.co/storage/v1/object/public/media/2026/658b944e-kmtedi-logo.webp",
+        "alt": "kmtedi logo",
+        "width": 447,
+        "height": 447
+      },
+      "description": "Developing programs to foster interest in technology, organizing student coding competitions, and facilitating internal software engineering workshops within the TEDI Department at SV UGM.",
       "division": "Minat dan Bakat",
-      "description": "Mengembangkan program pemberdayaan minat teknologi, kompetisi coding mahasiswa, dan fasilitasi workshop internal Software Engineering di lingkungan Departemen TEDI SV UGM.",
       "skills": [
         "Community Leadership",
         "Tech Workshop",
@@ -360,8 +392,14 @@
       "role": "Anggota Divisi Minat dan Bakat",
       "organization": "BKLASS UGM",
       "period": "Okt 2024 – Okt 2025",
+      "logo": {
+        "src": "https://jxguhdwifjfnjxxgcjvz.supabase.co/storage/v1/object/public/media/2026/379a7599-bklass-logo.webp",
+        "alt": "bklass logo",
+        "width": 400,
+        "height": 400
+      },
+      "description": "Coordinating student talent and creativity development activities in communities across study programs at Gadjah Mada University.",
       "division": "Minat dan Bakat",
-      "description": "Mengkoordinasikan kegiatan pengembangan bakat dan kreativitas mahasiswa dalam komunitas lintas program studi di Universitas Gadjah Mada.",
       "skills": [
         "Talent Development",
         "Coordination",
@@ -375,14 +413,52 @@
       "role": "Staff of Security Division",
       "organization": "Tech Enthusiast Day (TED UGM)",
       "period": "Okt 2025 – Des 2025",
+      "logo": {
+        "src": "https://jxguhdwifjfnjxxgcjvz.supabase.co/storage/v1/object/public/media/2026/5af500d7-ted-logo.webp",
+        "alt": "ted logo",
+        "width": 1280,
+        "height": 1280
+      },
+      "description": "Responsible for perimeter security, coordination of evacuation routes, and safety protocols during a series of national-scale technology seminars and innovation exhibitions.",
       "division": "Security & Protocol",
-      "description": "Bertanggung jawab atas pengamanan perimeter, koordinasi alur evakuasi, dan protokol keselamatan selama rangkaian seminar teknologi dan pameran inovasi berskala nasional.",
       "skills": [
         "Security Protocol",
         "Crowd Management",
         "Incident Response"
       ],
-      "photos": []
+      "photos": [
+        {
+          "src": "https://jxguhdwifjfnjxxgcjvz.supabase.co/storage/v1/object/public/media/2026/1f656c5e-7e9eff3c-3112-46b2-b645-17f816a06ffd.webp",
+          "alt": "7e9eff3c 3112 46b2 b645 17f816a06ffd",
+          "width": 1125,
+          "height": 2000,
+          "caption": "D-Day",
+          "year": "2025"
+        },
+        {
+          "src": "https://jxguhdwifjfnjxxgcjvz.supabase.co/storage/v1/object/public/media/2026/2a095918-88b0db45-b2a3-4983-b15b-1a0f1c9fb419.webp",
+          "alt": "88b0db45 b2a3 4983 b15b 1a0f1c9fb419",
+          "width": 1125,
+          "height": 2000,
+          "year": "2025"
+        },
+        {
+          "src": "https://jxguhdwifjfnjxxgcjvz.supabase.co/storage/v1/object/public/media/2026/0ab09df6-img-3935.webp",
+          "alt": "img 3935",
+          "width": 1124,
+          "height": 1699,
+          "caption": "First Gatering",
+          "year": "2025"
+        },
+        {
+          "src": "https://jxguhdwifjfnjxxgcjvz.supabase.co/storage/v1/object/public/media/2026/13cb68b3-dno-01935.webp",
+          "alt": "dno 01935",
+          "width": 2000,
+          "height": 1333,
+          "caption": "Awarding",
+          "year": "2025"
+        }
+      ]
     },
     {
       "id": "exp-trpl-league",
@@ -390,14 +466,66 @@
       "role": "Sub Coordinator of Security Division",
       "organization": "TRPL League UGM",
       "period": "Nov 2025",
+      "logo": {
+        "src": "https://jxguhdwifjfnjxxgcjvz.supabase.co/storage/v1/object/public/media/2026/b176ff9a-ligatrpl-logo.webp",
+        "alt": "ligatrpl logo",
+        "width": 1080,
+        "height": 1080
+      },
+      "description": "Leading the security sub-team for venues for e-sports matches and sports competitions between classes of UGM Software Engineering Technology students.",
       "division": "Security & Logistics",
-      "description": "Memimpin sub-tim keamanan venue pertandingan e-sports dan kompetisi olahraga antar angkatan mahasiswa Teknologi Rekayasa Perangkat Lunak UGM.",
       "skills": [
         "Team Leadership",
         "Venue Safety",
         "Risk Assessment"
       ],
-      "photos": []
+      "photos": [
+        {
+          "src": "https://jxguhdwifjfnjxxgcjvz.supabase.co/storage/v1/object/public/media/2026/bba275c4-tangkapan-layar-2026-11-18-pada-23-49-42.webp",
+          "alt": "tangkapan layar 2026 11 18 pada 23 49 42",
+          "width": 1125,
+          "height": 735,
+          "caption": "All-committee photo session",
+          "year": "2025"
+        }
+      ]
+    },
+    {
+      "id": "exp-tges",
+      "category": "committee",
+      "role": "Sub Coordinator of Logistics Division",
+      "organization": "TEDI Games and Electronic Sports (TGES)",
+      "period": "May 2025",
+      "logo": {
+        "src": "https://jxguhdwifjfnjxxgcjvz.supabase.co/storage/v1/object/public/media/2026/0cf7f469-tges-logo.webp",
+        "alt": "tges logo",
+        "width": 1080,
+        "height": 1080
+      },
+      "description": "Determining requirements, budget, and resources; ensuring security and the availability of items; procuring food, beverages, and other supplies; and coordinating with external parties (such as vendors).",
+      "division": "Logistics and Consumption",
+      "skills": [
+        "Team Leadership",
+        "Logistic Operations"
+      ],
+      "photos": [
+        {
+          "src": "https://jxguhdwifjfnjxxgcjvz.supabase.co/storage/v1/object/public/media/2026/c70d4b53-13246d48-3aed-480d-8e57-f9ee724a2363.webp",
+          "alt": "13246d48 3aed 480d 8e57 f9ee724a2363",
+          "width": 2000,
+          "height": 1500,
+          "caption": "All-committee photo session",
+          "year": "2025"
+        },
+        {
+          "src": "https://jxguhdwifjfnjxxgcjvz.supabase.co/storage/v1/object/public/media/2026/6d1e506c-98514d15-253c-45b2-a83b-c9abb05f179d.webp",
+          "alt": "98514d15 253c 45b2 a83b c9abb05f179d",
+          "width": 2000,
+          "height": 1500,
+          "caption": "All-committee photo session",
+          "year": "2025"
+        }
+      ]
     },
     {
       "id": "exp-blastout",
@@ -405,14 +533,37 @@
       "role": "Staff of Public Relations & Transportation Accommodation Division",
       "organization": "BLASTOUT UGM",
       "period": "Des 2024",
-      "division": "PR & Accommodation",
+      "logo": {
+        "src": "https://jxguhdwifjfnjxxgcjvz.supabase.co/storage/v1/object/public/media/2026/b24c3a95-img-1942.webp",
+        "alt": "img 1942",
+        "width": 1125,
+        "height": 936
+      },
       "description": "Menangani kemitraan media eksternal, akomodasi pemateri nasional, dan mobilisasi logistik delegasi kampus.",
+      "division": "PR & Accommodation",
       "skills": [
         "Public Relations",
         "Logistics Operations",
         "Sponsorship Liaison"
       ],
-      "photos": []
+      "photos": [
+        {
+          "src": "https://jxguhdwifjfnjxxgcjvz.supabase.co/storage/v1/object/public/media/2026/6bacd837-7a0a976c-7846-4550-a244-a8517d5bf5d9.webp",
+          "alt": "7a0a976c 7846 4550 a244 a8517d5bf5d9",
+          "width": 2000,
+          "height": 965,
+          "caption": "All-committee photo session",
+          "year": "2024"
+        },
+        {
+          "src": "https://jxguhdwifjfnjxxgcjvz.supabase.co/storage/v1/object/public/media/2026/28302040-rapat-besar-dprd-klaten.webp",
+          "alt": "rapat besar dprd klaten",
+          "width": 1125,
+          "height": 618,
+          "caption": "All-hands meeting",
+          "year": "2024"
+        }
+      ]
     },
     {
       "id": "exp-gc-arcade",
@@ -420,8 +571,14 @@
       "role": "Google Cloud Arcade Challenge Participant",
       "organization": "Dicoding Indonesia × Google Cloud",
       "period": "Jul 2026 – Sep 2026",
-      "division": "Cloud Architecture & DevOps",
+      "logo": {
+        "src": "https://jxguhdwifjfnjxxgcjvz.supabase.co/storage/v1/object/public/media/2026/68f4e4cc-dicoding-header-logo.webp",
+        "alt": "dicoding header logo",
+        "width": 794,
+        "height": 201
+      },
       "description": "Program intensif hands-on lab Qwiklabs menyelesaikan skenario komputasi awan, container orchestration Kubernetes GKE, IAM security, dan arsitektur microservices terdistribusi.",
+      "division": "Cloud Architecture & DevOps",
       "skills": [
         "Google Cloud Platform",
         "Kubernetes GKE",
@@ -436,8 +593,14 @@
       "role": "Injourney Hospitality House Participant",
       "organization": "PT Aviasi Pariwisata Indonesia (Persero)",
       "period": "Jun 2026",
+      "logo": {
+        "src": "https://jxguhdwifjfnjxxgcjvz.supabase.co/storage/v1/object/public/media/2026/8d47a21a-injourney-logo.webp",
+        "alt": "injourney logo",
+        "width": 2000,
+        "height": 713
+      },
+      "description": "Leadership training, professional communication and excellent service standards for BUMN in the national aviation and tourism ecosystem.",
       "division": "Professional Development",
-      "description": "Pelatihan kepemimpinan, komunikasi profesional, dan standar pelayanan prima BUMN dalam ekosistem aviasi dan pariwisata nasional.",
       "skills": [
         "Professional Communication",
         "Service Excellence",
