@@ -81,6 +81,11 @@
 - [x] **Task 6.2:** Sambungkan animasi morphing:
   - Gunakan Framer Motion `layoutId="about-window"` dari Card 4 di Hero menuju About Terminal Window saat scroll.
   - Tambahkan fallback jika `prefers-reduced-motion` aktif (termasuk transform scroll Hero via `useReducedMotion`).
+- [x] **Task 6.3:** Rapikan About tanpa mengubah konsep terminal:
+  - Pertahankan traffic lights, path, jam WIB, dan `cat ./about.md`; hapus panel System Specifications dan bingkai bertingkat.
+  - Narasi berbasis proyek nyata dapat diedit lewat **About story**; sinkron dengan VFS `about.md`.
+  - Foto memakai **Profile photo** dari admin, termasuk alt dan dimensi; tetap memakai pipeline publish yang ada.
+  - Verifikasi build/lint, viewport 390/768/1024/1440px, dan fallback reduced motion.
 
 ---
 
@@ -166,6 +171,9 @@
 - [x] **Task 13.6:** Profile & CV: toggle "Available for work", edit headline/bio/social links, upload CV dengan riwayat versi.
 - [x] **Task 13.7:** Publish flow: tampilan diff ala `git diff` sejak publish terakhir → tombol Publish → progress deploy realtime.
 - [x] **Task 13.8:** QA admin: keyboard navigation, focus-visible, empty/error/loading states, 390px & 1440px.
+- [x] **Task 13.9:** Perbaiki layar putih saat mengisi Architecture overview sebelum Key decisions:
+  - Preview tetap merender draft arsitektur yang belum lengkap; validasi simpan tetap berlaku.
+  - Tes regresi render serta uji paste, pemulihan draft lokal, dan simulasi save di 390px/1440px; build dan lint lolos.
 
 ---
 

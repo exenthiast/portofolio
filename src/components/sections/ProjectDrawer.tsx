@@ -72,7 +72,8 @@ export function ProjectCaseStudy({ project }: { project: Project }) {
             <Prompt>cat ARCHITECTURE.md</Prompt>
             <p className="text-[length:var(--step-small)] leading-relaxed text-[var(--ink-terminal)]">{project.architecture.overview}</p>
             <ul className="flex flex-col gap-2 text-[length:var(--step-small)] leading-relaxed text-[var(--ink-terminal-muted)]">
-              {project.architecture.keyDecisions.map((d) => (
+              {/* Admin previews may have an overview before the decisions field is filled. */}
+              {project.architecture.keyDecisions?.map((d) => (
                 <li key={d} className="flex gap-2"><span className="text-[var(--accent)]">→</span><span>{d}</span></li>
               ))}
             </ul>

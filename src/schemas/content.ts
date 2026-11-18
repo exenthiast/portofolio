@@ -36,6 +36,7 @@ export const profileSchema = z.object({
   title: z.string().trim().min(1),
   subtitle: z.string().trim().min(1),
   bio: z.string().trim().min(1),
+  aboutBio: z.string().trim().min(1).optional(),
   affiliation: z.string().trim().min(1),
   location: z.string().trim().min(1),
   availableForWork: z.boolean(),

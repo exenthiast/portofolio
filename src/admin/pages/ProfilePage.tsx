@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react'
 import { FileText, Plus, Trash2 } from 'lucide-react'
 import { profileSchema, type ProfileContent } from '../../schemas/content'
 import { content as bundled } from '../../data/content'
+import { aboutContent } from '../../data/about'
 import { repo } from '../lib/repo'
 import { usePending } from '../lib/pending'
 import { listMedia, type MediaRow } from '../lib/media'
@@ -79,8 +80,9 @@ export function ProfilePage() {
           </div>
           <TextField label="Hero subtitle" hint="Max 2 lines on the hero" value={doc.subtitle} onChange={(v) => set('subtitle', v)} error={errors.subtitle} />
           <TextField label="Status text" value={doc.statusText} onChange={(v) => set('statusText', v)} error={errors.statusText} />
-          <TextArea label="Bio" value={doc.bio} onChange={(v) => set('bio', v)} error={errors.bio} />
-          <ImageField label="Profile photo" value={doc.photo} onChange={(v) => setDoc(() => {
+          <TextArea label="Short bio" value={doc.bio} onChange={(v) => set('bio', v)} error={errors.bio} />
+          <TextArea label="About story" hint="Shown in the About terminal and cat ./about.md. Separate paragraphs with a blank line. Save profile, then Publish to update the live site." rows={8} value={doc.aboutBio ?? aboutContent.defaultBio} onChange={(v) => set('aboutBio', v)} error={errors.aboutBio} />
+          <ImageField label="Profile photo" hint="Shown in About. Choose or upload a photo, enter its alt text, then Save profile. Changes go live after Publish. Remove hides the photo." error={errors['photo.alt'] ?? errors['photo.src'] ?? errors['photo.width'] ?? errors['photo.height']} value={doc.photo} onChange={(v) => setDoc(() => {
             const next = { ...doc }
             if (v) next.photo = v
             else delete next.photo

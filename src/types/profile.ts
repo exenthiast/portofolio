@@ -1,4 +1,4 @@
-import type { ProfileContent } from '../schemas/content'
+import type { ImageAsset, ProfileContent } from '../schemas/content'
 
 export interface SocialLink {
   name: string
@@ -23,13 +23,9 @@ export interface HeroCardData {
   isMorphTarget?: boolean
 }
 
-export interface TechSpecItem {
-  category: string
-  items: string
-}
-
 export interface AboutData {
   terminalPath: string
+  prompt: string
   command: string
   headline: string
   subHeadline: string
@@ -37,11 +33,9 @@ export interface AboutData {
   photo: {
     name: string
     location: string
-    tag: string
-    imageAlt: string
+    image?: ImageAsset
   }
-  specsHeader: string
-  specs: TechSpecItem[]
+  projectsLink: { label: string; href: string }
 }
 
 /** Editable profile content + derived site configuration. */
