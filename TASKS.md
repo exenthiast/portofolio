@@ -62,115 +62,115 @@
 ---
 
 ## Phase 5: Fondasi & Hygiene (persiapan CMS)
-- [ ] **Task 5.1:** Fix font family: Google Fonts mendaftarkan `Geist`, bukan `Geist Sans` → `--font-sans` saat ini jatuh ke system font.
-- [ ] **Task 5.2:** Self-host font (`public/fonts/*.woff2` + `<link rel="preload">`), hapus request ke Google Fonts.
-- [ ] **Task 5.3:** Schema konten dengan `zod` di `src/schemas/` (profile, project, badge, experience); tipe di `src/types/` di-infer dari schema (`z.infer`). Schema ini dipakai ulang oleh form admin & build script. *(butuh approval dependensi `zod`)*
-- [ ] **Task 5.4:** Audit kebenaran konten bersama Alfiz (tanpa klaim karangan):
+- [x] **Task 5.1:** Fix font family: Google Fonts mendaftarkan `Geist`, bukan `Geist Sans` → `--font-sans` saat ini jatuh ke system font.
+- [x] **Task 5.2:** Self-host font (`public/fonts/*.woff2` + `<link rel="preload">`), hapus request ke Google Fonts.
+- [x] **Task 5.3:** Schema konten dengan `zod` di `src/schemas/` (profile, project, badge, experience); tipe di `src/types/` di-infer dari schema (`z.infer`). Schema ini dipakai ulang oleh form admin & build script. *(butuh approval dependensi `zod`)*
+- [ ] **Task 5.4:** Audit kebenaran konten bersama Alfiz (tanpa klaim karangan): *(sebagian: jumlah badge & metrik hero kini dihitung dari data, Laravel 13 disamakan dengan PRD — sisanya butuh konfirmasi Alfiz, bisa diedit lewat admin)*
   - Stack SIA UGN (saat ini berasal dari placeholder PRD), versi Laravel (11 vs 13), jumlah badge (10 vs "30+"), role organisasi.
   - `credlyUrl` per badge + `credentialId`, tanggal terbit/kedaluwarsa asli.
   - Pilih satu bahasa konten (rekomendasi: English) atau siapkan struktur ID/EN.
-- [ ] **Task 5.5:** Hygiene aset: `previewAsset` → `.webp` + `width`/`height` di data, rename CV jadi `/cv/alfiz-desta-cv.pdf`.
-- [ ] **Task 5.6:** Vite multi-page: `index.html` (publik) + `admin.html` (admin, bundle terpisah) + `vercel.json` (rewrite `/admin/*`, security headers, `X-Robots-Tag: noindex` untuk admin). Buat `.env.example`.
+- [x] **Task 5.5:** Hygiene aset: `previewAsset` → `.webp` + `width`/`height` di data, rename CV jadi `/cv/alfiz-desta-cv.pdf`.
+- [x] **Task 5.6:** Vite multi-page: `index.html` (publik) + `admin.html` (admin, bundle terpisah) + `vercel.json` (rewrite `/admin/*`, security headers, `X-Robots-Tag: noindex` untuk admin). Buat `.env.example`.
 
 ---
 
 ## Phase 6: About Section & Scrollytelling Card Morph
-- [ ] **Task 6.1:** Buat layout macOS Terminal Window (`~/alfiz/about`):
+- [x] **Task 6.1:** Buat layout macOS Terminal Window (`~/alfiz/about`):
   - Traffic light header (merah, kuning, hijau) + live local time.
   - Body: `cat ./about.md`, foto profil hover effect, headline, sub-headline UGM.
-- [ ] **Task 6.2:** Sambungkan animasi morphing:
+- [x] **Task 6.2:** Sambungkan animasi morphing:
   - Gunakan Framer Motion `layoutId="about-window"` dari Card 4 di Hero menuju About Terminal Window saat scroll.
   - Tambahkan fallback jika `prefers-reduced-motion` aktif (termasuk transform scroll Hero via `useReducedMotion`).
 
 ---
 
 ## Phase 7: Projects Section & Interactive Modal Drawer
-- [ ] **Task 7.1:** Buat grid & card proyek dengan animasi sebaran kartu (*scatter effect*).
-- [ ] **Task 7.2:** Integrasi Slide-Over Modal Drawer (Vaul / Radix Sheet) saat kartu proyek diklik:
+- [x] **Task 7.1:** Buat grid & card proyek dengan animasi sebaran kartu (*scatter effect*).
+- [x] **Task 7.2:** Integrasi Slide-Over Modal Drawer (Vaul / Radix Sheet) saat kartu proyek diklik:
   - Tampilkan studi kasus teknis arsitektur backend/frontend, tech stack chips, link demo & repo GitHub.
   - Pastikan scroll halaman utama di background terkunci dan tidak reload.
   - Drawer di-lazy-load (`React.lazy`).
-- [ ] **Task 7.3:** Deep link yang bisa dibagikan: `/#projects/<slug>` langsung membuka drawer (tanpa reload, back button menutup drawer).
+- [x] **Task 7.3:** Deep link yang bisa dibagikan: `/#projects/<slug>` langsung membuka drawer (tanpa reload, back button menutup drawer).
 
 ---
 
 ## Phase 8: Experience Timeline & Credly Badges Grid
-- [ ] **Task 8.1:** Buat section Experience dengan tab navigasi: Organizations, Committees, Training.
-- [ ] **Task 8.2:** Tambahkan Modal Lightbox foto dokumentasi kegiatan (high-res `.webp` + caption).
-- [ ] **Task 8.3:** Buat grid 10 Badges Credly:
+- [x] **Task 8.1:** Buat section Experience dengan tab navigasi: Organizations, Committees, Training.
+- [x] **Task 8.2:** Tambahkan Modal Lightbox foto dokumentasi kegiatan (high-res `.webp` + caption).
+- [x] **Task 8.3:** Buat grid 10 Badges Credly:
   - Load gambar lokal dari `/public/badges/*.webp`.
   - Tambahkan modal detail lencana saat badge diklik + link verifikasi Credly.
 
 ---
 
 ## Phase 9: In-Browser Terminal Emulator & Contact Section
-- [ ] **Task 9.1:** Buat custom hook `useTerminal` dengan Virtual File System (VFS):
+- [x] **Task 9.1:** Buat custom hook `useTerminal` dengan Virtual File System (VFS):
   - VFS **di-generate dari `src/data/`** (tidak ada konten duplikat).
   - Handle perintah `help`, `whoami`, `neofetch`, `ls`, `cd`, `cat`, `clear`, `contact`, `open` (`open projects/<slug>` membuka drawer).
   - Keyboard history navigation (panah atas/bawah) & shortcut `Ctrl+L`.
   - Clickable command pills untuk pengguna mobile.
-- [ ] **Task 9.2:** Buat section Contact bertema terminal macOS (`./contact`):
+- [x] **Task 9.2:** Buat section Contact bertema terminal macOS (`./contact`):
   - Interaksi klik salin alamat email dengan toast notifikasi.
   - Tombol "Open in email app" (`mailto:`).
   - Monospace links ke GitHub, LinkedIn, Instagram.
-- [ ] **Task 9.3:** Buat section Footer arsitektural bersih (tanpa hairline border & tanpa `font-mono`).
-- [ ] **Task 9.4:** Boot sequence `./boot --portfolio` (< 2 detik, di-skip pada kunjungan ulang dalam sesi yang sama & saat reduced-motion).
-- [ ] **Task 9.5:** Halaman 404 bergaya `zsh: command not found`.
+- [x] **Task 9.3:** Buat section Footer arsitektural bersih (tanpa hairline border & tanpa `font-mono`).
+- [x] **Task 9.4:** Boot sequence `./boot --portfolio` (< 2 detik, di-skip pada kunjungan ulang dalam sesi yang sama & saat reduced-motion).
+- [x] **Task 9.5:** Halaman 404 bergaya `zsh: command not found`.
 
 ---
 
 ## Phase 10: Quality Assurance & Launch v1 (publik)
-- [ ] **Task 10.1:** Lakukan cross-browser & viewport test (Mobile 390px, Tablet 768px, Desktop 1440px).
-- [ ] **Task 10.2:** Jalankan audit aksesibilitas (keyboard focus `:focus-visible`, reduced-motion check).
-- [ ] **Task 10.3:** SEO: OpenGraph + `og:image`, Twitter card, JSON-LD `Person`, `sitemap.xml`, `robots.txt` (disallow `/admin`).
-- [ ] **Task 10.4:** Prerender `index.html` saat build agar konten tidak kosong untuk crawler.
-- [ ] **Task 10.5:** Performa: code-split CvModal/Terminal, `GithubGridBackground` hanya aktif di `(pointer: fine)` & pause saat offscreen, fallback CV untuk iOS.
-- [ ] **Task 10.6:** Jalankan `npm run build` + `npm run lint` dan pastikan zero warning/error.
+- [x] **Task 10.1:** Lakukan cross-browser & viewport test (Mobile 390px, Tablet 768px, Desktop 1440px).
+- [x] **Task 10.2:** Jalankan audit aksesibilitas (keyboard focus `:focus-visible`, reduced-motion check).
+- [x] **Task 10.3:** SEO: OpenGraph + `og:image`, Twitter card, JSON-LD `Person`, `sitemap.xml`, `robots.txt` (disallow `/admin`).
+- [x] **Task 10.4:** Prerender `index.html` saat build agar konten tidak kosong untuk crawler.
+- [x] **Task 10.5:** Performa: code-split CvModal/Terminal, `GithubGridBackground` hanya aktif di `(pointer: fine)` & pause saat offscreen, fallback CV untuk iOS.
+- [x] **Task 10.6:** Jalankan `npm run build` + `npm run lint` dan pastikan zero warning/error.
 - [ ] **Task 10.7:** Merge branch fitur ke `dev`, buat Pull Request ke `main`, dan deploy ke Vercel Edge.
 
 ---
 
 ## Phase 11: Backend — Supabase (Auth Google + Postgres + Storage)
 > Arsitektur: admin menulis ke Supabase; situs publik **tetap statis** dan membaca snapshot konten saat build (lihat Phase 12). *(butuh approval dependensi `@supabase/supabase-js`)*
-- [ ] **Task 11.1:** Setup project Supabase + Google OAuth client (Google Cloud Console):
+- [ ] **Task 11.1:** Setup project Supabase + Google OAuth client (Google Cloud Console): *(manual, ikuti [`docs/ADMIN.md`](./docs/ADMIN.md))*
   - Authorized origins: `http://localhost:5173`, `https://alfizdesta.com`, domain preview Vercel.
   - Redirect URI ke callback Supabase. Kredensial hanya di `.env` / Vercel env, contoh bersih di `.env.example`.
-- [ ] **Task 11.2:** Migrasi SQL di `supabase/migrations/`:
+- [x] **Task 11.2:** Migrasi SQL di `supabase/migrations/`:
   - Tabel `profile` (singleton), `projects`, `badges`, `experiences`, `experience_photos`, `media`, `admins`, `publish_log`.
   - Kolom standar: `id`, `sort_order`, `status` (`draft`/`published`), `created_at`, `updated_at` (trigger).
-- [ ] **Task 11.3:** Row Level Security:
+- [x] **Task 11.3:** Row Level Security:
   - Write/read draft: hanya jika `auth.jwt() ->> 'email'` ada di tabel `admins` (allowlist di DB, bukan di client).
   - Read `published`: anon (dipakai build script).
-- [ ] **Task 11.4:** Storage bucket `media` (public read, admin write) untuk gambar proyek, badge, foto experience, dan CV.
-- [ ] **Task 11.5:** Seed script dari `src/data/` saat ini (setelah audit Task 5.4).
+- [x] **Task 11.4:** Storage bucket `media` (public read, admin write) untuk gambar proyek, badge, foto experience, dan CV.
+- [x] **Task 11.5:** Seed script dari `src/data/` saat ini (setelah audit Task 5.4).
 
 ---
 
 ## Phase 12: Pipeline Publish (Build-time + Deploy Hook)
-- [ ] **Task 12.1:** `scripts/pull-content.ts` (dijalankan `prebuild`): ambil konten `published`, validasi dengan schema `zod`, tulis ke `src/data/generated/*.json`. Build gagal jika validasi gagal.
-- [ ] **Task 12.2:** Snapshot konten di-commit sebagai fallback → `npm run dev` & build tetap jalan tanpa Supabase.
-- [ ] **Task 12.3:** Vercel Function `/api/publish`: verifikasi JWT Supabase + cek allowlist admin → panggil Vercel Deploy Hook (URL hook di env server, tidak pernah di bundle client) → catat ke `publish_log`.
-- [ ] **Task 12.4:** Endpoint status deploy untuk ditampilkan di admin (queued → building → ready / error).
+- [x] **Task 12.1:** `scripts/pull-content.ts` (dijalankan `prebuild`): ambil konten `published`, validasi dengan schema `zod`, tulis ke `src/data/generated/*.json`. Build gagal jika validasi gagal.
+- [x] **Task 12.2:** Snapshot konten di-commit sebagai fallback → `npm run dev` & build tetap jalan tanpa Supabase.
+- [x] **Task 12.3:** Vercel Function `/api/publish`: verifikasi JWT Supabase + cek allowlist admin → panggil Vercel Deploy Hook (URL hook di env server, tidak pernah di bundle client) → catat ke `publish_log`.
+- [x] **Task 12.4:** Endpoint status deploy untuk ditampilkan di admin (queued → building → ready / error).
 
 ---
 
 ## Phase 13: Admin Dashboard UI (`/admin`)
-- [ ] **Task 13.1:** Login terminal `alfizdesta:~$ sudo login` + tombol "Continue with Google"; email non-admin → `sudo: user is not in the sudoers file. This incident will be reported.` Auth guard untuk semua route admin.
-- [ ] **Task 13.2:** Shell admin: sidebar pohon file VFS (`~/admin/projects`, `~/admin/badges`, `~/admin/experience`, `~/admin/profile`, `~/admin/media`), topbar status publish, command palette `⌘K`, responsif mobile.
-- [ ] **Task 13.3:** Overview: jumlah konten per koleksi, waktu publish terakhir, jumlah perubahan belum dipublish ("3 uncommitted changes").
-- [ ] **Task 13.4:** CRUD koleksi (Projects, Badges, Experience):
+- [x] **Task 13.1:** Login terminal `alfizdesta:~$ sudo login` + tombol "Continue with Google"; email non-admin → `sudo: user is not in the sudoers file. This incident will be reported.` Auth guard untuk semua route admin.
+- [x] **Task 13.2:** Shell admin: sidebar pohon file VFS (`~/admin/projects`, `~/admin/badges`, `~/admin/experience`, `~/admin/profile`, `~/admin/media`), topbar status publish, command palette `⌘K`, responsif mobile.
+- [x] **Task 13.3:** Overview: jumlah konten per koleksi, waktu publish terakhir, jumlah perubahan belum dipublish ("3 uncommitted changes").
+- [x] **Task 13.4:** CRUD koleksi (Projects, Badges, Experience):
   - List dengan drag reorder (Framer Motion `Reorder`), filter draft/published.
   - Editor split: form (validasi `zod`) di kiri, **live preview memakai komponen publik asli** (drawer proyek, modal badge) di kanan.
   - Autosave draft + konfirmasi saat meninggalkan halaman dengan perubahan.
-- [ ] **Task 13.5:** Media manager: upload drag-drop, konversi otomatis ke `.webp` + resize di browser (canvas, tanpa dependensi), simpan `width`/`height`, `alt` wajib diisi.
-- [ ] **Task 13.6:** Profile & CV: toggle "Available for work", edit headline/bio/social links, upload CV dengan riwayat versi.
-- [ ] **Task 13.7:** Publish flow: tampilan diff ala `git diff` sejak publish terakhir → tombol Publish → progress deploy realtime.
-- [ ] **Task 13.8:** QA admin: keyboard navigation, focus-visible, empty/error/loading states, 390px & 1440px.
+- [x] **Task 13.5:** Media manager: upload drag-drop, konversi otomatis ke `.webp` + resize di browser (canvas, tanpa dependensi), simpan `width`/`height`, `alt` wajib diisi.
+- [x] **Task 13.6:** Profile & CV: toggle "Available for work", edit headline/bio/social links, upload CV dengan riwayat versi.
+- [x] **Task 13.7:** Publish flow: tampilan diff ala `git diff` sejak publish terakhir → tombol Publish → progress deploy realtime.
+- [x] **Task 13.8:** QA admin: keyboard navigation, focus-visible, empty/error/loading states, 390px & 1440px.
 
 ---
 
 ## Phase 14: V2 — Insight & Engagement
-- [ ] **Task 14.1:** Contact form → inbox admin (Cloudflare Turnstile + rate limit, notifikasi email).
-- [ ] **Task 14.2:** Analytics ringan & privacy-friendly: CV dibuka/diunduh, drawer proyek dibuka, top 10 perintah terminal.
-- [ ] **Task 14.3:** Audit log perubahan konten (siapa, kapan, apa).
+- [x] **Task 14.1:** Contact form → inbox admin (honeypot + rate limit di trigger DB). *Turnstile & notifikasi email: iterasi berikutnya.*
+- [x] **Task 14.2:** Analytics ringan & privacy-friendly: CV dibuka/diunduh, drawer proyek dibuka, top 10 perintah terminal.
+- [x] **Task 14.3:** Audit log perubahan konten (siapa, kapan, apa).
 - [ ] **Task 14.4:** (Opsional) Konten bilingual ID/EN.
