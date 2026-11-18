@@ -23,10 +23,32 @@ export interface HeroCardData {
   isMorphTarget?: boolean
 }
 
+export interface TechSpecItem {
+  category: string
+  items: string
+}
+
+export interface AboutData {
+  terminalPath: string
+  command: string
+  headline: string
+  subHeadline: string
+  bio: string
+  photo: {
+    name: string
+    location: string
+    tag: string
+    imageAlt: string
+  }
+  specsHeader: string
+  specs: TechSpecItem[]
+}
+
 /** Editable profile content + derived site configuration. */
 export interface Profile extends Omit<ProfileContent, 'socialLinks'> {
   socialLinks: Record<'github' | 'linkedin' | 'instagram', SocialLink>
   socialLinkList: SocialLink[]
   navLinks: NavLink[]
   heroCards: HeroCardData[]
+  about: AboutData
 }
