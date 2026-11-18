@@ -5,9 +5,12 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "prebuild": "node scripts/pull-content.ts",
     "build": "tsc -b && vite build",
     "lint": "oxlint",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "content:pull": "node scripts/pull-content.ts",
+    "seed:sql": "node scripts/seed-sql.ts"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.3.1",

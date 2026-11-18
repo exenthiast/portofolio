@@ -99,3 +99,11 @@ html.lenis body {
 .caret {
   animation: caret-blink 1s steps(1) infinite;
 }
+
+/* Static SEO fallback inside #root (replaced by React on boot) */
+.seo-fallback {
+  max-width: 48rem;
+  margin: 0 auto;
+  padding: 6rem 1.5rem;
+  line-height: 1.6;
+}

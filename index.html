@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="id">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -16,13 +16,24 @@
     <meta property="og:url" content="https://alfizdesta.com/" />
     <meta property="og:title" content="Alfiz Desta — Software Engineer" />
     <meta property="og:description" content="Backend systems, interactive UNIX terminal emulator, and verified engineering case studies." />
+    <meta property="og:image" content="https://alfizdesta.com/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Alfiz Desta Ariant Permana — Software Engineer at Universitas Gadjah Mada" />
+    <meta property="og:locale" content="en_US" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Alfiz Desta — Software Engineer" />
+    <meta name="twitter:description" content="Backend systems, interactive UNIX terminal emulator, and verified engineering case studies." />
+    <meta name="twitter:image" content="https://alfizdesta.com/og.png" />
+    <meta name="theme-color" content="#fafbff" />
+    <!--seo-jsonld-->
 
     <!-- Self-hosted fonts (latin subset, variable 400–700) -->
     <link rel="preload" href="/fonts/geist.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/fonts/geist-mono.woff2" as="font" type="font/woff2" crossorigin />
   </head>
   <body class="bg-bg text-ink selection:bg-accent selection:text-accent-ink">
-    <div id="root"></div>
+    <div id="root"><!--seo-fallback--></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
