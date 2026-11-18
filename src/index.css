@@ -24,7 +24,8 @@ body {
   font-family: var(--font-sans);
   margin: 0;
   padding: 0;
-  overflow-x: hidden;
+  /* Clip horizontal spill without creating a scroll container that breaks Hero's sticky viewport. */
+  overflow-x: clip;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
