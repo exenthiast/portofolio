@@ -50,6 +50,6 @@
   --color-mac-minimize: var(--mac-minimize);
   --color-mac-maximize: var(--mac-maximize);
 
-  --font-sans: 'Geist Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-sans: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-mono: 'Geist Mono', 'SF Mono', Menlo, Monaco, Consolas, monospace;
 }
