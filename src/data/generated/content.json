@@ -392,6 +392,55 @@
         "Infrastucture as Code (IaC)"
       ],
       "description": "Complete the Build Infrastructure with Terraform on Google Cloud skill badge to demonstrate skills in the following: Infrastructure as Code (IaC) principles using Terraform, provisioning and managing Google Cloud resources with Terraform configurations, effective state management (local and remote), and modularizing Terraform code for reusability and organization."
+    },
+    {
+      "id": "credential-a96c01",
+      "title": "Sertifikat PIONIR Gadjah Mada",
+      "issuer": "Universitas Gadjah Mada",
+      "issueDate": "2024",
+      "image": {
+        "src": "https://jxguhdwifjfnjxxgcjvz.supabase.co/storage/v1/object/public/media/2026/e0a4d6d8-certificate-preview.webp",
+        "alt": "First page of Sertifikat PIONIR Gadjah Mada",
+        "width": 1132,
+        "height": 1600
+      },
+      "skills": [
+        "Softskill"
+      ],
+      "kind": "certificate",
+      "pdfUrl": "https://jxguhdwifjfnjxxgcjvz.supabase.co/storage/v1/object/public/media/2026/a4868e05-sertifikat-pionir-alfiz-desta-ariant-per.pdf"
+    },
+    {
+      "id": "credential-95fc10",
+      "title": "Sertifikat Sub Koordinator TGES 2025",
+      "issuer": "KMTEDI UGM",
+      "issueDate": "2025",
+      "credentialId": "397/MT-01/STF/KMTEDI-UGM/2025",
+      "image": {
+        "src": "https://jxguhdwifjfnjxxgcjvz.supabase.co/storage/v1/object/public/media/2026/aedbc66e-certificate-preview.webp",
+        "alt": "First page of Sertifikat Sub Koordinator TGES 2025",
+        "width": 1600,
+        "height": 1132
+      },
+      "skills": [],
+      "kind": "certificate",
+      "pdfUrl": "https://jxguhdwifjfnjxxgcjvz.supabase.co/storage/v1/object/public/media/2026/0f6c593d-sertifikat-subko-tges25.pdf"
+    },
+    {
+      "id": "credential-2aec78",
+      "title": "Sertifikat BLASTOUT 2025",
+      "issuer": "BKLASS UGM",
+      "issueDate": "2025",
+      "credentialId": "255/B/SEK/Bklass/I/2025",
+      "image": {
+        "src": "https://jxguhdwifjfnjxxgcjvz.supabase.co/storage/v1/object/public/media/2026/4aabf0bb-certificate-preview.webp",
+        "alt": "First page of Sertifikat BLASTOUT 2025",
+        "width": 1600,
+        "height": 1132
+      },
+      "skills": [],
+      "kind": "certificate",
+      "pdfUrl": "https://jxguhdwifjfnjxxgcjvz.supabase.co/storage/v1/object/public/media/2026/86805b20-sertifikatblastout2025-alfizdesta.pdf"
     }
   ],
   "experiences": [

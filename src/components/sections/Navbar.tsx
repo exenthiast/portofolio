@@ -123,7 +123,7 @@ export function Navbar({ onOpenCv }: NavbarProps) {
 
         {/* Center: Navigation Links with Active Gray Capsule */}
         <nav
-          className="hidden md:flex items-center gap-1 p-1 rounded-full"
+          className="hidden lg:flex items-center gap-1 p-1 rounded-full"
           aria-label="Main Navigation"
         >
           {profileData.navLinks.map((link) => {
@@ -155,7 +155,7 @@ export function Navbar({ onOpenCv }: NavbarProps) {
         </nav>
 
         {/* Right: Quick Action CTAs (Desktop) */}
-        <div className="hidden sm:flex items-center gap-2">
+        <div className="hidden lg:flex items-center gap-2">
           <Button
             variant="ghost"
             size="sm"
@@ -179,7 +179,7 @@ export function Navbar({ onOpenCv }: NavbarProps) {
         </div>
 
         {/* Mobile Right: CV Quick Button + Menu Toggle */}
-        <div className="flex sm:hidden items-center gap-1.5">
+        <div className="flex lg:hidden items-center gap-1.5">
           <Button
             variant="secondary"
             size="sm"
@@ -210,7 +210,7 @@ export function Navbar({ onOpenCv }: NavbarProps) {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.2 }}
-            className={`pointer-events-auto sm:hidden bg-[#ffffff]/95 backdrop-blur-md border border-slate-200/80 shadow-lg px-5 py-4 space-y-2 w-full ${
+            className={`pointer-events-auto lg:hidden bg-[#ffffff]/95 backdrop-blur-md border border-slate-200/80 shadow-lg px-5 py-4 space-y-2 w-full ${
               isScrolled
                 ? 'max-w-sm mx-auto mt-2 rounded-2xl'
                 : 'border-t-0 border-x-0 border-b border-slate-200/80'

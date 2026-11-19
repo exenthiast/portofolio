@@ -30,7 +30,7 @@ async function main(): Promise<void> {
   const content = await fetchPublishedContent({ url, anonKey })
   writeFileSync(target, `${JSON.stringify(content, null, 2)}\n`)
   console.log(
-    `[pull-content] ✓ ${content.projects.length} projects, ${content.badges.length} badges, ${content.experiences.length} experiences`,
+    `[pull-content] ✓ ${content.projects.length} projects, ${content.badges.length} credentials, ${content.experiences.length} experiences`,
   )
 }
 

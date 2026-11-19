@@ -1,10 +1,10 @@
 import type { z } from 'zod'
-import { badgeSchema, experienceSchema, projectSchema } from '../../schemas/content'
-import type { Badge, Experience, Project } from '../../types'
+import { credentialSchema, experienceSchema, projectSchema } from '../../schemas/content'
+import type { Credential, CredentialKind, Experience, Project } from '../../types'
 
 export type CollectionKey = 'projects' | 'badges' | 'experiences'
 
-export type FieldType = 'text' | 'textarea' | 'url' | 'tags' | 'lines' | 'image' | 'images' | 'select'
+export type FieldType = 'text' | 'textarea' | 'url' | 'tags' | 'lines' | 'image' | 'images' | 'select' | 'certificate'
 
 export interface FieldDef {
   /** Dot path inside the document, e.g. "architecture.overview". */
@@ -15,6 +15,8 @@ export interface FieldDef {
   options?: { value: string; label: string }[]
   /** Optional nested object: remove the whole object when all its fields are empty. */
   group?: string
+  credentialKind?: CredentialKind
+  validationPaths?: string[]
 }
 
 export interface CollectionDef<T> {
@@ -62,30 +64,34 @@ const projects: CollectionDef<Project> = {
   ],
 }
 
-const badges: CollectionDef<Badge> = {
+const badges: CollectionDef<Credential> = {
   key: 'badges',
-  label: 'Badges',
-  singular: 'badge',
-  schema: badgeSchema,
-  titleOf: (b) => b.title || 'Untitled badge',
-  subtitleOf: (b) => `${b.issuer} · ${b.issueDate}`,
+  label: 'Credentials',
+  singular: 'credential',
+  schema: credentialSchema,
+  titleOf: (b) => b.title || 'Untitled credential',
+  subtitleOf: (b) => `${b.kind === 'certificate' ? 'Certificate' : 'Credly badge'} · ${b.issuer} · ${b.issueDate}`,
   blank: () => ({
-    id: `badge-${crypto.randomUUID().slice(0, 6)}`,
+    id: `credential-${crypto.randomUUID().slice(0, 6)}`,
+    kind: 'badge',
     title: '',
-    issuer: 'Google Cloud',
+    issuer: '',
     issueDate: String(new Date().getFullYear()),
-    credlyUrl: 'https://www.credly.com/users/alfiz-desta',
-    image: { src: '/badges/placeholder.webp', alt: 'Badge', width: 340, height: 340 },
+    credlyUrl: '',
+    image: { src: '', alt: '', width: 1200, height: 850 },
     skills: [],
   }),
   fields: [
+    { path: 'kind', label: 'Credential type', type: 'select', options: [{ value: 'badge', label: 'Credly badge' }, { value: 'certificate', label: 'Certificate' }] },
     { path: 'title', label: 'Title', type: 'text' },
     { path: 'issuer', label: 'Issuer', type: 'text' },
     { path: 'issueDate', label: 'Issue date', type: 'text', hint: 'e.g. Mar 2025' },
     { path: 'expiryDate', label: 'Expiry date', type: 'text' },
     { path: 'credentialId', label: 'Credential ID', type: 'text' },
-    { path: 'credlyUrl', label: 'Credly verification URL', type: 'url', hint: 'Link to the specific badge, not the profile' },
-    { path: 'image', label: 'Badge image', type: 'image' },
+    { path: 'credlyUrl', label: 'Credly verification URL', type: 'url', hint: 'Link to the specific badge, not the profile', credentialKind: 'badge' },
+    { path: 'image', label: 'Badge image', type: 'image', hint: 'Choose a badge image and provide alt text.', credentialKind: 'badge' },
+    { path: 'image', label: 'Certificate file', type: 'certificate', hint: 'Upload a PDF or image. PDF previews are generated automatically; the original file is kept.', credentialKind: 'certificate', validationPaths: ['pdfUrl'] },
+    { path: 'verificationUrl', label: 'Verification URL', type: 'url', hint: 'Optional public verification page from the issuer.', credentialKind: 'certificate' },
     { path: 'skills', label: 'Skills', type: 'tags' },
     { path: 'description', label: 'Description', type: 'textarea' },
   ],
@@ -131,7 +137,7 @@ const experiences: CollectionDef<Experience> = {
 
 export const collections = { projects, badges, experiences }
 
-export function getCollection(key: string): CollectionDef<Project> | CollectionDef<Badge> | CollectionDef<Experience> | null {
+export function getCollection(key: string): CollectionDef<Project> | CollectionDef<Credential> | CollectionDef<Experience> | null {
   return key in collections ? collections[key as CollectionKey] : null
 }
 

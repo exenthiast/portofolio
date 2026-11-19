@@ -155,6 +155,10 @@ No intermediate mushy sizes. Each step is clearly distinct:
   * The main page scroll position and background remain untouched.
 
 ### 5.5 Badges & Credentials Section: Self-Hosted Proof
+* **Credentials tabs:** Keep a single navbar item labelled **Credentials** and the existing `#badges` anchor. Use keyboard-accessible **Credly badges** / **Certificates** tabs with separate counts, defaulting to Credly. **See all on Credly** stays visible above either tab.
+* **Certificates:** A landscape document gallery (3 columns desktop, 2 tablet, 1 mobile). Image certificates use their actual preview; PDF-only certificates use an honest PDF document tile. Selecting a PDF-only certificate opens the native PDF preview, metadata, and Open PDF action; retain the direct action on browsers that cannot embed PDFs. Image certificates show their readable scan. Issuer verification is optional. Use an honest empty state until certificates are published.
+* **CMS:** Manage both kinds under **Credentials** with a type selector and type-specific fields. All certificate copy/assets come from published CMS content; keep Credly counts independent.
+* **PDF thumbnails:** The admin renders page one to a 1600px-long-edge image and stores it as WebP alongside the untouched PDF. Public cards and modals use this static image; PDF.js stays in the admin's lazy processing path. Existing PDFs gain an explicit Generate preview action. Keep the PDF tile/native viewer fallback for pending or failed previews.
 * **Visual Structure:** Clean 5-column grid (desktop) / 2-column grid (mobile) displaying the 10 Credly badges.
 * **Asset Rule:** All badges are self-hosted `.webp` assets loaded from `/public/badges/` (0% CORS failure risk, < 50ms load time).
 * **Click Interaction:** Opens a centered credential inspection modal showing: Badge Title, Issuer (Google Cloud, etc.), Issue Date, Credential ID, verified skills, and a direct verification link to Credly.

@@ -243,6 +243,10 @@ graph TD
     ---
 
 ### 4.2 Feature 8: Badges
+  * **Credentials (perluasan):** Satu section dan satu item navbar **Credentials**, dengan tab **Credly badges** (default) dan **Certificates**. Anchor `#badges` tetap kompatibel. Tautan **See all on Credly** tetap terlihat di kedua tab.
+  * **Certificates:** Dokumen PDF atau gambar, judul, penerbit, dan tanggal. PDF dapat digunakan tanpa thumbnail gambar terpisah; tampil sebagai dokumen PDF di galeri dan preview PDF native di modal, dengan tombol Open PDF sebagai akses langsung. Gambar memakai preview WebP. Tautan verifikasi penerbit opsional. Belum ada sertifikat published menampilkan empty state; tidak menambahkan bukti contoh ke konten publik.
+  * **Pengelolaan:** Admin **Credentials** memakai pilihan jenis dan satu field **Certificate file** yang menerima PDF atau gambar. Gambar wajib memiliki alt/dimensi; PDF asli disimpan tanpa konversi melalui media library yang ada. Minimal satu file sertifikat wajib diisi. Draft tidak tampil sampai ditandai published dan dipublish.
+  * **Thumbnail PDF otomatis:** PDF.js (`pdfjs-dist`, disetujui Alfiz) hanya dimuat saat pemrosesan admin untuk merender halaman pertama menjadi WebP. PDF lama memakai Generate preview tanpa upload ulang. Gambar preview disimpan dalam record credential, tampil langsung di galeri, dan PDF asli tetap tersedia. Jika render gagal, simpan akses PDF dan sediakan retry.
   * **Strategi Aset & Data:** 10 lencana diunduh dan disimpan mandiri (*self-hosted*) dalam format `.webp` di `/public/badges/` dan didefinisikan secara statis di `src/data/badges.ts` (mencegah error CORS / limitasi Credly CDN).
   * Menampilkan 10 badges dengan tombol "Lihat Selengkapnya di Credly" yang mengarah ke profil resmi di https://www.credly.com/users/alfiz-desta . 
     - Gambar badges (lokal `.webp`)

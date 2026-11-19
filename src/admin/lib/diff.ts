@@ -1,4 +1,4 @@
-import type { Content } from '../../schemas/content'
+import type { Content } from '../../schemas/content.ts'
 
 export type ChangeKind = 'added' | 'removed' | 'changed'
 

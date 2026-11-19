@@ -1,6 +1,6 @@
 import { profileData } from '../data/profile'
 import { projectsData } from '../data/projects'
-import { badgesData } from '../data/badges'
+import { badgesData, certificatesData } from '../data/badges'
 import { experienceData } from '../data/experience'
 import { emit, scrollToSection } from './events'
 import type { VFSDir, VFSFile, VFSNode } from '../types'
@@ -49,6 +49,14 @@ export function buildVfs(): VFSDir {
     .map((e) => `[${e.period}] ${e.category.toUpperCase().padEnd(12)} ${e.role} @ ${e.organization}`)
     .join('\n')
 
+  const certificates = certificatesData.map((certificate) => file(
+    `${certificate.id}.txt`,
+    [certificate.title, `issuer: ${certificate.issuer} (${certificate.issueDate})`, certificate.description,
+      certificate.pdfUrl ? `pdf: ${certificate.pdfUrl}` : '',
+      certificate.verificationUrl ? `verify: ${certificate.verificationUrl}` : ''].filter(Boolean).join('\n'),
+    () => emit('open-certificate', { id: certificate.id }),
+  ))
+
   return dir('~', [
     file('about.md', `# ${p.firstName} ${p.lastName}\n${p.title} · ${p.affiliation} · ${p.location}\n\n${p.about.bio}`, () => scrollToSection('about')),
     file(
@@ -60,6 +68,7 @@ export function buildVfs(): VFSDir {
     file('cv.pdf', '%PDF-1.7 — binary file. Try: open cv.pdf', () => emit('open-cv', undefined)),
     dir('projects', projects, () => scrollToSection('projects')),
     dir('badges', badges, () => scrollToSection('badges')),
+    dir('certificates', certificates, () => { emit('open-certificate', {}); scrollToSection('badges') }),
   ])
 }
 

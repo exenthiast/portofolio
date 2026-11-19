@@ -105,6 +105,22 @@
 - [x] **Task 8.3:** Buat grid 10 Badges Credly:
   - Load gambar lokal dari `/public/badges/*.webp`.
   - Tambahkan modal detail lencana saat badge diklik + link verifikasi Credly.
+- [x] **Task 8.4:** Gabungkan badge dan sertifikat dalam section Credentials:
+  - Tab Credly badges / Certificates dengan jumlah terpisah; tautan See all on Credly tetap terlihat.
+  - Galeri sertifikat dan modal dengan gambar, metadata, PDF opsional, serta tautan verifikasi opsional.
+  - Form admin dengan pilihan jenis credential, media picker gambar/PDF, serta alur draft/publish yang ada.
+  - Pertahankan kompatibilitas data Credly lama dan pisahkan PDF sertifikat dari riwayat CV.
+  - Build/lint, tes schema/pipeline, dan browser 390/768/1440px (termasuk reduced motion) lolos.
+- [x] **Task 8.5:** Dukung sertifikat PDF tanpa gambar terpisah:
+  - Satu Certificate file picker menerima PDF/gambar; PDF disimpan asli dan schema menerima PDF-only.
+  - Galeri memakai tile dokumen PDF; modal memakai preview PDF native dan tombol Open PDF.
+  - Build/lint, tes schema/pipeline, serta simulasi upload/simpan PDF di desktop/mobile lolos, termasuk PDF berekstensi huruf besar tanpa MIME dari browser.
+- [x] **Task 8.6:** Buat thumbnail halaman pertama PDF secara otomatis:
+  - `pdfjs-dist` disetujui Alfiz; PDF.js/worker dimuat hanya saat pemrosesan admin.
+  - Pilihan/upload PDF menghasilkan preview WebP lewat media pipeline yang ada; PDF asli tetap disimpan.
+  - PDF lama memakai Generate preview tanpa upload ulang; kegagalan render menjaga PDF dan menyediakan retry.
+  - Build/lint, tes regresi, serta browser 390/1440px lolos: auto-thumbnail, PDF lama, retry, publish metadata, dan tidak ada request PDF.js dari halaman publik.
+  - PDF sertifikat yang sudah tersimpan diuji render secara read-only; tidak mengubah konten/publish pengguna.
 
 ---
 

@@ -1,10 +1,11 @@
 import type { Profile, SocialLink } from '../types'
 import { content } from './content'
 import { aboutContent } from './about'
+import { badgesData } from './badges'
 
 const { socialLinks, ...identity } = content.profile
 const projects = content.projects
-const badges = content.badges
+const badges = badgesData
 const experiences = content.experiences
 
 const toLink = (id: string): SocialLink => {
@@ -31,7 +32,7 @@ export const profileData: Profile = {
     { label: 'About', href: '#about' },
     { label: 'Projects', href: '#projects' },
     { label: 'Experience', href: '#experience' },
-    { label: 'Badges', href: '#badges' },
+    { label: 'Credentials', href: '#badges' },
     { label: 'Contact', href: '#contact' },
   ],
   // Metrics are derived from content so the hero never contradicts the sections below.

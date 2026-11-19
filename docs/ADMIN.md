@@ -79,6 +79,41 @@ text, then save. The logo appears below the period in both the editor preview
 and the public entry. Use **Remove** to clear it; existing entries need no logo
 and no database migration is required because the image is stored in `data` JSONB.
 
+### Credly badges and certificates
+
+Open **Credentials** in the sidebar and choose **New credential**. Set
+**Credential type** to **Credly badge** or **Certificate**. Certificates do not
+require a Credly URL. Supply the title, issuer, issue date, and use **Certificate
+file → Choose PDF or image** to pick or upload either format in the same picker.
+A PDF is stored unchanged. Selecting or uploading it automatically renders the
+first page into a WebP preview using PDF.js, so the certificate is visible in the
+gallery without opening the document. PDF.js and its worker load only in admin
+when a preview is requested; the public site reads the saved image.
+Uploaded images are converted to WebP and require meaningful alt text. At least
+one certificate file is required; the issuer verification link is optional.
+Replacing the file selects the new PDF or image. Existing records containing
+both a cover image and an original PDF remain supported until the file is replaced.
+For a PDF saved before automatic previews, open its credential, click **Generate
+preview**, wait for the image, then **Save & mark published → Publish**. No PDF
+re-upload is needed. If preview generation fails, the PDF stays attached and
+**Generate preview** allows retry. PDF-only records without a generated preview
+retain the document tile/native viewer fallback. **Open PDF** remains available.
+
+**Save draft** keeps the item out of the public site. **Save & mark published**
+includes it in the next **Publish**. The public Credentials section shows separate
+Credly and certificate tabs, with **See all on Credly** always available.
+Certificate PDFs are excluded from the automatic CV version history.
+Deploy the application code with PDF-only certificate support before publishing
+certificates without images; older builds require certificate preview images.
+
+The existing `badges` table, `/admin/badges` route, and snapshot `badges` array
+store both kinds. Legacy rows without `kind` are Credly badges; certificates
+use `kind: "certificate"`. No SQL migration or change to RLS is required. Drafts,
+ordering, publish diffs, and build-time validation use the existing pipeline.
+Public links using `#badges` still work. The VFS also exposes `~/certificates`.
+When reverting to code predating certificate support, mark certificate rows as
+draft before running an older build that validates only Credly badges.
+
 ### Local preview after saving
 
 Save writes to Supabase. While `npm run dev` is running, the admin then asks the
