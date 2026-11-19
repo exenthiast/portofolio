@@ -1,4 +1,4 @@
-import type { Badge } from '../types'
 import { content } from './content'
+import { splitCredentials } from './credentials'
 
-export const badgesData: Badge[] = content.badges
+export const { badges: badgesData, certificates: certificatesData } = splitCredentials(content.badges)

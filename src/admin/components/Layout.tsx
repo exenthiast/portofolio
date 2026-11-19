@@ -8,7 +8,7 @@ import { CommandPalette, useNavItems } from './CommandPalette'
 const tree: { to: string; label: string; depth: number; end?: boolean }[] = [
   { to: '/', label: '~/admin', depth: 0, end: true },
   { to: '/projects', label: 'projects/', depth: 1 },
-  { to: '/badges', label: 'badges/', depth: 1 },
+  { to: '/badges', label: 'credentials/', depth: 1 },
   { to: '/experiences', label: 'experience/', depth: 1 },
   { to: '/profile', label: 'profile.md', depth: 1 },
   { to: '/media', label: 'media/', depth: 1 },

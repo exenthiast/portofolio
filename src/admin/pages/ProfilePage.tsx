@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
 import { FileText, Plus, Trash2 } from 'lucide-react'
-import { profileSchema, type ProfileContent } from '../../schemas/content'
+import { profileSchema, type Credential, type ProfileContent } from '../../schemas/content'
 import { content as bundled } from '../../data/content'
 import { aboutContent } from '../../data/about'
 import { repo } from '../lib/repo'
@@ -16,7 +16,11 @@ export function ProfilePage() {
   const toast = useToast()
   const { refresh } = usePending()
   const { data, error, loading } = useAsync(() => repo.profile(), [])
-  const cvs = useAsync(() => listMedia('pdf'), [])
+  const cvs = useAsync(async () => {
+    const [media, credentials] = await Promise.all([listMedia('pdf'), repo.list<Credential>('badges')])
+    const certificatePdfs = new Set(credentials.flatMap(({ data }) => data.kind === 'certificate' && data.pdfUrl ? [data.pdfUrl] : []))
+    return media.filter((file) => !certificatePdfs.has(file.url))
+  }, [])
   const [edited, setDoc] = useState<ProfileContent | null>(null)
   const [saving, setSaving] = useState(false)
   const [pickCv, setPickCv] = useState(false)

@@ -42,12 +42,16 @@ const slugify = (name: string) =>
     .slice(0, 40) || 'file'
 
 export async function uploadMedia(file: File, alt: string): Promise<MediaRow> {
-  const isPdf = file.type === 'application/pdf'
+  const isPdf = file.type === 'application/pdf' || /\.pdf$/i.test(file.name)
   const prefix = `${new Date().getFullYear()}/${crypto.randomUUID().slice(0, 8)}-${slugify(file.name)}`
-  let body: Blob = file
+  // Storage derives multipart MIME from the Blob, so normalize PDFs even when
+  // the browser reports an empty or generic type. File bytes stay unchanged.
+  let body: Blob = isPdf && file.type !== 'application/pdf'
+    ? new File([file], file.name, { type: 'application/pdf', lastModified: file.lastModified })
+    : file
   let width = 1
   let height = 1
-  let mime = file.type
+  let mime = isPdf ? 'application/pdf' : file.type
   let path = `${prefix}.pdf`
 
   if (!isPdf) {

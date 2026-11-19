@@ -6,11 +6,12 @@ import { repo, type Status } from '../lib/repo'
 import { usePending } from '../lib/pending'
 import { useToast } from '../components/Toast'
 import { Btn, ErrorNote, PageHeader, Skeleton } from '../components/ui'
-import { ImageField, ImagesField, LinesField, SelectField, TagsField, TextArea, TextField } from '../components/Fields'
+import { CertificateFileField, ImageField, ImagesField, LinesField, SelectField, TagsField, TextArea, TextField } from '../components/Fields'
 import { ProjectCaseStudy } from '../../components/sections/ProjectDrawer'
-import { BadgeDetail } from '../../components/sections/Badges'
+import { CredentialDetail } from '../../components/sections/CredentialDetail'
+import { credentialsCopy } from '../../data/credentials'
 import { ExperienceEntry } from '../../components/sections/Experience'
-import type { Badge, Experience, ExperiencePhoto, ImageAsset, Project } from '../../types'
+import type { Credential, Experience, ExperiencePhoto, ImageAsset, Project } from '../../types'
 
 type AnyDoc = { id: string }
 
@@ -37,15 +38,19 @@ function Field({ field, doc, error, onChange }: { field: FieldDef; doc: AnyDoc; 
     case 'textarea':
       return <TextArea {...common} mono={field.path.endsWith('databaseSchema')} value={typeof value === 'string' ? value : ''} onChange={set} />
     case 'select':
-      return <SelectField {...common} options={field.options ?? []} value={typeof value === 'string' ? value : ''} onChange={set} />
+      return <SelectField {...common} options={field.options ?? []} value={typeof value === 'string' ? value : field.path === 'kind' ? 'badge' : ''} onChange={set} />
     case 'tags':
       return <TagsField {...common} value={Array.isArray(value) ? (value as string[]) : []} onChange={set} />
     case 'lines':
       return <LinesField {...common} value={Array.isArray(value) ? (value as string[]) : []} onChange={set} />
-    case 'image':
-      return <ImageField {...common} value={value as ImageAsset | undefined} onChange={set} />
+    case 'image': {
+      const image = value as ImageAsset | undefined
+      return <ImageField {...common} value={image?.src ? image : undefined} onChange={set} />
+    }
     case 'images':
       return <ImagesField {...common} value={Array.isArray(value) ? (value as ExperiencePhoto[]) : []} onChange={set} />
+    case 'certificate':
+      return <CertificateFileField key={doc.id} {...common} documentTitle={String(getAt(doc, 'title') ?? '')} value={{ image: getAt(doc, 'image') as ImageAsset | undefined, pdfUrl: getAt(doc, 'pdfUrl') as string | undefined }} onChange={(file) => { onChange('image', file.image); onChange('pdfUrl', file.pdfUrl) }} />
   }
 }
 
@@ -53,11 +58,11 @@ function Preview({ collection, doc }: { collection: string; doc: AnyDoc }) {
   // Previews reuse the real public components, so what you see is what ships.
   if (collection === 'projects') return <ProjectCaseStudy project={doc as Project} />
   if (collection === 'badges') {
-    const b = doc as Badge
+    const credential = doc as Credential
     return (
       <div>
-        <h2 className="pr-10 text-[length:var(--step-lead)] font-semibold tracking-tight">{b.title || 'Untitled badge'}</h2>
-        <BadgeDetail badge={{ ...b, skills: b.skills ?? [] }} />
+        <h2 className="pr-10 text-[length:var(--step-lead)] font-semibold tracking-tight">{credential.title || credentialsCopy.detailTitle}</h2>
+        <CredentialDetail credential={credential} />
       </div>
     )
   }
@@ -140,7 +145,7 @@ export function CollectionEditor() {
       for (const issue of validation.error.issues) {
         const path = issue.path.join('.')
         // Attach nested errors (e.g. preview.alt) to their field.
-        const field = def?.fields.find((f) => path === f.path || path.startsWith(`${f.path}.`))
+        const field = def?.fields.find((f) => [f.path, ...(f.validationPaths ?? [])].some((prefix) => path === prefix || path.startsWith(`${prefix}.`)))
         const key = field?.path ?? path
         map[key] ??= issue.message
       }
@@ -249,7 +254,7 @@ export function CollectionEditor() {
       <div className={`grid gap-6 ${preview ? 'xl:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]' : ''}`}>
         <form className="flex flex-col gap-5 rounded-2xl bg-[var(--surface)] p-5 sm:p-6" onSubmit={(e) => { e.preventDefault(); void save() }} noValidate>
           <TextField label="ID" hint="Stable identifier (changing it creates a new URL key)" value={doc.id} onChange={(v) => onChange('id', v)} error={showErrors ? errors.id : undefined} />
-          {def.fields.map((f) => (
+          {def.fields.filter((field) => !field.credentialKind || field.credentialKind === (getAt(doc, 'kind') ?? 'badge')).map((f) => (
             <Field key={f.path} field={f} doc={doc} error={showErrors ? errors[f.path] : undefined} onChange={onChange} />
           ))}
         </form>

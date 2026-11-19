@@ -95,7 +95,7 @@ export function useNavItems(onPublish: () => void): PaletteItem[] {
     () => [
       { id: 'overview', label: 'cd ~/admin', hint: 'Overview', run: () => navigate('/') },
       { id: 'projects', label: 'cd projects', hint: 'Projects', run: () => navigate('/projects') },
-      { id: 'badges', label: 'cd badges', hint: 'Badges', run: () => navigate('/badges') },
+      { id: 'badges', label: 'cd credentials', hint: 'Credly badges & certificates', run: () => navigate('/badges') },
       { id: 'experiences', label: 'cd experience', hint: 'Experience', run: () => navigate('/experiences') },
       { id: 'profile', label: 'vim profile', hint: 'Profile & CV', run: () => navigate('/profile') },
       { id: 'media', label: 'ls media', hint: 'Media library', run: () => navigate('/media') },
@@ -103,7 +103,7 @@ export function useNavItems(onPublish: () => void): PaletteItem[] {
       { id: 'analytics', label: 'htop', hint: 'Analytics', run: () => navigate('/analytics') },
       { id: 'activity', label: 'git log', hint: 'Activity', run: () => navigate('/activity') },
       { id: 'new-project', label: 'touch projects/new', hint: 'New project', run: () => navigate('/projects/new') },
-      { id: 'new-badge', label: 'touch badges/new', hint: 'New badge', run: () => navigate('/badges/new') },
+      { id: 'new-badge', label: 'touch credentials/new', hint: 'New badge or certificate', run: () => navigate('/badges/new') },
       { id: 'new-exp', label: 'touch experience/new', hint: 'New experience', run: () => navigate('/experiences/new') },
       { id: 'publish', label: 'git push origin main', hint: 'Review & publish', run: onPublish },
       { id: 'site', label: 'open alfizdesta.com', hint: 'View live site', run: () => window.open('/', '_blank', 'noopener') },

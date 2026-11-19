@@ -73,6 +73,8 @@ export const projectSchema = z.object({
 })
 
 export const badgeSchema = z.object({
+  // Existing Credly rows have no kind; they remain valid without a data migration.
+  kind: z.literal('badge').optional(),
   id: z.string().trim().min(1),
   title: z.string().trim().min(1),
   issuer: z.string().trim().min(1),
@@ -84,6 +86,18 @@ export const badgeSchema = z.object({
   skills: z.array(z.string().trim().min(1)),
   description: z.string().trim().optional(),
 })
+
+export const certificateSchema = badgeSchema.omit({ kind: true, credlyUrl: true }).extend({
+  kind: z.literal('certificate'),
+  image: imageSchema.optional(),
+  pdfUrl: assetPath.optional(),
+  verificationUrl: url.refine((value) => /^https?:\/\//.test(value), 'Use an http(s) verification URL').optional(),
+}).refine((certificate) => Boolean(certificate.image || certificate.pdfUrl), {
+  path: ['image'],
+  message: 'Choose a certificate image or PDF',
+})
+
+export const credentialSchema = z.discriminatedUnion('kind', [badgeSchema, certificateSchema])
 
 export const experienceCategorySchema = z.enum(['organization', 'committee', 'training'])
 
@@ -108,7 +122,7 @@ export const experienceSchema = z.object({
 export const contentSchema = z.object({
   profile: profileSchema,
   projects: z.array(projectSchema),
-  badges: z.array(badgeSchema),
+  badges: z.array(credentialSchema),
   experiences: z.array(experienceSchema),
 })
 
@@ -117,6 +131,8 @@ export type SocialLinkContent = z.infer<typeof socialLinkSchema>
 export type ProfileContent = z.infer<typeof profileSchema>
 export type Project = z.infer<typeof projectSchema>
 export type Badge = z.infer<typeof badgeSchema>
+export type Certificate = z.infer<typeof certificateSchema>
+export type Credential = z.infer<typeof credentialSchema>
 export type ExperienceCategory = z.infer<typeof experienceCategorySchema>
 export type ExperiencePhoto = z.infer<typeof experiencePhotoSchema>
 export type Experience = z.infer<typeof experienceSchema>

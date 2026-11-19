@@ -60,7 +60,7 @@ export function Overview() {
   const tiles = data
     ? [
         { to: '/projects', label: 'Projects', icon: FolderGit2, ...data.projects },
-        { to: '/badges', label: 'Badges', icon: BadgeCheck, ...data.badges },
+        { to: '/badges', label: 'Credentials', icon: BadgeCheck, ...data.badges },
         { to: '/experiences', label: 'Experience', icon: Briefcase, ...data.experiences },
       ]
     : []

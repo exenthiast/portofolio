@@ -5,6 +5,7 @@
 export interface PortfolioEvents {
   'open-project': { slug: string }
   'open-badge': { id: string }
+  'open-certificate': { id?: string }
   'open-cv': undefined
 }
 

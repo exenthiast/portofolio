@@ -78,6 +78,26 @@ test('local content sync preserves published-only content and the last valid sna
       assert.equal((await request()).status, 200)
       assert.equal('logo' in JSON.parse(await readFile(snapshotPath, 'utf8')).experiences[0], false)
     })
+    await t.test('published certificates retain image, PDF, and verification metadata in the snapshot', async () => {
+      const certificate = {
+        kind: 'certificate' as const,
+        id: 'test-certificate', title: 'Certificate pipeline regression test', issuer: 'Test issuer', issueDate: '2026',
+        image: { src: '/certificates/test.webp', alt: 'Test certificate', width: 1200, height: 850 },
+        pdfUrl: '/certificates/test.pdf', verificationUrl: 'https://example.com/verify/test', skills: [],
+      }
+      content.badges.push(certificate)
+      assert.equal((await request()).status, 200)
+      const snapshot = JSON.parse(await readFile(snapshotPath, 'utf8'))
+      assert.deepEqual(snapshot.badges.find((item: { id: string }) => item.id === certificate.id), certificate)
+      content.badges.pop()
+      const { image: _image, ...pdfOnly } = certificate
+      content.badges.push(pdfOnly)
+      assert.equal((await request()).status, 200)
+      const pdfSnapshot = JSON.parse(await readFile(snapshotPath, 'utf8'))
+      assert.deepEqual(pdfSnapshot.badges.find((item: { id: string }) => item.id === certificate.id), pdfOnly)
+      content.badges.pop()
+      assert.equal((await request()).status, 200)
+    })
     await t.test('failed pulls keep the last valid data and allow retry', async () => {
       const before = await readFile(snapshotPath, 'utf8')
       fail = true
