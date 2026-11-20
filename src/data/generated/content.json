@@ -5,6 +5,7 @@
     "title": "Software Engineer",
     "subtitle": "Software Engineer · Backend & Distributed Systems @ UGM",
     "bio": "Software Engineering student at Universitas Gadjah Mada (UGM). Passionate about crafting robust backend architectures, distributed APIs, and developer-native web experiences.",
+    "aboutBio": "I'm a Software Engineering student at Universitas Gadjah Mada, based in Yogyakarta, Indonesia, with a focus on backend development, including API design, database management, and application logic.\n\nI've worked on backend development for SIM Pondok Tahfidz and SIA UGN, and led frontend development for Bimbel Lazuardy. Through Katalog Pustaka, I'm also exploring DevOps practices such as containerization, CI/CD, automated testing, and monitoring.\n\nBeyond coding, my involvement in student organizations and event committees has strengthened my teamwork, communication, and leadership skills. I'm eager to keep learning, collaborate with others, and build reliable, maintainable software.",
     "affiliation": "Universitas Gadjah Mada (UGM)",
     "location": "Yogyakarta, ID",
     "availableForWork": true,
@@ -56,9 +57,11 @@
         "PHP 8.3",
         "Laravel 13",
         "PostgreSQL",
-        "Sanctum",
         "Docker",
-        "Vercel"
+        "Laravel Sanctum",
+        "Redis",
+        "Barryvdh DomPDF",
+        "PHPUnit"
       ],
       "liveDemoUrl": "https://simpondokk.vercel.app/",
       "githubUrl": "https://github.com/exenthiast/SIMPondok-Tahfidz-BE",
@@ -77,9 +80,13 @@
         ]
       },
       "keyFeatures": [
-        "Pelacakan setoran hafalan harian dan rekap musabaqah santri.",
-        "Sistem penagihan iuran syahriah otomatis dengan notifikasi.",
-        "Dashboard statistik perkembangan santri untuk asatidz dan wali."
+        "Role-Based Access Control (RBAC).",
+        "Sesi Halaqah State Machine.",
+        "Data Normalization Engine (Master 114 Surat).",
+        "Santri development statistics dashboard for Halaqah and Admin.",
+        "Pencegahan N+1 Query (Eager Loading).",
+        "Presensi Massal & Rekapitulasi Presensi.",
+        "Automated PDF Generator"
       ]
     },
     {
@@ -124,13 +131,18 @@
       "title": "SIA UGN",
       "category": "Backend Developer",
       "role": "Backend Systems Engineer",
-      "description": "Sistem Informasi Akademik perguruan tinggi berkapasitas konkurensi tinggi untuk rencana studi mahasiswa, penjadwalan ruang kuliah otomatis, dan transkrip nilai terenkripsi.",
+      "description": "Higher education academic information system with high concurrency capacity for student study plans, automatic lecture hall scheduling, and encrypted transcripts.",
       "techStack": [
-        "Node.js",
-        "Express",
-        "MongoDB",
-        "Redis",
-        "Docker"
+        "PHP 8.2",
+        "Laravel 12",
+        "MySQL",
+        "Laravel Sanctum",
+        "Geofencing Haversine Formula",
+        "Firebase Cloud Messaging (FCM)",
+        "Docker",
+        "GHCR",
+        "Railway",
+        "Postman"
       ],
       "liveDemoUrl": "https://sia.trisuladana.com",
       "githubUrl": "https://github.com/exenthiast/SIA-UGN-BE",
@@ -149,9 +161,12 @@
         ]
       },
       "keyFeatures": [
-        "Pengisian Kartu Rencana Studi (KRS) real-time dengan validasi prasyarat matakuliah.",
-        "Algoritma penjadwalan kelas bebas bentrok dosen dan ruangan.",
-        "API gateway terisolasi untuk integrasi data kelembagaan."
+        "GPS Geofencing-Based Lecturer Attendance.",
+        "Lecturer Workload (BKD) & Cumulative Credit Points.",
+        "Tridharma of Higher Education.",
+        "Integrated Payroll and Payslips.",
+        "Integrated Academic Management.",
+        "Real-Time Messaging & Chat System."
       ]
     },
     {
@@ -160,7 +175,7 @@
       "title": "Bimbel Lazuardy",
       "category": "Frontend Developer",
       "role": "Lead Frontend Developer",
-      "description": "Platform pembelajaran interaktif dan bimbingan belajar berbasis web dengan visualisasi progres siswa, tryout ujian berkala, dan modul interaktif.",
+      "description": "Web-based interactive learning and tutoring platform with visualization of student progress, periodic exam tryouts, and interactive modules.",
       "techStack": [
         "Vue 3",
         "Vite",
@@ -185,9 +200,9 @@
         ]
       },
       "keyFeatures": [
-        "Simulasi tryout dengan timer otomatis dan anti-kecurangan tab tracking.",
-        "Analisis butir soal dan grafik penguasaan materi per siswa.",
-        "Antarmuka ramah mobile untuk akses materi belajar di mana saja."
+        "Tryout simulation with automatic timer and anti-cheating tab tracking.",
+        "Analysis of question items and material mastery graphs per student.",
+        "Mobile friendly interface to access study materials anywhere."
       ]
     }
   ],
@@ -469,6 +484,21 @@
       "pdfUrl": "https://jxguhdwifjfnjxxgcjvz.supabase.co/storage/v1/object/public/media/2026/86805b20-sertifikatblastout2025-alfizdesta.pdf"
     },
     {
+      "id": "credential-3d0bdb",
+      "title": "Sertifikat Peserta Orientasi TRPL",
+      "issuer": "ASSETS UGM",
+      "issueDate": "2024",
+      "image": {
+        "src": "https://jxguhdwifjfnjxxgcjvz.supabase.co/storage/v1/object/public/media/2026/65ce5c03-certificate-preview.webp",
+        "alt": "First page of Sertifikat LIGA TRPL",
+        "width": 1600,
+        "height": 1131
+      },
+      "skills": [],
+      "kind": "certificate",
+      "pdfUrl": "https://jxguhdwifjfnjxxgcjvz.supabase.co/storage/v1/object/public/media/2026/284de921-sertifikat-ligatrpl2024.pdf"
+    },
+    {
       "id": "credential-a96c01",
       "title": "Sertifikat PIONIR Gadjah Mada",
       "issuer": "Universitas Gadjah Mada",
@@ -528,6 +558,51 @@
         "Project Planning"
       ],
       "photos": []
+    },
+    {
+      "id": "exp-b07771",
+      "category": "committee",
+      "role": "Coordinator of Logistics Division",
+      "organization": "TEDI Games and Electronic Sports (TGES)",
+      "period": "Jun 2026",
+      "logo": {
+        "src": "https://jxguhdwifjfnjxxgcjvz.supabase.co/storage/v1/object/public/media/2026/0cf7f469-tges-logo.webp",
+        "alt": "tges logo",
+        "width": 1080,
+        "height": 1080
+      },
+      "description": "Monitor and coordinate all logistics staff to ensure the event proceeds according to plan.\nDetermine requirements, budget, and resources.\nEnsure the security and availability of items.\nProcure food, beverages, and other necessary supplies.\nCoordinate with external parties (such as vendors).",
+      "division": "Logistics and Consumption",
+      "skills": [
+        "Team Leadership",
+        "Logistic Operations"
+      ],
+      "photos": [
+        {
+          "src": "https://jxguhdwifjfnjxxgcjvz.supabase.co/storage/v1/object/public/media/2026/d66138bb-rapat-koordinator-divisi-tges-2026.webp",
+          "alt": "rapat koordinator divisi tges 2026",
+          "width": 2000,
+          "height": 1125,
+          "caption": "Coordinator Meeting",
+          "year": "2026"
+        },
+        {
+          "src": "https://jxguhdwifjfnjxxgcjvz.supabase.co/storage/v1/object/public/media/2026/c3d29962-foto-divisi-loko-tges-2026.webp",
+          "alt": "foto divisi loko tges 2026",
+          "width": 2000,
+          "height": 1333,
+          "caption": "Division Photo",
+          "year": "2026"
+        },
+        {
+          "src": "https://jxguhdwifjfnjxxgcjvz.supabase.co/storage/v1/object/public/media/2026/36e20b4b-clossing-tges2026.webp",
+          "alt": "clossing tges2026",
+          "width": 2000,
+          "height": 1083,
+          "caption": "Clossing",
+          "year": "2026"
+        }
+      ]
     },
     {
       "id": "exp-ted",
@@ -661,12 +736,13 @@
         "width": 1125,
         "height": 936
       },
-      "description": "Menangani kemitraan media eksternal, akomodasi pemateri nasional, dan mobilisasi logistik delegasi kampus.",
+      "description": "Managed event permits and coordinated approvals with relevant authorities. Organized guest lists and distributed invitations to external parties. Coordinated communication with vendors, sponsors, guest stars, and external stakeholders. Arranged accommodations for committee members and guest stars within budget. Managed transportation schedules, including airport/station pick-ups and drop-offs.",
       "division": "PR & Accommodation",
       "skills": [
         "Public Relations",
         "Logistics Operations",
-        "Sponsorship Liaison"
+        "Sponsorship Liaison",
+        "Transportasion"
       ],
       "photos": [
         {
@@ -683,6 +759,44 @@
           "width": 1125,
           "height": 618,
           "caption": "All-hands meeting",
+          "year": "2024"
+        }
+      ]
+    },
+    {
+      "id": "exp-722fc3",
+      "category": "committee",
+      "role": "Staff Logistics and Supplies Division",
+      "organization": "TRPL League UGM",
+      "period": "Nov 2024",
+      "logo": {
+        "src": "https://jxguhdwifjfnjxxgcjvz.supabase.co/storage/v1/object/public/media/2026/b176ff9a-ligatrpl-logo.webp",
+        "alt": "ligatrpl logo",
+        "width": 1080,
+        "height": 1080
+      },
+      "description": "Designing and creating symbolic elements for the opening and closing of an event.\nDetermining requirements, budget, and resources.\nEnsuring safety and the availability of items.\nProcuring food, beverages, and other supplies.",
+      "division": "Inventory, Equipment and Logistics Management",
+      "skills": [
+        "Sound Reinforcement",
+        "Safety and Security",
+        "Logistic Operations"
+      ],
+      "photos": [
+        {
+          "src": "https://jxguhdwifjfnjxxgcjvz.supabase.co/storage/v1/object/public/media/2026/0815b1db-clossing-liga-trpl2024.webp",
+          "alt": "clossing liga trpl2024",
+          "width": 1536,
+          "height": 1024,
+          "caption": "Clossing",
+          "year": "2024"
+        },
+        {
+          "src": "https://jxguhdwifjfnjxxgcjvz.supabase.co/storage/v1/object/public/media/2026/232a0d91-opening-ligatrpl2024.webp",
+          "alt": "opening ligatrpl2024",
+          "width": 2000,
+          "height": 1333,
+          "caption": "Opening",
           "year": "2024"
         }
       ]
