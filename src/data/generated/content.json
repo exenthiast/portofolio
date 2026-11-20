@@ -1,0 +1,848 @@
+{
+  "profile": {
+    "firstName": "Alfiz Desta",
+    "lastName": "Ariant Permana",
+    "title": "Software Engineer",
+    "subtitle": "Software Engineer · Backend & Distributed Systems @ UGM",
+    "bio": "Software Engineering student at Universitas Gadjah Mada (UGM). Passionate about crafting robust backend architectures, distributed APIs, and developer-native web experiences.",
+    "aboutBio": "I'm a Software Engineering student at Universitas Gadjah Mada, based in Yogyakarta, Indonesia, with a focus on backend development, including API design, database management, and application logic.\n\nI've worked on backend development for SIM Pondok Tahfidz and SIA UGN, and led frontend development for Bimbel Lazuardy. Through Katalog Pustaka, I'm also exploring DevOps practices such as containerization, CI/CD, automated testing, and monitoring.\n\nBeyond coding, my involvement in student organizations and event committees has strengthened my teamwork, communication, and leadership skills. I'm eager to keep learning, collaborate with others, and build reliable, maintainable software.",
+    "affiliation": "Universitas Gadjah Mada (UGM)",
+    "location": "Yogyakarta, ID",
+    "availableForWork": true,
+    "statusText": "Available for work / Yogyakarta, ID",
+    "email": "alfizdestaap@gmail.com",
+    "resumeUrl": "/cv/alfiz-desta-cv.pdf",
+    "photo": {
+      "src": "https://jxguhdwifjfnjxxgcjvz.supabase.co/storage/v1/object/public/media/2026/78802d65-confident-portrait-in-geometric-light.webp",
+      "alt": "confident portrait in geometric light",
+      "width": 1038,
+      "height": 1516
+    },
+    "navbarLogo": {
+      "src": "https://jxguhdwifjfnjxxgcjvz.supabase.co/storage/v1/object/public/media/2026/f57b0345-alfiz-desta-monogram-mark.svg",
+      "alt": "alfiz desta monogram mark",
+      "width": 1,
+      "height": 1
+    },
+    "socialLinks": [
+      {
+        "id": "github",
+        "name": "GitHub",
+        "url": "https://github.com/exenthiast",
+        "handle": "/exenthiast"
+      },
+      {
+        "id": "linkedin",
+        "name": "LinkedIn",
+        "url": "https://www.linkedin.com/in/alfiz-desta-0a0318326/",
+        "handle": "/alfizdesta"
+      },
+      {
+        "id": "instagram",
+        "name": "Instagram",
+        "url": "https://instagram.com/d.destaz",
+        "handle": "/d.destaz"
+      }
+    ]
+  },
+  "projects": [
+    {
+      "id": "sim-pondok-tahfidz",
+      "slug": "sim-pondok-tahfidz",
+      "title": "SIM Pondok Tahfidz",
+      "category": "Backend Developer",
+      "role": "Lead Backend Developer",
+      "description": "Sistem Informasi Manajemen Pondok Tahfidz modern untuk tata kelola santri, kurikulum hafalan Al-Qur’an, pencatatan keuangan syariah, dan pelaporan wali santri secara real-time.",
+      "techStack": [
+        "PHP 8.3",
+        "Laravel 13",
+        "PostgreSQL",
+        "Docker",
+        "Laravel Sanctum",
+        "Redis",
+        "Barryvdh DomPDF",
+        "PHPUnit"
+      ],
+      "liveDemoUrl": "https://simpondokk.vercel.app/",
+      "githubUrl": "https://github.com/exenthiast/SIMPondok-Tahfidz-BE",
+      "preview": {
+        "src": "https://jxguhdwifjfnjxxgcjvz.supabase.co/storage/v1/object/public/media/2026/45e9c0fc-screenshot-2026-11-20-at-21-24-45.webp",
+        "alt": "screenshot 2026 11 20 at 21 24 45",
+        "width": 2000,
+        "height": 1322
+      },
+      "architecture": {
+        "overview": "Modular monolithic architecture with strictly typed service-repository pattern, isolated tenant scopes, and atomic database transactions.",
+        "keyDecisions": [
+          "PostgreSQL with JSONB fields for extensible tahfidz grade rubric.",
+          "Laravel Sanctum token authentication with fine-grained role-based permission gates.",
+          "Automated Dockerized container workflow for testing and migration pipelines."
+        ]
+      },
+      "keyFeatures": [
+        "Role-Based Access Control (RBAC).",
+        "Sesi Halaqah State Machine.",
+        "Data Normalization Engine (Master 114 Surat).",
+        "Santri development statistics dashboard for Halaqah and Admin.",
+        "Pencegahan N+1 Query (Eager Loading).",
+        "Presensi Massal & Rekapitulasi Presensi.",
+        "Automated PDF Generator"
+      ]
+    },
+    {
+      "id": "katalog-pustaka",
+      "slug": "katalog-pustaka",
+      "title": "Katalog Pustaka",
+      "category": "Full-stack & DevOps",
+      "role": "Developer · Academic Project",
+      "description": "A book catalog application developed through weekly coursework in Software Construction and Evolution, covering book records, stock, and token-based authentication. The project grows alongside my DevOps practice, with containerized services, automated testing and image publishing, and infrastructure monitoring.",
+      "techStack": [
+        "PHP 8.4",
+        "Laravel 13",
+        "Vue 3",
+        "PostgreSQL 16",
+        "GitHub Actions",
+        "PHPUnit",
+        "Prometheus",
+        "Grafana",
+        "Docker"
+      ],
+      "githubUrl": "https://github.com/exenthiast/uts-pl-543220",
+      "preview": {
+        "src": "https://jxguhdwifjfnjxxgcjvz.supabase.co/storage/v1/object/public/media/2026/978a45d3-screenshot-2026-11-21-at-00-45-59.webp",
+        "alt": "screenshot 2026 11 21 at 00 45 59",
+        "width": 2000,
+        "height": 1324
+      },
+      "architecture": {
+        "overview": "A Vue 3 SPA communicates with a Laravel 13 REST API through an Nginx reverse proxy. The API uses Sanctum authentication and PostgreSQL, with FrankenPHP serving the backend. Docker Compose defines the application and monitoring services. GitHub Actions runs tests and builds before publishing commit-tagged images to GHCR, while Prometheus and Grafana provide container and host monitoring.",
+        "keyDecisions": [
+          "Separate frontend and API containers behind an Nginx reverse proxy.",
+          "Protect book-management endpoints with Sanctum bearer tokens.",
+          "Persist PostgreSQL data using a named Docker volume.",
+          "Publish commit-tagged container images after backend tests and frontend builds.",
+          "Version Grafana dashboards and Prometheus configuration alongside application code."
+        ]
+      }
+    },
+    {
+      "id": "sia-ugn",
+      "slug": "sia-ugn",
+      "title": "SIA UGN",
+      "category": "Backend Developer",
+      "role": "Backend Systems Engineer",
+      "description": "Higher education academic information system with high concurrency capacity for student study plans, automatic lecture hall scheduling, and encrypted transcripts.",
+      "techStack": [
+        "PHP 8.2",
+        "Laravel 12",
+        "MySQL",
+        "Laravel Sanctum",
+        "Geofencing Haversine Formula",
+        "Firebase Cloud Messaging (FCM)",
+        "Docker",
+        "GHCR",
+        "Railway",
+        "Postman"
+      ],
+      "liveDemoUrl": "https://sia.trisuladana.com",
+      "githubUrl": "https://github.com/exenthiast/SIA-UGN-BE",
+      "preview": {
+        "src": "https://jxguhdwifjfnjxxgcjvz.supabase.co/storage/v1/object/public/media/2026/0466c763-siaugn-loginpage.webp",
+        "alt": "siaugn loginpage",
+        "width": 1430,
+        "height": 1069
+      },
+      "architecture": {
+        "overview": "High-throughput RESTful API designed with Redis caching layer and optimistic concurrency locks for KRS traffic surges.",
+        "keyDecisions": [
+          "Optimistic locking during course selection to prevent race conditions in capacity caps.",
+          "In-memory Redis caching for fast syllabus and timetable lookup.",
+          "Aggregation pipelines for rapid transcript GPA calculations."
+        ]
+      },
+      "keyFeatures": [
+        "GPS Geofencing-Based Lecturer Attendance.",
+        "Lecturer Workload (BKD) & Cumulative Credit Points.",
+        "Tridharma of Higher Education.",
+        "Integrated Payroll and Payslips.",
+        "Integrated Academic Management.",
+        "Real-Time Messaging & Chat System."
+      ]
+    },
+    {
+      "id": "bimbel-lazuardy",
+      "slug": "bimbel-lazuardy",
+      "title": "Bimbel Lazuardy",
+      "category": "Frontend Developer",
+      "role": "Lead Frontend Developer",
+      "description": "Web-based interactive learning and tutoring platform with visualization of student progress, periodic exam tryouts, and interactive modules.",
+      "techStack": [
+        "Vue 3",
+        "Vite",
+        "Pinia",
+        "Tailwind CSS",
+        "TypeScript"
+      ],
+      "liveDemoUrl": "https://lazuardy.trpl.space",
+      "githubUrl": "https://github.com/exenthiast/PAD-LAZUARDY-FRONTEND",
+      "preview": {
+        "src": "https://jxguhdwifjfnjxxgcjvz.supabase.co/storage/v1/object/public/media/2026/ae6b8ad6-screenshot-2026-11-20-at-21-27-34.webp",
+        "alt": "screenshot 2026 11 20 at 21 27 34",
+        "width": 2000,
+        "height": 1322
+      },
+      "architecture": {
+        "overview": "Composition API-driven Single Page Application with centralized Pinia reactive state stores and custom responsive design system tokens.",
+        "keyDecisions": [
+          "Vue 3 Composition API with script setup for maximum type safety and render performance.",
+          "Pinia state hydration for persistent student practice session states.",
+          "Zero-dependency SVG chart rendering for progress telemetry."
+        ]
+      },
+      "keyFeatures": [
+        "Tryout simulation with automatic timer and anti-cheating tab tracking.",
+        "Analysis of question items and material mastery graphs per student.",
+        "Mobile friendly interface to access study materials anywhere."
+      ]
+    }
+  ],
+  "badges": [
+    {
+      "id": "badge-10",
+      "title": "Build Real World AI Applications with Gemini and Imagen Skill Badge",
+      "issuer": "Google Cloud",
+      "issueDate": "Aug 24, 2026",
+      "credentialId": "81532c52-82c0-4fb3-a727-8d2ac746da7b",
+      "credlyUrl": "https://www.credly.com/earner/earned/badge/81532c52-82c0-4fb3-a727-8d2ac746da7b",
+      "image": {
+        "src": "https://jxguhdwifjfnjxxgcjvz.supabase.co/storage/v1/object/public/media/2026/9198c4a2-build-real-world-ai-applications-with-ge.webp",
+        "alt": "build real world ai applications with ge",
+        "width": 2000,
+        "height": 2000
+      },
+      "skills": [
+        "Vertex AI",
+        "Gemini",
+        "Imagen",
+        "Natural Language Processing (NLP)"
+      ],
+      "description": "Complete the introductory Build Real World AI Applications with Gemini and Imagen skill badge to demonstrate skills in the following: image recognition, natural language processing, image generation using Google's powerful Gemini and Imagen models, deploying applications on the Vertex AI platform."
+    },
+    {
+      "id": "badge-1",
+      "title": "Implement CI/CD Pipelines on Google Cloud Skill Badge",
+      "issuer": "Google Cloud",
+      "issueDate": "Aug 18, 2026",
+      "credentialId": "d383138a-541f-4145-bf38-65842bdc65aa",
+      "credlyUrl": "https://www.credly.com/earner/earned/badge/d383138a-541f-4145-bf38-65842bdc65aa",
+      "image": {
+        "src": "https://jxguhdwifjfnjxxgcjvz.supabase.co/storage/v1/object/public/media/2026/2cbb2fd7-implement-ci-cd-pipelines-on-google-clou.webp",
+        "alt": "implement ci cd pipelines on google clou",
+        "width": 680,
+        "height": 680
+      },
+      "skills": [
+        "Artifact Registry",
+        "CI/CD",
+        "Cloud Build",
+        "Cloud Deploy"
+      ],
+      "description": "Earn the intermediate skill badge by completing the Implement CI/CD Pipelines on Google Cloud course where you will learn how to use Artifact Registry, Cloud Build, and Cloud Deploy. You will interact with the Cloud console, Google Cloud CLI, Cloud Run, and GKE. This course will teach you how to build continuous integration pipelines, store and secure artifacts, scan for vulnerabilities, attest to the validity of approved releases."
+    },
+    {
+      "id": "badge-2",
+      "title": "Manage Kubernetes in Google Cloud Skill Badge",
+      "issuer": "Google Cloud",
+      "issueDate": "Aug 4, 2026",
+      "credentialId": "53067b9a-611f-49c5-9aec-75a1c5ee06db",
+      "credlyUrl": "https://www.credly.com/earner/earned/badge/53067b9a-611f-49c5-9aec-75a1c5ee06db",
+      "image": {
+        "src": "https://jxguhdwifjfnjxxgcjvz.supabase.co/storage/v1/object/public/media/2026/a47b0dbe-manage-kubernetes-in-google-cloud-skill-.webp",
+        "alt": "manage kubernetes in google cloud skill",
+        "width": 680,
+        "height": 680
+      },
+      "skills": [
+        "Docker",
+        "GKE",
+        "Kubetcl",
+        "Kubernetes"
+      ],
+      "description": "Complete the intermediate Manage Kubernetes in Google Cloud skill badge to demonstrate skills in the following: configure and build images to run and debug Docker containers, build Kubernetes Engine clusters, and manage them with kubectl, deploy Kubernetes applications using deployments and continuous delivery techniques."
+    },
+    {
+      "id": "badge-8",
+      "title": "Connecting Cloud Networks with NCC",
+      "issuer": "Google Cloud",
+      "issueDate": "Aug 3, 2026",
+      "credentialId": "afa699e6-67f7-409a-94f9-b9407e728f6f",
+      "credlyUrl": "https://www.credly.com/earner/earned/badge/afa699e6-67f7-409a-94f9-b9407e728f6f",
+      "image": {
+        "src": "https://jxguhdwifjfnjxxgcjvz.supabase.co/storage/v1/object/public/media/2026/3349efe5-connecting-cloud-networks-with-ncc.webp",
+        "alt": "connecting cloud networks with ncc",
+        "width": 1080,
+        "height": 1080
+      },
+      "skills": [
+        "Cloud Infrastucture",
+        "Cloud Services",
+        "Computer Network Infrastucture",
+        "Computer Networking",
+        "Google Cloud Networking",
+        "Multi Cloud",
+        "Network Management Systems",
+        "Network Service"
+      ],
+      "description": "Earn the intermediate Skill Badge by completing the Connecting Cloud Networks with NCC where you will learn how to use the Network Connectivity Center to connect your on-premises, cloud enterprise networks, and hybrid networks, and manage them as spokes through a single, centralized hub on Google Cloud."
+    },
+    {
+      "id": "badge-5",
+      "title": "Deploy Multi-Agent Architectures",
+      "issuer": "Google Cloud",
+      "issueDate": "Aug 2, 2026",
+      "credentialId": "c43130be-6ff0-46b6-9d0f-3c53e22cb76d",
+      "credlyUrl": "https://www.credly.com/earner/earned/badge/c43130be-6ff0-46b6-9d0f-3c53e22cb76d",
+      "image": {
+        "src": "https://jxguhdwifjfnjxxgcjvz.supabase.co/storage/v1/object/public/media/2026/0a73fe06-deploy-multi-agent-architectures.webp",
+        "alt": "deploy multi agent architectures",
+        "width": 680,
+        "height": 680
+      },
+      "skills": [
+        "AI Agents",
+        "Agent Development Kit",
+        "Authentication Protocols",
+        "Model Context Protocol"
+      ],
+      "description": "Complete the Deploy Multi-Agent Architectures skill badge to demonstrate skills in the following: building multi-agent systems with ADK, connecting agents with the Agent-to-Agent (A2A) protocol, integrating external tools using the Model Context Protocol (MCP), and deploying a complete multi-agent solution to Agent Engine."
+    },
+    {
+      "id": "badge-3",
+      "title": "Orchestrate Multi-agent Workflows with Gemini Enterprise",
+      "issuer": "Google Cloud",
+      "issueDate": "Jul 28, 2026",
+      "credentialId": "054d6bd4-9844-46d8-ac73-432bf4d1fb44",
+      "credlyUrl": "https://www.credly.com/earner/earned/badge/054d6bd4-9844-46d8-ac73-432bf4d1fb44",
+      "image": {
+        "src": "https://jxguhdwifjfnjxxgcjvz.supabase.co/storage/v1/object/public/media/2026/ee6beff5-orchestrate-multi-agent-workflows-with-g.webp",
+        "alt": "orchestrate multi agent workflows with g",
+        "width": 1080,
+        "height": 1080
+      },
+      "skills": [
+        "AI Agents",
+        "Gemini Enterprise",
+        "Multi-agents"
+      ],
+      "description": "Complete the Orchestrate Multi-Agent Workflows with Gemini Enterprise skill badge to demonstrate skills in the following: using agentic assistants powered by Gemini Enterprise to unify data across first- and third-party sources, develop multimedia marketing materials, and automate business actions across systems."
+    },
+    {
+      "id": "badge-4",
+      "title": "Engineer AI Agents with Agent Development Kit (ADK)",
+      "issuer": "Google Cloud",
+      "issueDate": "Jul 26, 2026",
+      "credentialId": "7199c1b7-aa99-4afe-b537-df6f4f65e53a",
+      "credlyUrl": "https://www.credly.com/earner/earned/badge/7199c1b7-aa99-4afe-b537-df6f4f65e53a",
+      "image": {
+        "src": "https://jxguhdwifjfnjxxgcjvz.supabase.co/storage/v1/object/public/media/2026/38166be9-engineer-ai-agents-with-agent-developmen.webp",
+        "alt": "engineer ai agents with agent developmen",
+        "width": 680,
+        "height": 680
+      },
+      "skills": [
+        "AI Agents",
+        "Agent Development Kit",
+        "Large Language Models Fine-Tuning",
+        "Model Training",
+        "Pretraining Large Language Models",
+        "Tokenization"
+      ],
+      "description": "Complete the Engineer AI Agents with Agent Development Kit (ADK) skill badge to demonstrate skills in the following: formulating real-world language model research problems; building a simple tokenizer; preparing a dataset for training a transformer language model; running the training loop of a small language model."
+    },
+    {
+      "id": "badge-7",
+      "title": "Build a Data Warehouse with BigQuery Skill Badge",
+      "issuer": "Google Cloud",
+      "issueDate": "Jul 25, 2026",
+      "credentialId": "873aea22-5f6a-4979-b55e-aa023d211a92",
+      "credlyUrl": "https://www.credly.com/earner/earned/badge/873aea22-5f6a-4979-b55e-aa023d211a92",
+      "image": {
+        "src": "https://jxguhdwifjfnjxxgcjvz.supabase.co/storage/v1/object/public/media/2026/a967e845-build-a-data-warehouse-with-bigquery-ski.webp",
+        "alt": "build a data warehouse with bigquery ski",
+        "width": 680,
+        "height": 680
+      },
+      "skills": [
+        "BigQuery",
+        "Data Ingestion",
+        "Data Model",
+        "Data Warehouse"
+      ],
+      "description": "Complete the Build a Data Warehouse with BigQuery skill badge to demonstrate skills in the following: joining data to create new tables, troubleshooting joins, appending data with unions, creating date-partitioned tables, and working with JSON, arrays, and structs in BigQuery."
+    },
+    {
+      "id": "badge-6",
+      "title": "Secure Software Delivery Skill Badge",
+      "issuer": "Google Cloud",
+      "issueDate": "Jul 23, 2026",
+      "credentialId": "f6598bae-0c88-41bd-aecc-f87f0e28021a",
+      "credlyUrl": "https://www.credly.com/earner/earned/badge/f6598bae-0c88-41bd-aecc-f87f0e28021a",
+      "image": {
+        "src": "https://jxguhdwifjfnjxxgcjvz.supabase.co/storage/v1/object/public/media/2026/1be20be1-secure-software-delivery-skill-badge.webp",
+        "alt": "secure software delivery skill badge",
+        "width": 680,
+        "height": 680
+      },
+      "skills": [
+        "Cloud Build",
+        "DevSecOps",
+        "GKE"
+      ],
+      "description": "Complete the intermediate Secure Software Delivery skill badge to demonstrate your proficiency in proactively integrating security into the software development lifecycle (SDLC) with DevSecOps principles. You'll learn how to utilize Google Kubernetes Engine (GKE) and Cloud Run for secure container image deployment, implement automated vulnerability scanning to proactively identify risks, and streamline application development with Artifact Registry while maintaining a focus on security."
+    },
+    {
+      "id": "badge-9",
+      "title": "Build Infrastructure with Terraform on Google Cloud Skill Badge",
+      "issuer": "Google Cloud",
+      "issueDate": "Jul 23, 2026",
+      "credentialId": "5b0509ee-66ca-48cd-9807-8779bd7b3041",
+      "credlyUrl": "https://www.credly.com/earner/earned/badge/5b0509ee-66ca-48cd-9807-8779bd7b3041",
+      "image": {
+        "src": "https://jxguhdwifjfnjxxgcjvz.supabase.co/storage/v1/object/public/media/2026/c8677e68-build-infrastructure-with-terraform-on-g.webp",
+        "alt": "build infrastructure with terraform on g",
+        "width": 680,
+        "height": 680
+      },
+      "skills": [
+        "Terraform",
+        "Google Cloud Platform (GCP)",
+        "Infrastucture as Code (IaC)"
+      ],
+      "description": "Complete the Build Infrastructure with Terraform on Google Cloud skill badge to demonstrate skills in the following: Infrastructure as Code (IaC) principles using Terraform, provisioning and managing Google Cloud resources with Terraform configurations, effective state management (local and remote), and modularizing Terraform code for reusability and organization."
+    },
+    {
+      "id": "credential-a5b886",
+      "title": "HUAWEI ICT ACADEMY",
+      "issuer": "HUAWEI",
+      "issueDate": "2026",
+      "credentialId": "ICT20260707008507",
+      "image": {
+        "src": "https://jxguhdwifjfnjxxgcjvz.supabase.co/storage/v1/object/public/media/2026/74050c3b-tangkapan-layar-2026-11-20-pada-22-00-23.webp",
+        "alt": "tangkapan layar 2026 11 20 pada 22 00 23",
+        "width": 1125,
+        "height": 1574
+      },
+      "skills": [],
+      "kind": "certificate"
+    },
+    {
+      "id": "credential-fd38dc",
+      "title": "Sertifikat TED",
+      "issuer": "KMTEDI UGM",
+      "issueDate": "2025",
+      "credentialId": "4141/UNI/SV-2-TEDI/KM/SR/2025",
+      "image": {
+        "src": "https://jxguhdwifjfnjxxgcjvz.supabase.co/storage/v1/object/public/media/2026/0e64b5e4-certificate-preview.webp",
+        "alt": "First page of Sertifikat TED",
+        "width": 1600,
+        "height": 1095
+      },
+      "skills": [],
+      "kind": "certificate",
+      "pdfUrl": "https://jxguhdwifjfnjxxgcjvz.supabase.co/storage/v1/object/public/media/2026/0c01a0b5-sertifikat-ted.pdf"
+    },
+    {
+      "id": "credential-95fc10",
+      "title": "Sertifikat Sub Koordinator TGES 2025",
+      "issuer": "KMTEDI UGM",
+      "issueDate": "2025",
+      "credentialId": "397/MT-01/STF/KMTEDI-UGM/2025",
+      "image": {
+        "src": "https://jxguhdwifjfnjxxgcjvz.supabase.co/storage/v1/object/public/media/2026/aedbc66e-certificate-preview.webp",
+        "alt": "First page of Sertifikat Sub Koordinator TGES 2025",
+        "width": 1600,
+        "height": 1132
+      },
+      "skills": [],
+      "kind": "certificate",
+      "pdfUrl": "https://jxguhdwifjfnjxxgcjvz.supabase.co/storage/v1/object/public/media/2026/0f6c593d-sertifikat-subko-tges25.pdf"
+    },
+    {
+      "id": "credential-2aec78",
+      "title": "Sertifikat BLASTOUT 2025",
+      "issuer": "BKLASS UGM",
+      "issueDate": "2025",
+      "credentialId": "255/B/SEK/Bklass/I/2025",
+      "image": {
+        "src": "https://jxguhdwifjfnjxxgcjvz.supabase.co/storage/v1/object/public/media/2026/4aabf0bb-certificate-preview.webp",
+        "alt": "First page of Sertifikat BLASTOUT 2025",
+        "width": 1600,
+        "height": 1132
+      },
+      "skills": [],
+      "kind": "certificate",
+      "pdfUrl": "https://jxguhdwifjfnjxxgcjvz.supabase.co/storage/v1/object/public/media/2026/86805b20-sertifikatblastout2025-alfizdesta.pdf"
+    },
+    {
+      "id": "credential-3d0bdb",
+      "title": "Sertifikat Peserta Orientasi TRPL",
+      "issuer": "ASSETS UGM",
+      "issueDate": "2024",
+      "image": {
+        "src": "https://jxguhdwifjfnjxxgcjvz.supabase.co/storage/v1/object/public/media/2026/65ce5c03-certificate-preview.webp",
+        "alt": "First page of Sertifikat LIGA TRPL",
+        "width": 1600,
+        "height": 1131
+      },
+      "skills": [],
+      "kind": "certificate",
+      "pdfUrl": "https://jxguhdwifjfnjxxgcjvz.supabase.co/storage/v1/object/public/media/2026/284de921-sertifikat-ligatrpl2024.pdf"
+    },
+    {
+      "id": "credential-a96c01",
+      "title": "Sertifikat PIONIR Gadjah Mada",
+      "issuer": "Universitas Gadjah Mada",
+      "issueDate": "2024",
+      "image": {
+        "src": "https://jxguhdwifjfnjxxgcjvz.supabase.co/storage/v1/object/public/media/2026/e0a4d6d8-certificate-preview.webp",
+        "alt": "First page of Sertifikat PIONIR Gadjah Mada",
+        "width": 1132,
+        "height": 1600
+      },
+      "skills": [
+        "Softskill"
+      ],
+      "kind": "certificate",
+      "pdfUrl": "https://jxguhdwifjfnjxxgcjvz.supabase.co/storage/v1/object/public/media/2026/a4868e05-sertifikat-pionir-alfiz-desta-ariant-per.pdf"
+    }
+  ],
+  "experiences": [
+    {
+      "id": "exp-kmtedi",
+      "category": "organization",
+      "role": "Anggota Divisi Minat dan Bakat",
+      "organization": "KMTEDI UGM (Keluarga Mahasiswa Teknologi Rekayasa Perangkat Lunak)",
+      "period": "2024 – Sekarang",
+      "logo": {
+        "src": "https://jxguhdwifjfnjxxgcjvz.supabase.co/storage/v1/object/public/media/2026/658b944e-kmtedi-logo.webp",
+        "alt": "kmtedi logo",
+        "width": 447,
+        "height": 447
+      },
+      "description": "Developing programs to foster interest in technology, organizing student coding competitions, and facilitating internal software engineering workshops within the TEDI Department at SV UGM.",
+      "division": "Minat dan Bakat",
+      "skills": [
+        "Community Leadership",
+        "Tech Workshop",
+        "Event Organization"
+      ],
+      "photos": []
+    },
+    {
+      "id": "exp-bklass",
+      "category": "organization",
+      "role": "Anggota Divisi Minat dan Bakat",
+      "organization": "BKLASS UGM",
+      "period": "Okt 2024 – Okt 2025",
+      "logo": {
+        "src": "https://jxguhdwifjfnjxxgcjvz.supabase.co/storage/v1/object/public/media/2026/379a7599-bklass-logo.webp",
+        "alt": "bklass logo",
+        "width": 400,
+        "height": 400
+      },
+      "description": "Coordinating student talent and creativity development activities in communities across study programs at Gadjah Mada University.",
+      "division": "Minat dan Bakat",
+      "skills": [
+        "Talent Development",
+        "Coordination",
+        "Project Planning"
+      ],
+      "photos": []
+    },
+    {
+      "id": "exp-b07771",
+      "category": "committee",
+      "role": "Coordinator of Logistics Division",
+      "organization": "TEDI Games and Electronic Sports (TGES)",
+      "period": "Jun 2026",
+      "logo": {
+        "src": "https://jxguhdwifjfnjxxgcjvz.supabase.co/storage/v1/object/public/media/2026/0cf7f469-tges-logo.webp",
+        "alt": "tges logo",
+        "width": 1080,
+        "height": 1080
+      },
+      "description": "Monitor and coordinate all logistics staff to ensure the event proceeds according to plan.\nDetermine requirements, budget, and resources.\nEnsure the security and availability of items.\nProcure food, beverages, and other necessary supplies.\nCoordinate with external parties (such as vendors).",
+      "division": "Logistics and Consumption",
+      "skills": [
+        "Team Leadership",
+        "Logistic Operations"
+      ],
+      "photos": [
+        {
+          "src": "https://jxguhdwifjfnjxxgcjvz.supabase.co/storage/v1/object/public/media/2026/d66138bb-rapat-koordinator-divisi-tges-2026.webp",
+          "alt": "rapat koordinator divisi tges 2026",
+          "width": 2000,
+          "height": 1125,
+          "caption": "Coordinator Meeting",
+          "year": "2026"
+        },
+        {
+          "src": "https://jxguhdwifjfnjxxgcjvz.supabase.co/storage/v1/object/public/media/2026/c3d29962-foto-divisi-loko-tges-2026.webp",
+          "alt": "foto divisi loko tges 2026",
+          "width": 2000,
+          "height": 1333,
+          "caption": "Division Photo",
+          "year": "2026"
+        },
+        {
+          "src": "https://jxguhdwifjfnjxxgcjvz.supabase.co/storage/v1/object/public/media/2026/36e20b4b-clossing-tges2026.webp",
+          "alt": "clossing tges2026",
+          "width": 2000,
+          "height": 1083,
+          "caption": "Clossing",
+          "year": "2026"
+        }
+      ]
+    },
+    {
+      "id": "exp-ted",
+      "category": "committee",
+      "role": "Staff of Security Division",
+      "organization": "Tech Enthusiast Day (TED UGM)",
+      "period": "Okt 2025 – Des 2025",
+      "logo": {
+        "src": "https://jxguhdwifjfnjxxgcjvz.supabase.co/storage/v1/object/public/media/2026/5af500d7-ted-logo.webp",
+        "alt": "ted logo",
+        "width": 1280,
+        "height": 1280
+      },
+      "description": "Responsible for perimeter security, coordination of evacuation routes, and safety protocols during a series of national-scale technology seminars and innovation exhibitions.",
+      "division": "Security & Protocol",
+      "skills": [
+        "Security Protocol",
+        "Crowd Management",
+        "Incident Response"
+      ],
+      "photos": [
+        {
+          "src": "https://jxguhdwifjfnjxxgcjvz.supabase.co/storage/v1/object/public/media/2026/1f656c5e-7e9eff3c-3112-46b2-b645-17f816a06ffd.webp",
+          "alt": "7e9eff3c 3112 46b2 b645 17f816a06ffd",
+          "width": 1125,
+          "height": 2000,
+          "caption": "D-Day",
+          "year": "2025"
+        },
+        {
+          "src": "https://jxguhdwifjfnjxxgcjvz.supabase.co/storage/v1/object/public/media/2026/2a095918-88b0db45-b2a3-4983-b15b-1a0f1c9fb419.webp",
+          "alt": "88b0db45 b2a3 4983 b15b 1a0f1c9fb419",
+          "width": 1125,
+          "height": 2000,
+          "year": "2025"
+        },
+        {
+          "src": "https://jxguhdwifjfnjxxgcjvz.supabase.co/storage/v1/object/public/media/2026/0ab09df6-img-3935.webp",
+          "alt": "img 3935",
+          "width": 1124,
+          "height": 1699,
+          "caption": "First Gatering",
+          "year": "2025"
+        },
+        {
+          "src": "https://jxguhdwifjfnjxxgcjvz.supabase.co/storage/v1/object/public/media/2026/13cb68b3-dno-01935.webp",
+          "alt": "dno 01935",
+          "width": 2000,
+          "height": 1333,
+          "caption": "Awarding",
+          "year": "2025"
+        }
+      ]
+    },
+    {
+      "id": "exp-trpl-league",
+      "category": "committee",
+      "role": "Sub Coordinator of Security Division",
+      "organization": "TRPL League UGM",
+      "period": "Nov 2025",
+      "logo": {
+        "src": "https://jxguhdwifjfnjxxgcjvz.supabase.co/storage/v1/object/public/media/2026/b176ff9a-ligatrpl-logo.webp",
+        "alt": "ligatrpl logo",
+        "width": 1080,
+        "height": 1080
+      },
+      "description": "Leading the security sub-team for venues for e-sports matches and sports competitions between classes of UGM Software Engineering Technology students.",
+      "division": "Security & Logistics",
+      "skills": [
+        "Team Leadership",
+        "Venue Safety",
+        "Risk Assessment"
+      ],
+      "photos": [
+        {
+          "src": "https://jxguhdwifjfnjxxgcjvz.supabase.co/storage/v1/object/public/media/2026/bba275c4-tangkapan-layar-2026-11-18-pada-23-49-42.webp",
+          "alt": "tangkapan layar 2026 11 18 pada 23 49 42",
+          "width": 1125,
+          "height": 735,
+          "caption": "All-committee photo session",
+          "year": "2025"
+        }
+      ]
+    },
+    {
+      "id": "exp-tges",
+      "category": "committee",
+      "role": "Sub Coordinator of Logistics Division",
+      "organization": "TEDI Games and Electronic Sports (TGES)",
+      "period": "May 2025",
+      "logo": {
+        "src": "https://jxguhdwifjfnjxxgcjvz.supabase.co/storage/v1/object/public/media/2026/0cf7f469-tges-logo.webp",
+        "alt": "tges logo",
+        "width": 1080,
+        "height": 1080
+      },
+      "description": "Determining requirements, budget, and resources; ensuring security and the availability of items; procuring food, beverages, and other supplies; and coordinating with external parties (such as vendors).",
+      "division": "Logistics and Consumption",
+      "skills": [
+        "Team Leadership",
+        "Logistic Operations"
+      ],
+      "photos": [
+        {
+          "src": "https://jxguhdwifjfnjxxgcjvz.supabase.co/storage/v1/object/public/media/2026/c70d4b53-13246d48-3aed-480d-8e57-f9ee724a2363.webp",
+          "alt": "13246d48 3aed 480d 8e57 f9ee724a2363",
+          "width": 2000,
+          "height": 1500,
+          "caption": "All-committee photo session",
+          "year": "2025"
+        },
+        {
+          "src": "https://jxguhdwifjfnjxxgcjvz.supabase.co/storage/v1/object/public/media/2026/6d1e506c-98514d15-253c-45b2-a83b-c9abb05f179d.webp",
+          "alt": "98514d15 253c 45b2 a83b c9abb05f179d",
+          "width": 2000,
+          "height": 1500,
+          "caption": "All-committee photo session",
+          "year": "2025"
+        }
+      ]
+    },
+    {
+      "id": "exp-blastout",
+      "category": "committee",
+      "role": "Staff of Public Relations & Transportation Accommodation Division",
+      "organization": "BLASTOUT UGM",
+      "period": "Des 2024",
+      "logo": {
+        "src": "https://jxguhdwifjfnjxxgcjvz.supabase.co/storage/v1/object/public/media/2026/b24c3a95-img-1942.webp",
+        "alt": "img 1942",
+        "width": 1125,
+        "height": 936
+      },
+      "description": "Managed event permits and coordinated approvals with relevant authorities. Organized guest lists and distributed invitations to external parties. Coordinated communication with vendors, sponsors, guest stars, and external stakeholders. Arranged accommodations for committee members and guest stars within budget. Managed transportation schedules, including airport/station pick-ups and drop-offs.",
+      "division": "PR & Accommodation",
+      "skills": [
+        "Public Relations",
+        "Logistics Operations",
+        "Sponsorship Liaison",
+        "Transportasion"
+      ],
+      "photos": [
+        {
+          "src": "https://jxguhdwifjfnjxxgcjvz.supabase.co/storage/v1/object/public/media/2026/6bacd837-7a0a976c-7846-4550-a244-a8517d5bf5d9.webp",
+          "alt": "7a0a976c 7846 4550 a244 a8517d5bf5d9",
+          "width": 2000,
+          "height": 965,
+          "caption": "All-committee photo session",
+          "year": "2024"
+        },
+        {
+          "src": "https://jxguhdwifjfnjxxgcjvz.supabase.co/storage/v1/object/public/media/2026/28302040-rapat-besar-dprd-klaten.webp",
+          "alt": "rapat besar dprd klaten",
+          "width": 1125,
+          "height": 618,
+          "caption": "All-hands meeting",
+          "year": "2024"
+        }
+      ]
+    },
+    {
+      "id": "exp-722fc3",
+      "category": "committee",
+      "role": "Staff Logistics and Supplies Division",
+      "organization": "TRPL League UGM",
+      "period": "Nov 2024",
+      "logo": {
+        "src": "https://jxguhdwifjfnjxxgcjvz.supabase.co/storage/v1/object/public/media/2026/b176ff9a-ligatrpl-logo.webp",
+        "alt": "ligatrpl logo",
+        "width": 1080,
+        "height": 1080
+      },
+      "description": "Designing and creating symbolic elements for the opening and closing of an event.\nDetermining requirements, budget, and resources.\nEnsuring safety and the availability of items.\nProcuring food, beverages, and other supplies.",
+      "division": "Inventory, Equipment and Logistics Management",
+      "skills": [
+        "Sound Reinforcement",
+        "Safety and Security",
+        "Logistic Operations"
+      ],
+      "photos": [
+        {
+          "src": "https://jxguhdwifjfnjxxgcjvz.supabase.co/storage/v1/object/public/media/2026/0815b1db-clossing-liga-trpl2024.webp",
+          "alt": "clossing liga trpl2024",
+          "width": 1536,
+          "height": 1024,
+          "caption": "Clossing",
+          "year": "2024"
+        },
+        {
+          "src": "https://jxguhdwifjfnjxxgcjvz.supabase.co/storage/v1/object/public/media/2026/232a0d91-opening-ligatrpl2024.webp",
+          "alt": "opening ligatrpl2024",
+          "width": 2000,
+          "height": 1333,
+          "caption": "Opening",
+          "year": "2024"
+        }
+      ]
+    },
+    {
+      "id": "exp-gc-arcade",
+      "category": "training",
+      "role": "Google Cloud Arcade Challenge Participant",
+      "organization": "Dicoding Indonesia × Google Cloud",
+      "period": "Jul 2026 – Sep 2026",
+      "logo": {
+        "src": "https://jxguhdwifjfnjxxgcjvz.supabase.co/storage/v1/object/public/media/2026/68f4e4cc-dicoding-header-logo.webp",
+        "alt": "dicoding header logo",
+        "width": 794,
+        "height": 201
+      },
+      "description": "Program intensif hands-on lab Qwiklabs menyelesaikan skenario komputasi awan, container orchestration Kubernetes GKE, IAM security, dan arsitektur microservices terdistribusi.",
+      "division": "Cloud Architecture & DevOps",
+      "skills": [
+        "Google Cloud Platform",
+        "Kubernetes GKE",
+        "Terraform",
+        "BigQuery"
+      ],
+      "photos": []
+    },
+    {
+      "id": "exp-injourney",
+      "category": "training",
+      "role": "Injourney Hospitality House Participant",
+      "organization": "PT Aviasi Pariwisata Indonesia (Persero)",
+      "period": "Jun 2026",
+      "logo": {
+        "src": "https://jxguhdwifjfnjxxgcjvz.supabase.co/storage/v1/object/public/media/2026/8d47a21a-injourney-logo.webp",
+        "alt": "injourney logo",
+        "width": 2000,
+        "height": 713
+      },
+      "description": "Leadership training, professional communication and excellent service standards for BUMN in the national aviation and tourism ecosystem.",
+      "division": "Professional Development",
+      "skills": [
+        "Professional Communication",
+        "Service Excellence",
+        "Leadership"
+      ],
+      "photos": []
+    }
+  ]
+}

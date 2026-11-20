@@ -3,7 +3,7 @@
 | Document Information | Detail |
 | :--- | :--- |
 | **Product Name** | Alfiz Desta Portfolio Platform |
-| **Live URL** | (https://alfizdesta.com) |
+| **Live URL** | (https://alfizdesta.dev) |
 | **Owner / Subject** | Alfiz Desta Ariant Permana (Software Engineering, Universitas Gadjah Mada) |
 | **Document Version** | 1.1.0 (Refined Architecture) |
 | **Status** | Planning & Design Phase (Figma / Figcraft First) |
@@ -47,7 +47,7 @@
 ## 1. Executive Summary & Product Vision
 
 ### 1.1 Product Overview
-**alfizdesta.com** adalah personal portfolio dan platform engineering showcase interaktif milik **Alfiz Desta Ariant Permana**, seorang Software Engineering student 
+**alfizdesta.dev** adalah personal portfolio dan platform engineering showcase interaktif milik **Alfiz Desta Ariant Permana**, seorang Software Engineering student 
 di Universitas Gadjah Mada (UGM). Platform ini dirancang bukan sekadar sebagai resume online statis, melainkan representasi interaktif dari keahlian teknis 
 (*craftsmanship*) pemiliknya dalam membangun produk digital *end-to-end* (Web Apps, Backend/APIs, Cloud Infrastructure).
 
@@ -79,7 +79,7 @@ Menjadi standar portfolio rekayasa perangkat lunak modern yang menggabungkan:
 
 ```mermaid
 graph TD
-    Root["https://alfizdesta.com/"]
+    Root["https://alfizdesta.dev/"]
     
     subgraph LandingPage ["Landing Page (Single Page Application)"]
         BootSplash["Boot Splash Animation (./boot --portfolio)"]
@@ -107,7 +107,7 @@ graph TD
 ```
 
 ### 3.1 Sitemap Specification (`sitemap.xml`)
-- Base URL: `https://alfizdesta.com/` (Single Page Application dengan in-page Modal Drawer untuk detail proyek & lencana).
+- Base URL: `https://alfizdesta.dev/` (Single Page Application dengan in-page Modal Drawer untuk detail proyek & lencana).
 - Desain UI/UX dipersiapkan terlebih dahulu melalui Figma / Figcraft sebelum implementasi coding.
 
 ---
@@ -152,6 +152,7 @@ graph TD
 ---
 
 ### 4.2 Feature 3: Navbar
+    - Logo dapat diganti melalui Admin → Profile & CV: pilih/upload WebP atau SVG, atau upload PNG/JPEG (dikonversi WebP), isi alt text, dan tinjau preview sebelum Save profile → Publish. SVG disimpan asli dengan MIME dan dimensi gambar yang sesuai, serta dirender melalui elemen gambar. Logo mempertahankan proporsi di dalam area tetap; nama dan jabatan tetap dari profil. Logo yang dihapus/gagal dimuat kembali menampilkan AD. Profil lama tanpa logo tetap kompatibel.
     - Logo dengan nama inisial, samping logo: "Alfiz Desta.", bawah nama: "Software Engineer".
     - Navigasi cepat: Overview, About, Projects, Experience, Badges , Contact.
     - CTA Button: Github, Linkedin.
@@ -243,6 +244,10 @@ graph TD
     ---
 
 ### 4.2 Feature 8: Badges
+  * **Credentials (perluasan):** Satu section dan satu item navbar **Credentials**, dengan tab **Credly badges** (default) dan **Certificates**. Anchor `#badges` tetap kompatibel. Tautan **See all on Credly** tetap terlihat di kedua tab.
+  * **Certificates:** Dokumen PDF atau gambar, judul, penerbit, dan tanggal. PDF dapat digunakan tanpa thumbnail gambar terpisah; tampil sebagai dokumen PDF di galeri dan preview PDF native di modal, dengan tombol Open PDF sebagai akses langsung. Gambar memakai preview WebP. Tautan verifikasi penerbit opsional. Belum ada sertifikat published menampilkan empty state; tidak menambahkan bukti contoh ke konten publik.
+  * **Pengelolaan:** Admin **Credentials** memakai pilihan jenis dan satu field **Certificate file** yang menerima PDF atau gambar. Gambar wajib memiliki alt/dimensi; PDF asli disimpan tanpa konversi melalui media library yang ada. Minimal satu file sertifikat wajib diisi. Draft tidak tampil sampai ditandai published dan dipublish.
+  * **Thumbnail PDF otomatis:** PDF.js (`pdfjs-dist`, disetujui Alfiz) hanya dimuat saat pemrosesan admin untuk merender halaman pertama menjadi WebP. PDF lama memakai Generate preview tanpa upload ulang. Gambar preview disimpan dalam record credential, tampil langsung di galeri, dan PDF asli tetap tersedia. Jika render gagal, simpan akses PDF dan sediakan retry.
   * **Strategi Aset & Data:** 10 lencana diunduh dan disimpan mandiri (*self-hosted*) dalam format `.webp` di `/public/badges/` dan didefinisikan secara statis di `src/data/badges.ts` (mencegah error CORS / limitasi Credly CDN).
   * Menampilkan 10 badges dengan tombol "Lihat Selengkapnya di Credly" yang mengarah ke profil resmi di https://www.credly.com/users/alfiz-desta . 
     - Gambar badges (lokal `.webp`)
@@ -303,7 +308,7 @@ graph TD
 * **Focus States**: State `:focus-visible` dengan outline kontras indigo (`outline: 2px solid #4338ca`) untuk pengguna keyboard navigation / screen reader.
 
 ### 5.3 SEO & Structured Data
-* **Canonical URL**: `<link rel="canonical" href="https://alfizdesta.com/" />`
+* **Canonical URL**: `<link rel="canonical" href="https://alfizdesta.dev/" />`
 * **OpenGraph & Twitter Card**: Meta tags lengkap (`og:title`, `og:description`, `og:image`, `og:type=website`, `twitter:card=summary`).
 * **JSON-LD Schema**:
   ```json
@@ -311,7 +316,7 @@ graph TD
     "@context": "https://schema.org",
     "@type": "Person",
     "name": Alfiz Desta Ariant Permana",
-    "url": "https://alfizdesta.com/",
+    "url": "https://alfizdesta.dev/",
     "jobTitle": "Software Engineer",
     "alumniOf": {
       "@type": "CollegeOrUniversity",

@@ -1,5 +1,5 @@
 # AGENTS.md — AI Agent Operating System & Senior Engineer Guardrails
-**Alfiz Desta Portfolio Platform (`alfizdesta.com`)**
+**Alfiz Desta Portfolio Platform (`alfizdesta.dev`)**
 
 > Bertindaklah sebagai **Senior Software Engineer & Frontend Systems Architect**. Dokumen ini adalah aturan main wajib (*strict execution guardrails*) yang mengikat bagi AI Agent mana pun dalam mengeksekusi proyek ini. 
 

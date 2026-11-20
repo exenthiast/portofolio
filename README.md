@@ -1,32 +1,24 @@
-# React + TypeScript + Vite
+# alfizdesta.dev
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Personal portfolio of **Alfiz Desta Ariant Permana**: a developer console for recruiters and engineers, with a CMS-style admin dashboard behind Google sign-in.
 
-Currently, two official plugins are available:
+- **Public site:** React 19 + Vite SPA, Tailwind v4, Framer Motion, Lenis. Static, with content baked in at build time.
+- **Admin (`/admin`):** Google OAuth (Supabase Auth), editors with live preview, WebP media library, `git diff`-style publish, inbox, analytics, audit log.
+- **Content contract:** `src/schemas/content.ts` (zod) is shared by the site, the admin forms and the build.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Scripts
 
-## React Compiler
+| Command | What it does |
+| --- | --- |
+| `npm run dev` | Dev server (`/` public, `/admin` dashboard) |
+| `npm run build` | `prebuild` pulls + validates content, then type-checks and builds both apps |
+| `npm run lint` | oxlint |
+| `npm run content:pull` | Pull published content from Supabase into `src/data/generated/content.json` |
+| `npm run seed:sql` | Regenerate `supabase/seed.sql` from the snapshot |
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Docs
 
-## Expanding the Oxlint configuration
-
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
-```
-
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+- [`PRD.md`](./PRD.md): product requirements
+- [`DESIGN.md`](./DESIGN.md): visual system and anti-slop rules
+- [`TASKS.md`](./TASKS.md): roadmap and status
+- [`docs/ADMIN.md`](./docs/ADMIN.md): Supabase, Google OAuth and Vercel setup for the admin

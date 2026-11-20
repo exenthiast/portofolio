@@ -1,5 +1,5 @@
 # DESIGN.md — Visual Direction & Design System
-**Alfiz Desta Portfolio Platform (`alfizdesta.com`)**
+**Alfiz Desta Portfolio Platform (`alfizdesta.dev`)**
 *Engineered under the strict House Rules of `tasteskill v2` (Anti-Slop Frontend Standard)*
 
 ---
@@ -112,6 +112,9 @@ No intermediate mushy sizes. Each step is clearly distinct:
 
 ## 5. Section-by-Section Blueprints & Compositions
 
+### Navbar identity
+* The optional **Navbar logo** in admin Profile & CV replaces only the AD mark. Fit the WebP or SVG image with `object-contain` in the existing 32px mobile / 36px desktop square, preserving its aspect ratio and explicit dimensions/alt text. SVG uploads keep their original vector format and render through an image element. Keep the profile name and title beside it. Missing or failed images fall back to AD. The admin preview reuses the public brand component, and changes follow Save profile → Publish.
+
 ### 5.1 Hero Section: The Quad-Terminal Overview
 * **Desktop Composition (1440px):**
   * Canvas: Pure `--bg` (`#fafbff`).
@@ -136,9 +139,11 @@ No intermediate mushy sizes. Each step is clearly distinct:
   * If `prefers-reduced-motion` is active: Instant crossfade without positional travel.
 
 ### 5.3 About Section: The macOS Terminal Console
-* **Window Frame:** Solid obsidian `#0c0d12` with traffic light buttons (`#ff5f56`, `#ffbd2e`, `#27c93f`), centered path `~/alfiz/about`, and live time stamp.
-* **Left Column:** `alfizdesta:~$ cat ./about.md` with interactive developer profile portrait.
-* **Right Column:** High-contrast statement typography detailing education at Universitas Gadjah Mada (UGM) and backend engineering passions.
+* **Window Frame:** White `--surface` body and a solid grey `--surface-raised` header, as specified in the PRD. Keep the traffic light dots, centered path `~/alfiz/about`, and live WIB clock. No resting shadow or nested outlined panels.
+* **Command:** `alfizdesta:~$ cat ./about.md` spans the body above the two columns. Monospace stays in the shell command and terminal path; narrative copy uses Geist Sans.
+* **Left Column:** A single portrait from the admin **Profile photo** field, with explicit dimensions and alt text. Name and location sit below it. A brief hover wobble respects reduced motion. Removing the photo in admin removes this column.
+* **Right Column:** A short greeting, role, and readable paragraphs describing education and named projects. The admin **About story** field controls this narrative and the VFS `about.md` file. Keep the System Specifications / Tech Matrix panel removed; technical details belong with their projects.
+* **Mobile:** Stack the portrait and story in document flow. Keep the shell command and WIB time readable without horizontal overflow.
 * **Scroll Departure:** Profile picture slides and stacks as the project cards prepare to scatter into the next section.
 
 ### 5.4 Projects Section: The Engineering Ledger & Modal Drawer
@@ -153,6 +158,10 @@ No intermediate mushy sizes. Each step is clearly distinct:
   * The main page scroll position and background remain untouched.
 
 ### 5.5 Badges & Credentials Section: Self-Hosted Proof
+* **Credentials tabs:** Keep a single navbar item labelled **Credentials** and the existing `#badges` anchor. Use keyboard-accessible **Credly badges** / **Certificates** tabs with separate counts, defaulting to Credly. **See all on Credly** stays visible above either tab.
+* **Certificates:** A landscape document gallery (3 columns desktop, 2 tablet, 1 mobile). Image certificates use their actual preview; PDF-only certificates use an honest PDF document tile. Selecting a PDF-only certificate opens the native PDF preview, metadata, and Open PDF action; retain the direct action on browsers that cannot embed PDFs. Image certificates show their readable scan. Issuer verification is optional. Use an honest empty state until certificates are published.
+* **CMS:** Manage both kinds under **Credentials** with a type selector and type-specific fields. All certificate copy/assets come from published CMS content; keep Credly counts independent.
+* **PDF thumbnails:** The admin renders page one to a 1600px-long-edge image and stores it as WebP alongside the untouched PDF. Public cards and modals use this static image; PDF.js stays in the admin's lazy processing path. Existing PDFs gain an explicit Generate preview action. Keep the PDF tile/native viewer fallback for pending or failed previews.
 * **Visual Structure:** Clean 5-column grid (desktop) / 2-column grid (mobile) displaying the 10 Credly badges.
 * **Asset Rule:** All badges are self-hosted `.webp` assets loaded from `/public/badges/` (0% CORS failure risk, < 50ms load time).
 * **Click Interaction:** Opens a centered credential inspection modal showing: Badge Title, Issuer (Google Cloud, etc.), Issue Date, Credential ID, verified skills, and a direct verification link to Credly.
