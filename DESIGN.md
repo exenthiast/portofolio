@@ -112,6 +112,9 @@ No intermediate mushy sizes. Each step is clearly distinct:
 
 ## 5. Section-by-Section Blueprints & Compositions
 
+### Navbar identity
+* The optional **Navbar logo** in admin Profile & CV replaces only the AD mark. Fit the WebP or SVG image with `object-contain` in the existing 32px mobile / 36px desktop square, preserving its aspect ratio and explicit dimensions/alt text. SVG uploads keep their original vector format and render through an image element. Keep the profile name and title beside it. Missing or failed images fall back to AD. The admin preview reuses the public brand component, and changes follow Save profile → Publish.
+
 ### 5.1 Hero Section: The Quad-Terminal Overview
 * **Desktop Composition (1440px):**
   * Canvas: Pure `--bg` (`#fafbff`).

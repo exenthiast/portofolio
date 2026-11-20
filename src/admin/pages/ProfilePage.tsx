@@ -3,6 +3,8 @@ import { FileText, Plus, Trash2 } from 'lucide-react'
 import { profileSchema, type Credential, type ProfileContent } from '../../schemas/content'
 import { content as bundled } from '../../data/content'
 import { aboutContent } from '../../data/about'
+import { navbarBrandContent } from '../../data/branding'
+import { NavbarBrand } from '../../components/ui/NavbarBrand'
 import { repo } from '../lib/repo'
 import { usePending } from '../lib/pending'
 import { listMedia, type MediaRow } from '../lib/media'
@@ -86,6 +88,16 @@ export function ProfilePage() {
           <TextField label="Status text" value={doc.statusText} onChange={(v) => set('statusText', v)} error={errors.statusText} />
           <TextArea label="Short bio" value={doc.bio} onChange={(v) => set('bio', v)} error={errors.bio} />
           <TextArea label="About story" hint="Shown in the About terminal and cat ./about.md. Separate paragraphs with a blank line. Save profile, then Publish to update the live site." rows={8} value={doc.aboutBio ?? aboutContent.defaultBio} onChange={(v) => set('aboutBio', v)} error={errors.aboutBio} />
+          <ImageField label={navbarBrandContent.logoLabel} hint={navbarBrandContent.logoHint} error={errors['navbarLogo.alt'] ?? errors['navbarLogo.src'] ?? errors['navbarLogo.width'] ?? errors['navbarLogo.height']} value={doc.navbarLogo} onChange={(value) => {
+            const next = { ...doc }
+            if (value) next.navbarLogo = value
+            else delete next.navbarLogo
+            setDoc(next)
+          }} />
+          <div className="flex flex-col gap-3">
+            <p className="text-sm text-[var(--ink-secondary)]">{navbarBrandContent.previewLabel}</p>
+            <NavbarBrand firstName={doc.firstName} title={doc.title} logo={doc.navbarLogo} />
+          </div>
           <ImageField label="Profile photo" hint="Shown in About. Choose or upload a photo, enter its alt text, then Save profile. Changes go live after Publish. Remove hides the photo." error={errors['photo.alt'] ?? errors['photo.src'] ?? errors['photo.width'] ?? errors['photo.height']} value={doc.photo} onChange={(v) => setDoc(() => {
             const next = { ...doc }
             if (v) next.photo = v

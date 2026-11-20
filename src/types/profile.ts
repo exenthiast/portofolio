@@ -1,5 +1,11 @@
 import type { ImageAsset, ProfileContent } from '../schemas/content'
 
+export interface NavbarBrandProps {
+  firstName: string
+  title: string
+  logo?: ImageAsset
+}
+
 export interface SocialLink {
   name: string
   label: string

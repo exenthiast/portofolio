@@ -44,6 +44,9 @@ export const profileSchema = z.object({
   email: z.string().trim().email(),
   resumeUrl: assetPath,
   photo: imageSchema.optional(),
+  navbarLogo: imageSchema.extend({
+    src: assetPath.refine((value) => /\.(?:webp|svg)(?:[?#]|$)/i.test(value), 'Choose a WebP or SVG logo, or upload a PNG/JPEG for automatic conversion'),
+  }).optional(),
   socialLinks: z.array(socialLinkSchema),
 })
 

@@ -152,6 +152,7 @@ graph TD
 ---
 
 ### 4.2 Feature 3: Navbar
+    - Logo dapat diganti melalui Admin → Profile & CV: pilih/upload WebP atau SVG, atau upload PNG/JPEG (dikonversi WebP), isi alt text, dan tinjau preview sebelum Save profile → Publish. SVG disimpan asli dengan MIME dan dimensi gambar yang sesuai, serta dirender melalui elemen gambar. Logo mempertahankan proporsi di dalam area tetap; nama dan jabatan tetap dari profil. Logo yang dihapus/gagal dimuat kembali menampilkan AD. Profil lama tanpa logo tetap kompatibel.
     - Logo dengan nama inisial, samping logo: "Alfiz Desta.", bawah nama: "Software Engineer".
     - Navigasi cepat: Overview, About, Projects, Experience, Badges , Contact.
     - CTA Button: Github, Linkedin.

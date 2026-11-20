@@ -5,6 +5,7 @@ import { Modal } from '../../components/ui/Modal'
 import { listMedia, uploadMedia, type MediaRow } from '../lib/media'
 import { generateCertificatePreview } from '../lib/pdf-preview'
 import { useToast } from './Toast'
+import { mediaPickerContent } from '../../data/media'
 import { Btn } from './ui'
 
 const inputCls =
@@ -168,7 +169,7 @@ export function MediaPicker({ open, onClose, onPick, accept = 'image' }: { open:
       <div className="mt-4 flex flex-col gap-4">
         <label className="flex cursor-pointer items-center justify-center gap-2 rounded-xl bg-[var(--bg-subtle)] p-6 text-sm font-medium hover:bg-[var(--surface-raised)] focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-[var(--accent)]">
           <Upload className="h-4 w-4" />
-          {busy ? accept === 'certificate' ? 'Processing certificate…' : 'Uploading…' : accept === 'certificate' ? 'Upload PDF or image' : accept === 'pdf' ? 'Upload a new PDF' : 'Upload new (auto-converted to WebP)'}
+          {busy ? accept === 'certificate' ? 'Processing certificate…' : 'Uploading…' : accept === 'certificate' ? 'Upload PDF or image' : accept === 'pdf' ? 'Upload a new PDF' : mediaPickerContent.imageUploadLabel}
           <input type="file" className="sr-only" accept={accept === 'certificate' ? '.pdf,application/pdf,image/*' : accept === 'pdf' ? '.pdf,application/pdf' : 'image/*'} disabled={busy} onChange={(e) => void upload(e.target.files?.[0])} />
         </label>
         {items === null ? (

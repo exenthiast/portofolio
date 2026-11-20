@@ -4,6 +4,7 @@ import type { Transition } from 'framer-motion'
 import { ArrowUpRight, Menu, X } from 'lucide-react'
 import { profileData } from '../../data/profile'
 import { Button } from '../ui/Button'
+import { NavbarBrand } from '../ui/NavbarBrand'
 
 interface NavbarProps {
   onOpenCv?: () => void
@@ -107,18 +108,7 @@ export function Navbar({ onOpenCv }: NavbarProps) {
           className="flex items-center gap-2.5 sm:gap-3 group focus-visible:outline-2 focus-visible:outline-[var(--accent)] rounded-lg p-1 -m-1"
           aria-label="Alfiz Desta Home"
         >
-          <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-[var(--surface-terminal)] text-white font-mono font-bold flex items-center justify-center text-xs sm:text-sm shadow-xs border border-white/10 group-hover:border-[var(--accent)] transition-colors">
-            AD
-          </div>
-          <div className="flex flex-col">
-            <span className="font-semibold text-xs sm:text-sm tracking-tight text-[var(--ink)] flex items-center gap-0.5">
-              {profileData.firstName}
-              <span className="text-[var(--accent)]">.</span>
-            </span>
-            <span className="text-[10px] sm:text-xs text-[var(--ink-secondary)] font-normal -mt-0.5 hidden xs:inline">
-              {profileData.title}
-            </span>
-          </div>
+          <NavbarBrand firstName={profileData.firstName} title={profileData.title} logo={profileData.navbarLogo} />
         </a>
 
         {/* Center: Navigation Links with Active Gray Capsule */}
