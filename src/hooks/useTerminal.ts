@@ -11,7 +11,7 @@ const WELCOME: TerminalHistoryItem = {
   result: {
     status: 'info',
     lines: [
-      [{ kind: 'text', text: 'Welcome to alfizdesta.com — a real shell over my portfolio.', tone: 'accent' }],
+      [{ kind: 'text', text: 'Welcome to alfizdesta.dev — a real shell over my portfolio.', tone: 'accent' }],
       [
         { kind: 'text', text: 'Type or tap: ' },
         { kind: 'command', text: 'help', command: 'help' },

@@ -106,7 +106,7 @@ export function useNavItems(onPublish: () => void): PaletteItem[] {
       { id: 'new-badge', label: 'touch credentials/new', hint: 'New badge or certificate', run: () => navigate('/badges/new') },
       { id: 'new-exp', label: 'touch experience/new', hint: 'New experience', run: () => navigate('/experiences/new') },
       { id: 'publish', label: 'git push origin main', hint: 'Review & publish', run: onPublish },
-      { id: 'site', label: 'open alfizdesta.com', hint: 'View live site', run: () => window.open('/', '_blank', 'noopener') },
+      { id: 'site', label: 'open alfizdesta.dev', hint: 'View live site', run: () => window.open('/', '_blank', 'noopener') },
     ],
     [navigate, onPublish],
   )

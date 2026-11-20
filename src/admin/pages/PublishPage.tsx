@@ -40,7 +40,7 @@ const stepLabel: Record<DeployState, string> = {
   publishing: 'validating content & triggering deploy…',
   queued: 'deploy queued on Vercel…',
   building: 'building (pull-content → tsc → vite build)…',
-  ready: 'live! alfizdesta.com is up to date',
+  ready: 'live! alfizdesta.dev is up to date',
   error: 'deploy failed — check Vercel logs',
   unknown: 'deploy triggered — status API not configured; live in ~1 minute',
 }
@@ -104,7 +104,7 @@ export function PublishPage() {
         path="~/admin $ git diff --staged"
         actions={
           <Btn variant="accent" disabled={busy || changes.length === 0} onClick={() => void publish()}>
-            <Rocket className="h-4 w-4" /> {busy ? 'Publishing…' : 'Publish to alfizdesta.com'}
+            <Rocket className="h-4 w-4" /> {busy ? 'Publishing…' : 'Publish to alfizdesta.dev'}
           </Btn>
         }
       />

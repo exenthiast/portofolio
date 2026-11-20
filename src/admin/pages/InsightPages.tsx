@@ -43,7 +43,7 @@ export function InboxPage() {
               </div>
               <p className="mt-2 whitespace-pre-wrap text-sm leading-relaxed">{m.body}</p>
               <div className="mt-3 flex gap-1">
-                <a href={`mailto:${m.email}?subject=${encodeURIComponent('Re: your message on alfizdesta.com')}`} onClick={() => void markRead(m, true)} className="inline-flex h-8 items-center gap-1.5 rounded-full bg-[var(--surface-terminal)] px-3 text-xs font-medium text-white">Reply</a>
+                <a href={`mailto:${m.email}?subject=${encodeURIComponent('Re: your message on alfizdesta.dev')}`} onClick={() => void markRead(m, true)} className="inline-flex h-8 items-center gap-1.5 rounded-full bg-[var(--surface-terminal)] px-3 text-xs font-medium text-white">Reply</a>
                 <button type="button" onClick={() => void markRead(m, !m.read_at)} className="inline-flex h-8 items-center gap-1.5 rounded-full px-3 text-xs hover:bg-[var(--surface-raised)] cursor-pointer">
                   {m.read_at ? <><Mail className="h-3.5 w-3.5" /> Mark unread</> : <><MailOpen className="h-3.5 w-3.5" /> Mark read</>}
                 </button>

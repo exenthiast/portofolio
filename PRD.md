@@ -3,7 +3,7 @@
 | Document Information | Detail |
 | :--- | :--- |
 | **Product Name** | Alfiz Desta Portfolio Platform |
-| **Live URL** | (https://alfizdesta.com) |
+| **Live URL** | (https://alfizdesta.dev) |
 | **Owner / Subject** | Alfiz Desta Ariant Permana (Software Engineering, Universitas Gadjah Mada) |
 | **Document Version** | 1.1.0 (Refined Architecture) |
 | **Status** | Planning & Design Phase (Figma / Figcraft First) |
@@ -47,7 +47,7 @@
 ## 1. Executive Summary & Product Vision
 
 ### 1.1 Product Overview
-**alfizdesta.com** adalah personal portfolio dan platform engineering showcase interaktif milik **Alfiz Desta Ariant Permana**, seorang Software Engineering student 
+**alfizdesta.dev** adalah personal portfolio dan platform engineering showcase interaktif milik **Alfiz Desta Ariant Permana**, seorang Software Engineering student 
 di Universitas Gadjah Mada (UGM). Platform ini dirancang bukan sekadar sebagai resume online statis, melainkan representasi interaktif dari keahlian teknis 
 (*craftsmanship*) pemiliknya dalam membangun produk digital *end-to-end* (Web Apps, Backend/APIs, Cloud Infrastructure).
 
@@ -79,7 +79,7 @@ Menjadi standar portfolio rekayasa perangkat lunak modern yang menggabungkan:
 
 ```mermaid
 graph TD
-    Root["https://alfizdesta.com/"]
+    Root["https://alfizdesta.dev/"]
     
     subgraph LandingPage ["Landing Page (Single Page Application)"]
         BootSplash["Boot Splash Animation (./boot --portfolio)"]
@@ -107,7 +107,7 @@ graph TD
 ```
 
 ### 3.1 Sitemap Specification (`sitemap.xml`)
-- Base URL: `https://alfizdesta.com/` (Single Page Application dengan in-page Modal Drawer untuk detail proyek & lencana).
+- Base URL: `https://alfizdesta.dev/` (Single Page Application dengan in-page Modal Drawer untuk detail proyek & lencana).
 - Desain UI/UX dipersiapkan terlebih dahulu melalui Figma / Figcraft sebelum implementasi coding.
 
 ---
@@ -308,7 +308,7 @@ graph TD
 * **Focus States**: State `:focus-visible` dengan outline kontras indigo (`outline: 2px solid #4338ca`) untuk pengguna keyboard navigation / screen reader.
 
 ### 5.3 SEO & Structured Data
-* **Canonical URL**: `<link rel="canonical" href="https://alfizdesta.com/" />`
+* **Canonical URL**: `<link rel="canonical" href="https://alfizdesta.dev/" />`
 * **OpenGraph & Twitter Card**: Meta tags lengkap (`og:title`, `og:description`, `og:image`, `og:type=website`, `twitter:card=summary`).
 * **JSON-LD Schema**:
   ```json
@@ -316,7 +316,7 @@ graph TD
     "@context": "https://schema.org",
     "@type": "Person",
     "name": Alfiz Desta Ariant Permana",
-    "url": "https://alfizdesta.com/",
+    "url": "https://alfizdesta.dev/",
     "jobTitle": "Software Engineer",
     "alumniOf": {
       "@type": "CollegeOrUniversity",

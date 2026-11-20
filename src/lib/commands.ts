@@ -178,7 +178,7 @@ const specs: Record<string, CommandSpec> = {
       return ok([
         [t('alfiz@portfolio', 'accent')],
         [t('---------------', 'muted')],
-        [t('OS:        ', 'muted'), t('alfizdesta.com (React 19 + Vite)')],
+        [t('OS:        ', 'muted'), t('alfizdesta.dev (React 19 + Vite)')],
         [t('Host:      ', 'muted'), t(p.affiliation)],
         [t('Role:      ', 'muted'), t(p.title)],
         [t('Location:  ', 'muted'), t(`${p.location} (GMT+7)`)],

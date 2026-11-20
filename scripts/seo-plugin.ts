@@ -3,7 +3,7 @@ import path from 'node:path'
 import type { Plugin } from 'vite'
 import type { Content } from '../src/schemas/content.ts'
 
-const SITE = 'https://alfizdesta.com/'
+const SITE = 'https://alfizdesta.dev/'
 
 const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
 

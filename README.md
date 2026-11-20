@@ -1,4 +1,4 @@
-# alfizdesta.com
+# alfizdesta.dev
 
 Personal portfolio of **Alfiz Desta Ariant Permana**: a developer console for recruiters and engineers, with a CMS-style admin dashboard behind Google sign-in.
 

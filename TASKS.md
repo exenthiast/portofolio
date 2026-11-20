@@ -1,5 +1,5 @@
 # TASKS.md — Engineering Roadmap & Step-by-Step Tasklist
-**Alfiz Desta Portfolio Platform (`alfizdesta.com`)**
+**Alfiz Desta Portfolio Platform (`alfizdesta.dev`)**
 
 > **Petunjuk Eksekusi Agent:** 
 > - Kerjakan hanya **1 sub-task** dalam satu giliran.
@@ -154,7 +154,7 @@
 ## Phase 11: Backend — Supabase (Auth Google + Postgres + Storage)
 > Arsitektur: admin menulis ke Supabase; situs publik **tetap statis** dan membaca snapshot konten saat build (lihat Phase 12). *(butuh approval dependensi `@supabase/supabase-js`)*
 - [ ] **Task 11.1:** Setup project Supabase + Google OAuth client (Google Cloud Console): *(manual, ikuti [`docs/ADMIN.md`](./docs/ADMIN.md))*
-  - Authorized origins: `http://localhost:5173`, `https://alfizdesta.com`, domain preview Vercel.
+  - Authorized origins: `http://localhost:5173`, `https://alfizdesta.dev`, domain preview Vercel.
   - Redirect URI ke callback Supabase. Kredensial hanya di `.env` / Vercel env, contoh bersih di `.env.example`.
 - [x] **Task 11.2:** Migrasi SQL di `supabase/migrations/`:
   - Tabel `profile` (singleton), `projects`, `badges`, `experiences`, `experience_photos`, `media`, `admins`, `publish_log`.

@@ -1,5 +1,5 @@
 # DESIGN.md — Visual Direction & Design System
-**Alfiz Desta Portfolio Platform (`alfizdesta.com`)**
+**Alfiz Desta Portfolio Platform (`alfizdesta.dev`)**
 *Engineered under the strict House Rules of `tasteskill v2` (Anti-Slop Frontend Standard)*
 
 ---

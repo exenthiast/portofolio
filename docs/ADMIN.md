@@ -35,12 +35,12 @@ rollback is needed; restore those ACLs to undo only the newly added privileges.
 ## 2. Google OAuth
 
 1. Google Cloud Console → APIs & Services → **Credentials** → *Create OAuth client ID* → *Web application*.
-2. **Authorized JavaScript origins:** `https://alfizdesta.com`, `http://localhost:5173`
+2. **Authorized JavaScript origins:** `https://alfizdesta.dev`, `http://localhost:5173`
 3. **Authorized redirect URI:** `https://<project-ref>.supabase.co/auth/v1/callback`
 4. Supabase → **Authentication → Providers → Google**: paste Client ID + Secret, enable.
 5. Supabase → **Authentication → URL Configuration**:
-   - Site URL: `https://alfizdesta.com`
-   - Redirect URLs: `https://alfizdesta.com/admin`, `http://localhost:5173/admin`, `https://*-<vercel-team>.vercel.app/admin`
+   - Site URL: `https://alfizdesta.dev`
+   - Redirect URLs: `https://alfizdesta.dev/admin`, `http://localhost:5173/admin`, `https://*-<vercel-team>.vercel.app/admin`
 
 ## 3. Environment variables
 
