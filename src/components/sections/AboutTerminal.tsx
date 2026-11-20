@@ -81,7 +81,7 @@ export function AboutTerminal({ className = '', isEmbedded = false }: AboutTermi
             <p className="mt-2 text-[length:var(--step-small)] text-[var(--ink-secondary)]">{about.subHeadline}</p>
             <div className="mt-5 space-y-4 text-[var(--ink)]">
               {paragraphs.map((text, index) => (
-                <p key={index} className={`${index === 0 ? 'text-[length:var(--step-lead)] leading-[1.4]' : 'text-[length:var(--step-body)] leading-relaxed'} text-pretty`}>
+                <p key={index} className="text-[length:var(--step-body)] leading-relaxed text-pretty">
                   {text}
                 </p>
               ))}
