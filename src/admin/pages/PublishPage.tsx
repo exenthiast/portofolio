@@ -38,11 +38,11 @@ function DiffBlock({ change }: { change: Change }) {
 const stepLabel: Record<DeployState, string> = {
   idle: '',
   publishing: 'validating content & triggering deploy…',
-  queued: 'deploy queued on Vercel…',
+  queued: 'deployment queued…',
   building: 'building (pull-content → tsc → vite build)…',
   ready: 'live! alfizdesta.dev is up to date',
-  error: 'deploy failed — check Vercel logs',
-  unknown: 'deploy triggered — status API not configured; live in ~1 minute',
+  error: 'deployment failed — check hosting build logs',
+  unknown: 'deployment requested — check hosting build history for the result',
 }
 
 export function PublishPage() {
@@ -85,7 +85,7 @@ export function PublishPage() {
       const body = (await res.json()) as { ok?: boolean; error?: string; detail?: string }
       if (!res.ok) throw new Error([body.error, body.detail].filter(Boolean).join(': ') || `HTTP ${res.status}`)
       setState('queued')
-      toast('pushed to origin/main — deploying')
+      toast('Deployment requested')
       await refresh()
       history.reload()
       startPolling()

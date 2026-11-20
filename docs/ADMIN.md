@@ -1,5 +1,9 @@
 # Admin Dashboard — Setup & Operations
 
+**Primary deployment target: Cloudflare Workers.** Follow [CLOUDFLARE.md](./CLOUDFLARE.md)
+for current hosting, runtime variables, previews and deploy-hook setup. The Vercel
+deployment instructions below are retained for the legacy adapter and rollback.
+
 The admin lives at **`/admin`** (separate Vite entry `admin.html`, its own bundle, `noindex`).
 Sign-in is **Google OAuth via Supabase Auth**; only emails in the `public.admins` table get in,
 and Postgres Row Level Security enforces that on every query (the UI guard is only UX).

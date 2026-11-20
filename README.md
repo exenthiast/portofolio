@@ -18,6 +18,8 @@ Personal portfolio of **Alfiz Desta Ariant Permana**: a developer console for re
 
 ## Docs
 
+- [`docs/CLOUDFLARE.md`](./docs/CLOUDFLARE.md): primary hosting, preview builds, publish hook and Name.com domain setup
+
 - [`PRD.md`](./PRD.md): product requirements
 - [`DESIGN.md`](./DESIGN.md): visual system and anti-slop rules
 - [`TASKS.md`](./TASKS.md): roadmap and status

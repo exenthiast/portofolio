@@ -148,6 +148,13 @@
 - [x] **Task 10.5:** Performa: code-split CvModal/Terminal, `GithubGridBackground` hanya aktif di `(pointer: fine)` & pause saat offscreen, fallback CV untuk iOS.
 - [x] **Task 10.6:** Jalankan `npm run build` + `npm run lint` dan pastikan zero warning/error.
 - [ ] **Task 10.7:** Merge branch fitur ke `dev`, buat Pull Request ke `main`, dan deploy ke Vercel Edge.
+  - Target hosting diperbarui menjadi Cloudflare Workers; PR rilis `dev` → `main`: #10.
+- [x] **Task 10.8:** Siapkan adapter Cloudflare Workers sebelum deployment:
+  - Wrangler + Static Assets, routing `/admin/*` dan `/api/*`, serta header publik/admin.
+  - Publish memakai validasi dan allowlist Supabase yang sama melalui Cloudflare Deploy Hook; adapter Vercel dipertahankan.
+  - Status Cloudflare ditampilkan sebagai belum diketahui; hasil build diperiksa di dashboard, tanpa klaim sudah live.
+  - Panduan build/runtime variables, preview, Google OAuth, dan domain Name.com ada di `docs/CLOUDFLARE.md`.
+  - Build/lint, 27 tes, Wrangler dry-run, serta routing/header runtime lokal lolos; deployment dan OAuth live tetap tahap berikutnya.
 
 ---
 
