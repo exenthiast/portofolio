@@ -190,6 +190,13 @@
 - [x] **Task 13.9:** Perbaiki layar putih saat mengisi Architecture overview sebelum Key decisions:
   - Preview tetap merender draft arsitektur yang belum lengkap; validasi simpan tetap berlaku.
   - Tes regresi render serta uji paste, pemulihan draft lokal, dan simulasi save di 390px/1440px; build dan lint lolos.
+- [x] **Task 13.10:** Kelola logo navbar melalui Profile & CV:
+  - Pilih/upload logo WebP melalui media picker, alt/dimensi tervalidasi, dan preview memakai komponen navbar yang sama.
+  - Save profile → Publish memakai pipeline yang ada; profil lama tetap valid dan logo dihapus/gagal dimuat kembali ke AD.
+  - Build/lint, tes schema/publish, dan browser 390px/1440px lolos: pilih library, upload PNG→WebP, preview, simulasi save/remove, fallback gambar rusak, focus-visible, dan tanpa overflow; tidak menulis konten produksi.
+- [x] **Task 13.11:** Dukung logo navbar SVG:
+  - Pilih/upload SVG asli melalui media picker; validasi SVG/WebP dan simpan MIME/dimensi SVG yang sesuai.
+  - Schema/publish, upload/preview SVG di 390px/1440px (termasuk MIME kosong dan file asli/dimensi terjaga), regresi PNG→WebP, build, dan lint lolos; penyimpanan browser disimulasikan.
 
 ---
 

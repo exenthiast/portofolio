@@ -43,20 +43,32 @@ const slugify = (name: string) =>
 
 export async function uploadMedia(file: File, alt: string): Promise<MediaRow> {
   const isPdf = file.type === 'application/pdf' || /\.pdf$/i.test(file.name)
+  const isSvg = !isPdf && (file.type === 'image/svg+xml' || /\.svg$/i.test(file.name))
   const prefix = `${new Date().getFullYear()}/${crypto.randomUUID().slice(0, 8)}-${slugify(file.name)}`
-  // Storage derives multipart MIME from the Blob, so normalize PDFs even when
-  // the browser reports an empty or generic type. File bytes stay unchanged.
-  let body: Blob = isPdf && file.type !== 'application/pdf'
-    ? new File([file], file.name, { type: 'application/pdf', lastModified: file.lastModified })
+  let mime = isPdf ? 'application/pdf' : isSvg ? 'image/svg+xml' : file.type
+  // Storage derives multipart MIME from the Blob. Preserve original PDF/SVG
+  // bytes while normalizing empty or generic browser-reported MIME types.
+  let body: Blob = (isPdf || isSvg) && file.type !== mime
+    ? new File([file], file.name, { type: mime, lastModified: file.lastModified })
     : file
   let width = 1
   let height = 1
-  let mime = isPdf ? 'application/pdf' : file.type
   let path = `${prefix}.pdf`
 
   if (!isPdf) {
-    if (file.type === 'image/svg+xml') {
+    if (isSvg) {
       path = `${prefix}.svg`
+      const objectUrl = URL.createObjectURL(body)
+      try {
+        const image = new Image()
+        image.src = objectUrl
+        await image.decode()
+        width = image.naturalWidth
+        height = image.naturalHeight
+        if (!width || !height) throw new Error('SVG must have nonzero dimensions')
+      } finally {
+        URL.revokeObjectURL(objectUrl)
+      }
     } else {
       const converted = await toWebp(file)
       body = converted.blob
