@@ -60,6 +60,14 @@ continues to work only on Vercel.
 
 ## Preview and OAuth verification
 
+`wrangler preview` requires the `previews` block in `wrangler.jsonc`. The
+`PUBLIC_INPUT_LIMITER` binding uses namespace `151002` for previews, separate from
+production's `151001`, so preview traffic cannot consume the production edge
+quota. Reserve these IDs for this application within the Cloudflare account;
+choose different unused IDs if another application already uses them. Keep
+`assets` and the compatibility settings at the top level. Configure staging
+variables/secrets in Previews Base separately, following the security rollout.
+
 After this configuration reaches the preview branch, check the Cloudflare build
 log and open its preview URL. Verify `/`, `/admin`, `/admin/profile`, project
 drawers, credential media and CV. Add the actual preview `/admin` URL to Supabase

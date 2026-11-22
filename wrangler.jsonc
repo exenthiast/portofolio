@@ -11,6 +11,15 @@
       "simple": { "limit": 90, "period": 60 }
     }
   ],
+  "previews": {
+    "ratelimits": [
+      {
+        "name": "PUBLIC_INPUT_LIMITER",
+        "namespace_id": "151002",
+        "simple": { "limit": 90, "period": 60 }
+      }
+    ]
+  },
   "assets": {
     "directory": "./dist",
     "binding": "ASSETS",
