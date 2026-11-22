@@ -1,15 +1,17 @@
 import test from 'node:test'
-import { execFileSync } from 'node:child_process'
+import assert from 'node:assert/strict'
+import { execFile, execFileSync } from 'node:child_process'
 import { existsSync, mkdtempSync, readdirSync, readFileSync, rmSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { promisify } from 'node:util'
 
 const root = fileURLToPath(new URL('../', import.meta.url))
-const candidates = [process.env.PG_BIN, '/Library/PostgreSQL/18/bin', '/opt/homebrew/opt/postgresql@18/bin', '/usr/lib/postgresql/18/bin']
+const candidates = [process.env.PG_BIN, '/Library/PostgreSQL/18/bin', '/opt/homebrew/opt/postgresql@18/bin', '/usr/lib/postgresql/18/bin', '/usr/lib/postgresql/17/bin']
 const bin = candidates.find((dir): dir is string => Boolean(dir && existsSync(path.join(dir, 'initdb'))))
 
-test('security migrations enforce PostgreSQL invariants with synthetic principals', { skip: !bin && 'Set PG_BIN to a local PostgreSQL installation' }, () => {
+test('security migrations enforce PostgreSQL invariants with synthetic principals', { skip: !bin && 'Set PG_BIN to PostgreSQL 17 or newer' }, async (t) => {
   if (!bin) return
   const scratch = mkdtempSync(path.join(tmpdir(), 'portfolio-phase15-'))
   const data = path.join(scratch, 'data')
@@ -26,8 +28,18 @@ test('security migrations enforce PostgreSQL invariants with synthetic principal
       sql(path.join(root, 'supabase/migrations', name))
     }
     for (const name of readdirSync(path.join(root, 'supabase/tests')).filter((name) => name.endsWith('.sql') && name !== 'bootstrap.sql').sort()) {
-      sql(path.join(root, 'supabase/tests', name))
+      await t.test(name, () => { sql(path.join(root, 'supabase/tests', name)) })
     }
+    await t.test('concurrent contact requests cannot exceed the atomic source quota', async () => {
+      const exec = promisify(execFile)
+      const results = await Promise.all(Array.from({ length: 8 }, () => exec(path.join(bin, 'psql'), [
+        '-X', '-qAt', '-h', scratch, '-U', 'postgres', '-d', 'postgres', '-v', 'ON_ERROR_STOP=1',
+        '-c', "set role service_role; select public.consume_public_input('contact',repeat('c',64));",
+      ], { env, timeout: 10_000, maxBuffer: 32_000, encoding: 'utf8' })))
+      const answers = results.map((result) => result.stdout.trim())
+      assert.equal(answers.filter((answer) => answer === 't').length, 3)
+      assert.equal(answers.filter((answer) => answer === 'f').length, 5)
+    })
   } catch (error) {
     const log = path.join(scratch, 'postgres.log')
     if (existsSync(log)) process.stderr.write(readFileSync(log, 'utf8'))

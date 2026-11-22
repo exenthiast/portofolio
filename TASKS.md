@@ -254,6 +254,7 @@
   - Uji pembatasan permintaan, validasi anti-bot, penolakan jalur insert yang melewati server, dan penetapan waktu analytics; jangan melakukan uji spam pada production.
   - Jalankan ulang Security Advisor dan catat peringatan yang terselesaikan, dipertahankan dengan alasan, atau masih memerlukan validasi.
   - Untuk perubahan kode, jalankan `npm run build` dan `npm run lint`; bila UI berubah, verifikasi 390px/1440px. Catat hasil aktual sebelum mencentang task.
+  - [x] Bukti repository/lokal: `node --test scripts/*.test.ts` lulus 42/42 tanpa skip, termasuk matriks RLS pengunjung/pengguna biasa/admin, Storage, publish log, timestamp, dan delapan request kontak bersamaan (hanya tiga lolos). Build/lint dan browser 390px/1440px dengan mock layanan eksternal lolos; warning ukuran chunk PDF lama tetap ada. Advisor production diperiksa ulang dan belum berubah karena migrasi belum diterapkan; rincian pengecualian dan gate penerapan ada di `docs/SECURITY.md`. Backup/restore, staging dengan layanan nyata, konfigurasi Auth, serta verifikasi sesudah penerapan masih terbuka.
 
 ---
 
