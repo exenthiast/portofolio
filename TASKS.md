@@ -237,6 +237,7 @@
   - Kunci `search_path` pada `public.touch_updated_at()` dan gunakan referensi objek yang eksplisit bila diperlukan.
   - Tinjau/cabut izin `EXECUTE` yang tidak diperlukan pada fungsi trigger internal `guard_message_rate()` dan `write_audit()`, termasuk grant melalui `PUBLIC`.
   - Pertahankan akses `is_admin()` yang diperlukan policy dan backend; peringatan `SECURITY DEFINER` tidak otomatis berarti fungsi dapat dieksploitasi.
+  - [x] Implementasi repository: migrasi `20261122030000_lock_internal_functions.sql` mengunci search path dan mencabut EXECUTE helper trigger, termasuk grant PUBLIC; tes PostgreSQL lokal membuktikan trigger audit/update tetap bekerja dan `is_admin()` tetap tersedia untuk RLS/backend, build/lint lolos. Belum diterapkan ke database aktif; advisor live masih mencerminkan konfigurasi lama.
 - [ ] **Task 15.5:** Tinjau pemisahan aset publik dan berkas privat:
   - Pertahankan bucket `media` untuk aset yang memang boleh diunduh publik; status draft konten tidak membuat file di bucket publik menjadi privat.
   - Jika ada kebutuhan berkas rahasia, gunakan bucket privat dengan policy admin dan akses sementara yang sesuai; jangan menganggap penyembunyian URL sebagai kontrol akses.
