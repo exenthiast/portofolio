@@ -1,7 +1,8 @@
 import { json, requireAdmin, type ServerEnv } from '../api/_lib/auth.ts'
 import { publishContent } from '../api/_lib/publish.ts'
+import { handlePublicInput, isPublicInputRoute, type PublicInputBindings } from '../api/_lib/public-input.ts'
 
-export interface WorkerEnv {
+export interface WorkerEnv extends PublicInputBindings {
   ASSETS: { fetch(request: Request): Promise<Response> }
   SUPABASE_URL?: string
   SUPABASE_ANON_KEY?: string
@@ -31,6 +32,7 @@ function secure(response: Response, admin: boolean): Response {
 async function handle(request: Request, env: WorkerEnv): Promise<Response> {
   const url = new URL(request.url)
   if (url.pathname === '/api' || url.pathname.startsWith('/api/')) {
+    if (isPublicInputRoute(url.pathname)) return handlePublicInput(request, env, request.headers.get('CF-Connecting-IP'))
     const method = url.pathname === '/api/publish' ? 'POST' : url.pathname === '/api/deploy-status' ? 'GET' : null
     if (!method) return json({ error: 'not found' }, 404)
     if (request.method !== method) {

@@ -167,6 +167,7 @@ export function MediaPicker({ open, onClose, onPick, accept = 'image' }: { open:
   return (
     <Modal open={open} onOpenChange={(o) => { if (!o) { setItems(null); onClose() } }} title={accept === 'certificate' ? 'Choose a certificate file' : accept === 'pdf' ? 'Choose a PDF' : 'Choose an image'} className="max-w-3xl p-6">
       <div className="mt-4 flex flex-col gap-4">
+        <p className="text-sm text-[var(--ink-secondary)]">{mediaPickerContent.publicAccessNotice}</p>
         <label className="flex cursor-pointer items-center justify-center gap-2 rounded-xl bg-[var(--bg-subtle)] p-6 text-sm font-medium hover:bg-[var(--surface-raised)] focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-[var(--accent)]">
           <Upload className="h-4 w-4" />
           {busy ? accept === 'certificate' ? 'Processing certificate…' : 'Uploading…' : accept === 'certificate' ? 'Upload PDF or image' : accept === 'pdf' ? 'Upload a new PDF' : mediaPickerContent.imageUploadLabel}

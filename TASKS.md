@@ -8,6 +8,8 @@
 
 > **Urutan besar (disepakati):** Fondasi → Section publik → QA & Launch v1 → Backend Supabase → Pipeline publish → Admin Dashboard → V2.
 
+> **Target rilis berikutnya (disepakati): v1.1.0.** v1.0.0 sudah dirilis. Phase 15 (keamanan Supabase) dan Phase 16 (peningkatan di bawah) menjadi satu target rilis, dikerjakan satu sub-task per giliran. Perubahan dapat ditinjau lewat PR terpisah; tidak perlu digabung menjadi satu PR besar. Siapkan backup dan bukti pemulihan (Task 16.1) sebelum menerapkan perubahan database Phase 15. Blog, bilingual ID/EN, dark mode, dan PWA tetap backlog opsional di luar target ini.
+
 ---
 
 ## Phase 0: Design Phase (Figma / Figcraft First)
@@ -212,3 +214,97 @@
 - [x] **Task 14.2:** Analytics ringan & privacy-friendly: CV dibuka/diunduh, drawer proyek dibuka, top 10 perintah terminal.
 - [x] **Task 14.3:** Audit log perubahan konten (siapa, kapan, apa).
 - [ ] **Task 14.4:** (Opsional) Konten bilingual ID/EN.
+
+---
+
+## Phase 15: Perbaikan Keamanan Database Supabase
+> Tindak lanjut pemeriksaan baca-saja production pada 22 November 2026. RLS aktif pada seluruh 10 tabel CMS; poin berikut mencatat risiko penyalahgunaan dan penguatan konfigurasi, bukan bukti kebocoran data. Status implementasi repository dan penerapan production dicatat terpisah; migrasi/pengaturan production di fase ini belum diubah. Checklist induk tetap terbuka bila masih memerlukan penerapan atau bukti aktif.
+
+- [ ] **Task 15.1:** Lindungi input publik analytics dan kontak:
+  - Tambahkan pembatasan permintaan dan validasi anti-bot di server; honeypot browser hanya menjadi pelengkap.
+  - Tutup jalur insert langsung `anon`/pengguna biasa yang dapat melewati perlindungan server, sambil mempertahankan akses yang dibutuhkan admin.
+  - Perbaiki pembatas kontak agar pergantian email tidak mudah menghabiskan kuota bersama dan menghalangi pengunjung sah.
+  - [x] Implementasi repository: endpoint Worker kontak/analytics dengan Turnstile server-side, bukti analytics HMAC sementara, edge throttle, kuota atomik per sumber, serta migrasi `20261122040000_protect_public_input.sql` untuk menutup insert publik. Tes API/PostgreSQL lokal, build/lint, browser 390px/1440px (mock layanan eksternal), dan canary secret bundle lolos. Aktivasi widget/secrets, backup/restore, staging, dan penerapan production masih menunggu; urutan rollout ada di `docs/SECURITY.md`.
+  - [x] Persiapan konfigurasi Cloudflare (konfirmasi Alfiz, 23 November 2026): site key build serta runtime Supabase/Turnstile/signing secret dan origin sudah diisi di dashboard. Nilai secret tidak dibaca atau dicatat. Pemeriksaan GET production masih menunjukkan `/api/contact` 404; pemeriksaan katalog database menunjukkan RPC rate limit/trigger timestamp belum tersedia dan policy insert publik lama masih ada. Konfigurasi ini belum membuktikan endpoint atau migrasi sudah aktif.
+  - [x] Perbaikan check Workers Builds PR #13: tambahkan `previews.ratelimits` dengan namespace `151002`, terpisah dari production `151001`, untuk memenuhi konfigurasi `wrangler preview`. Parser konfigurasi Wrangler 4.166.0, bundling `deploy --dry-run`, build/lint, serta 11 tes Worker/input publik lolos; hasil check remote diverifikasi setelah push. Dependensi proyek tidak berubah.
+- [ ] **Task 15.2:** Jadikan waktu analytics otoritatif dari server:
+  - Tetapkan `events.created_at` di server/database dan cegah pemanggil publik menentukan waktunya sendiri.
+  - Pertahankan validasi jenis event serta batas panjang label/path.
+  - [x] Implementasi repository: migrasi `20261122010000_server_analytics_time.sql` menimpa timestamp insert/update; tes PostgreSQL lokal untuk timestamp palsu, jenis event, dan panjang label/path lolos, build/lint lolos. Penerapan dan pembuktian pada database aktif masih menunggu prasyarat backup/staging.
+- [ ] **Task 15.3:** Cabut izin database yang tidak dibutuhkan aplikasi:
+  - Hapus `TRUNCATE`, `TRIGGER`, dan `REFERENCES` dari role `anon` dan `authenticated` pada tabel CMS yang diperiksa; tinjau izin tambahan lain berdasarkan kebutuhan nyata.
+  - Rapikan default privileges agar tabel baru tidak mewarisi izin berlebih, tanpa mengubah objek internal yang dikelola Supabase.
+  - Pertahankan RLS dan izin minimum untuk konten publik, input yang telah dilindungi, serta operasi admin.
+  - [x] Implementasi repository: migrasi `20261122020000_least_privilege_cms.sql` menetapkan grant CMS eksplisit dan default privileges; tes PostgreSQL lokal membuktikan pencabutan izin berlebih dan izin minimum tetap tersedia, build/lint lolos. Default milik `supabase_admin` hanya diubah bila role migrasi berwenang; jika tidak, perlu review pemilik sebelum checklist induk selesai. Belum diterapkan ke database aktif.
+- [ ] **Task 15.4:** Rapikan keamanan fungsi database:
+  - Kunci `search_path` pada `public.touch_updated_at()` dan gunakan referensi objek yang eksplisit bila diperlukan.
+  - Tinjau/cabut izin `EXECUTE` yang tidak diperlukan pada fungsi trigger internal `guard_message_rate()` dan `write_audit()`, termasuk grant melalui `PUBLIC`.
+  - Pertahankan akses `is_admin()` yang diperlukan policy dan backend; peringatan `SECURITY DEFINER` tidak otomatis berarti fungsi dapat dieksploitasi.
+  - [x] Implementasi repository: migrasi `20261122030000_lock_internal_functions.sql` mengunci search path dan mencabut EXECUTE helper trigger, termasuk grant PUBLIC; tes PostgreSQL lokal membuktikan trigger audit/update tetap bekerja dan `is_admin()` tetap tersedia untuk RLS/backend, build/lint lolos. Belum diterapkan ke database aktif; advisor live masih mencerminkan konfigurasi lama.
+- [x] **Task 15.5:** Tinjau pemisahan aset publik dan berkas privat:
+  - Pertahankan bucket `media` untuk aset yang memang boleh diunduh publik; status draft konten tidak membuat file di bucket publik menjadi privat.
+  - Jika ada kebutuhan berkas rahasia, gunakan bucket privat dengan policy admin dan akses sementara yang sesuai; jangan menganggap penyembunyian URL sebagai kontrol akses.
+  - Bukti: inspeksi baca-saja bucket/policy aktif dan keputusan batas akses tercatat di `docs/SECURITY.md`; belum ada kebutuhan fitur berkas privat. Media manager dan picker menjelaskan unggahan langsung publik, termasuk draft. Build/lint serta browser 390px/1440px lolos dengan request eksternal disimulasikan; tidak mengubah bucket atau berkas production.
+  - Tindak lanjut uji role lokal: migrasi `20261122050000_preserve_admin_storage_access.sql` menambahkan SELECT metadata bucket `media` khusus admin agar update/delete bekerja. Uji batas bucket dan penolakan pengguna biasa tersedia; penerapan policy ke production masih menunggu backup/staging.
+- [ ] **Task 15.6:** Periksa konfigurasi Supabase Auth yang aktif:
+  - Verifikasi provider login, pendaftaran akun, konfirmasi email, dan perlindungan akun admin; UI saat ini memakai Google OAuth.
+  - Jika login password diaktifkan, evaluasi perlindungan password bocor sesuai dukungan paket Supabase; catat bila tidak relevan atau tidak tersedia.
+  - [x] Pemeriksaan baca-saja aktif: Google dan Email aktif, signup terbuka, konfirmasi email wajib; satu admin memakai Google tanpa password tersimpan. Advisor menyatakan proteksi password bocor nonaktif. Rincian ada di `docs/SECURITY.md`; provider Email, dukungan paket, Google MFA/recovery, serta redirect allowlist masih memerlukan keputusan/verifikasi pemilik melalui dashboard sebelum checklist induk ditutup.
+- [ ] **Task 15.7:** Verifikasi perbaikan sebelum menandai fase selesai:
+  - Uji di lingkungan terisolasi/staging memakai data sintetis sebagai pengunjung, pengguna biasa, dan admin; jangan mengandalkan koneksi berhak istimewa untuk membuktikan RLS.
+  - Buktikan data privat/draft dan operasi admin ditolak untuk pihak yang tidak berhak, sementara konten publik, pesan sah, analytics, serta alur publish tetap berfungsi.
+  - Uji pembatasan permintaan, validasi anti-bot, penolakan jalur insert yang melewati server, dan penetapan waktu analytics; jangan melakukan uji spam pada production.
+  - Jalankan ulang Security Advisor dan catat peringatan yang terselesaikan, dipertahankan dengan alasan, atau masih memerlukan validasi.
+  - Untuk perubahan kode, jalankan `npm run build` dan `npm run lint`; bila UI berubah, verifikasi 390px/1440px. Catat hasil aktual sebelum mencentang task.
+  - [x] Bukti repository/lokal: `node --test scripts/*.test.ts` lulus 42/42 tanpa skip, termasuk matriks RLS pengunjung/pengguna biasa/admin, Storage, publish log, timestamp, dan delapan request kontak bersamaan (hanya tiga lolos). Build/lint dan browser 390px/1440px dengan mock layanan eksternal lolos; warning ukuran chunk PDF lama tetap ada. Advisor production diperiksa ulang dan belum berubah karena migrasi belum diterapkan; rincian pengecualian dan gate penerapan ada di `docs/SECURITY.md`. Backup/restore, staging dengan layanan nyata, konfigurasi Auth, serta verifikasi sesudah penerapan masih terbuka.
+
+---
+
+## Phase 16: v1.1.0 — Kualitas Konten & Keandalan Operasional
+> Seluruh task berikut masih berupa rencana. Pertahankan arsitektur publik statis, sumber konten CMS yang ada, dan kompatibilitas fitur v1.0.0. Penambahan dependensi atau layanan baru yang memerlukannya tetap mengikuti persetujuan Alfiz; kredensial hanya di environment server.
+
+- [ ] **Task 16.1:** Siapkan backup database dan media yang terbukti bisa dipulihkan:
+  - Inventarisasi konten, schema/migrasi, dan file Storage yang perlu dicadangkan, termasuk CV, sertifikat, serta gambar; snapshot konten di Git bukan backup lengkap CMS.
+  - Cadangkan file Storage secara terpisah karena backup database Supabase hanya menyertakan metadata file; tentukan lokasi salinan, jadwal, dan retensi sesuai kebutuhan.
+  - Dokumentasikan dan uji pemulihan di lingkungan terisolasi; buktikan relasi konten dan file kembali berfungsi tanpa menimpa production.
+- [ ] **Task 16.2:** Selesaikan audit kebenaran konten bersama Alfiz (lanjutan Task 5.4):
+  - Konfirmasi stack/versi, peran, tanggal, metadata kredensial, dan tautan demo/repository; tandai klaim yang belum memiliki bukti untuk dikonfirmasi atau diperbaiki.
+  - Seragamkan konten publik ke bahasa yang disepakati; bilingual tetap Task 14.4, bukan prasyarat rilis ini.
+  - Perbarui melalui sumber konten yang ada dan verifikasi snapshot publik setelah publish; jangan mengarang angka dampak atau menaruh konten di komponen.
+- [ ] **Task 16.3:** Perdalam studi kasus setiap proyek yang dipublikasikan:
+  - Jelaskan masalah, kontribusi pribadi dan batas peran tim, keputusan teknis beserta alasannya, bukti implementasi, serta hasil yang bisa diverifikasi.
+  - Kaitkan klaim teknis dengan repository, screenshot, diagram, atau pengujian yang relevan; gunakan hasil fungsional jika belum ada metrik terukur.
+  - Pakai field CMS yang sudah tersedia terlebih dahulu; perluasan schema hanya jika konten membutuhkannya, dengan kompatibilitas data lama dan preview admin.
+- [ ] **Task 16.4:** Sediakan halaman proyek dengan URL tersendiri:
+  - Sajikan studi kasus dari sumber konten yang sama pada path publik per slug, dengan HTML hasil prerender, judul, canonical, serta metadata OpenGraph khusus proyek.
+  - Pertahankan drawer dan deep link lama `/#projects/<slug>`; verifikasi akses langsung, refresh, tombol back, slug tidak dikenal, dan routing Cloudflare.
+  - Tambahkan URL proyek ke sitemap; uji preview tautan serta tampilan 390px/1440px, navigasi keyboard, dan reduced motion.
+- [ ] **Task 16.5:** Lengkapi kepastian hasil publish Cloudflare:
+  - Hubungkan permintaan publish dengan build/deployment yang sesuai; tampilkan queued/building/ready/error, tautan log, dan kondisi timeout/unknown dengan jujur.
+  - Bedakan snapshot yang diminta untuk dipublish dari konten yang terbukti sudah aktif; tampilkan identitas versi konten aktif dan jangan menandai perubahan sudah tayang hanya karena deploy hook menerima request.
+  - Verifikasi build gagal, request berulang, dan perubahan konten saat build berlangsung; dokumentasikan pemulihan deployment beserta snapshot kontennya, karena rollback Worker tidak memulihkan database/media.
+- [ ] **Task 16.6:** Tambahkan notifikasi email untuk pesan masuk (lanjutan Task 14.1):
+  - Kirim pemberitahuan kepada Alfiz setelah pesan berhasil tersimpan melalui jalur server yang dilindungi pada Task 15.1; gunakan penyedia email yang disepakati sebelum integrasi.
+  - Kegagalan email tidak boleh menghilangkan pesan atau membuat pengunjung mengirim ulang pesan yang sudah tersimpan; catat status pengiriman dan sediakan retry terbatas tanpa notifikasi ganda.
+  - Uji pesan tersimpan, notifikasi berhasil/gagal, dan balasan melalui email menggunakan data sintetis serta penerima uji yang disepakati.
+- [ ] **Task 16.7:** Otomatiskan pemeriksaan kualitas pada setiap PR:
+  - Tambahkan workflow GitHub Actions untuk build, lint, dan seluruh tes yang tersedia, memakai versi Node yang sesuai deployment dan snapshot fallback tanpa kredensial production.
+  - Tambahkan pemeriksaan alur penting secara bertahap: buka studi kasus/deep link, akses CV, navigasi admin, dan hasil publish memakai simulasi atau staging.
+  - Verifikasi workflow benar-benar berjalan dan kegagalan pemeriksaan terlihat sebelum merge; jangan melakukan publish atau menulis ke database production dari CI.
+- [ ] **Task 16.8:** Catat baseline performa dan periksa regresi pengalaman pengguna:
+  - Ukur production pada mobile/desktop untuk loading, respons interaksi, dan kestabilan layout (LCP, INP, CLS); bedakan data pengguna nyata dari hasil pengujian lab, dan catat jika data lapangan belum cukup.
+  - Tentukan optimasi berdasarkan temuan terukur pada aset, bundle, atau animasi; simpan hasil sebelum/sesudah dengan kondisi pengukuran yang sama.
+  - Verifikasi viewport 390px/1440px, navigasi keyboard, fokus modal/drawer, reduced motion, serta akses CV/PDF pada browser mobile.
+- [ ] **Task 16.9:** Selaraskan dokumentasi dan metadata rilis:
+  - Rekonsiliasi status Task 10.7/11.1 dengan bukti deployment dan OAuth aktual; perbarui panduan hosting utama ke Cloudflare Workers dan jelaskan posisi adapter Vercel.
+  - Selaraskan versi `package.json` dan lockfile ke target v1.1.0 saat rilis siap; catat perubahan dari v1.0.0, konfigurasi baru, migrasi, dan langkah pemulihan.
+  - Pastikan contoh environment bersih dan panduan setup/publish bisa diikuti tanpa kredensial yang tertanam di repository.
+- [ ] **Task 16.10:** Ganti favicon portfolio agar konsisten dengan logo navbar:
+  - Gunakan aset logo navbar dari sumber konten profil (`navbarLogo`) yang sama; sediakan fallback inisial AD jika logo belum diatur atau tidak dapat digunakan sebagai favicon.
+  - Pastikan ikon tetap terbaca pada ukuran 16px/32px dengan rasio dan ruang aman yang sesuai, tanpa mendistorsi atau mengubah aset logo navbar asli.
+  - Perbarui referensi favicon publik/admin melalui alur snapshot/build/publish yang ada; tangani cache agar favicon baru dapat terlihat setelah perubahan logo dipublish.
+  - Verifikasi favicon di browser desktop/mobile, fallback, dan akses langsung `/admin`; jalankan build/lint serta pastikan tidak ada request aset ikon yang gagal.
+- [ ] **Task 16.11:** Verifikasi dan rilis satu paket v1.1.0:
+  - Pastikan Phase 15 dan Task 16.1–16.10 selesai dengan bukti aktual; jalankan build, lint, tes relevan, serta QA publik/admin pada 390px/1440px.
+  - Verifikasi alur simpan → publish → deployment berhasil → konten publik sesuai, pesan masuk/notifikasi, analytics, halaman proyek, dan akses media; catat hasil pemeriksaan staging serta pemeriksaan production yang aman.
+  - Ikuti alur PR branch fitur → `dev` → `main`, buat release/tag v1.1.0 sesuai hasil yang sudah diverifikasi, dan catat deployment serta versi konten yang aktif.

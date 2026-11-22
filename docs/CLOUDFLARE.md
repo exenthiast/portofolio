@@ -42,6 +42,12 @@ verifies the Supabase session and admin allowlist before calling this hook, then
 records the validated published snapshot using the existing `publish_log` table.
 No database migration or reseed is needed.
 
+That statement applies to the hosting adapter itself. Phase 15 protected public
+input adds runtime secrets, a native rate-limit binding, Turnstile configuration,
+and database migrations; follow [the security rollout](./SECURITY.md) before
+enabling `VITE_TURNSTILE_SITE_KEY`. Never add service-role/Turnstile/signing secrets
+to public `VITE_` variables. Keep staging and production credentials separate.
+
 Keep the production deploy hook out of preview runtime settings. A preview can
 read the site and display admin content, but its Publish action will report a
 configuration error until a hook is explicitly supplied. Saving in admin still
@@ -53,6 +59,14 @@ requested, without claiming it has completed. The former Vercel status adapter
 continues to work only on Vercel.
 
 ## Preview and OAuth verification
+
+`wrangler preview` requires the `previews` block in `wrangler.jsonc`. The
+`PUBLIC_INPUT_LIMITER` binding uses namespace `151002` for previews, separate from
+production's `151001`, so preview traffic cannot consume the production edge
+quota. Reserve these IDs for this application within the Cloudflare account;
+choose different unused IDs if another application already uses them. Keep
+`assets` and the compatibility settings at the top level. Configure staging
+variables/secrets in Previews Base separately, following the security rollout.
 
 After this configuration reaches the preview branch, check the Cloudflare build
 log and open its preview URL. Verify `/`, `/admin`, `/admin/profile`, project
