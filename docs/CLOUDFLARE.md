@@ -42,6 +42,12 @@ verifies the Supabase session and admin allowlist before calling this hook, then
 records the validated published snapshot using the existing `publish_log` table.
 No database migration or reseed is needed.
 
+That statement applies to the hosting adapter itself. Phase 15 protected public
+input adds runtime secrets, a native rate-limit binding, Turnstile configuration,
+and database migrations; follow [the security rollout](./SECURITY.md) before
+enabling `VITE_TURNSTILE_SITE_KEY`. Never add service-role/Turnstile/signing secrets
+to public `VITE_` variables. Keep staging and production credentials separate.
+
 Keep the production deploy hook out of preview runtime settings. A preview can
 read the site and display admin content, but its Publish action will report a
 configuration error until a hook is explicitly supplied. Saving in admin still

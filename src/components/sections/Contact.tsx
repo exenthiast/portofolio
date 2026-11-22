@@ -2,27 +2,43 @@ import { useState, type FormEvent } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Mail } from 'lucide-react'
 import { profileData } from '../../data/profile'
-import { isBackendConfigured, restInsert, track } from '../../lib/analytics'
+import { track } from '../../lib/analytics'
+import { getBotToken, isPublicInputConfigured } from '../../lib/bot-check'
+import { contactFormContent } from '../../data/contact'
 import { TerminalWindow, Prompt } from '../ui/TerminalWindow'
 
 type SendState = 'idle' | 'sending' | 'sent' | 'error'
 
 function MessageForm() {
   const [state, setState] = useState<SendState>('idle')
+  const [errorMessage, setErrorMessage] = useState(contactFormContent.error)
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    const form = new FormData(e.currentTarget)
+    const element = e.currentTarget
+    const form = new FormData(element)
     // Honeypot: real people never see or fill this field.
     if (String(form.get('website') ?? '')) return setState('sent')
     setState('sending')
-    const ok = await restInsert('messages', {
-      name: String(form.get('name') ?? '').slice(0, 120),
-      email: String(form.get('email') ?? '').slice(0, 200),
-      body: String(form.get('body') ?? '').slice(0, 4000),
-    })
-    setState(ok ? 'sent' : 'error')
-    if (ok) e.currentTarget.reset()
+    setErrorMessage(contactFormContent.error)
+    let botToken: string
+    try { botToken = await getBotToken('contact') }
+    catch { setErrorMessage(contactFormContent.verification); setState('error'); return }
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: String(form.get('name') ?? ''), email: String(form.get('email') ?? ''), body: String(form.get('body') ?? ''), botToken }),
+      })
+      if (!response.ok) {
+        if (response.status === 429) setErrorMessage(contactFormContent.limited)
+        setState('error')
+        return
+      }
+      const receipt: unknown = await response.json()
+      if (!receipt || typeof receipt !== 'object' || !('ok' in receipt) || receipt.ok !== true) throw new Error('Message not accepted')
+      element.reset()
+      setState('sent')
+    } catch { setState('error') }
   }
 
   const field = 'w-full rounded-lg bg-[var(--surface-terminal-header)] px-3 py-2.5 text-[var(--ink-terminal)] placeholder:text-[var(--ink-terminal-muted)]/60 outline-none focus-visible:outline-2 focus-visible:outline-[var(--accent)]'
@@ -46,14 +62,19 @@ function MessageForm() {
       </label>
       <input name="website" tabIndex={-1} autoComplete="off" aria-hidden="true" className="hidden" />
       <div className="flex items-center gap-4">
-        <button type="submit" disabled={state === 'sending'} className="h-10 rounded-full bg-[var(--accent)] px-5 text-sm font-medium text-[var(--accent-ink)] cursor-pointer disabled:opacity-60">
-          {state === 'sending' ? 'sending…' : 'send ↵'}
+        <button type="submit" disabled={state === 'sending'} className="h-10 shrink-0 whitespace-nowrap rounded-full bg-[var(--accent)] px-5 text-sm font-medium text-[var(--accent-ink)] cursor-pointer disabled:opacity-60">
+          {state === 'sending' ? contactFormContent.sending : contactFormContent.send}
         </button>
         <span aria-live="polite" className="text-xs">
-          {state === 'sent' && <span className="text-[var(--accent)]">✓ delivered. I'll reply by email.</span>}
-          {state === 'error' && <span className="text-[var(--mac-close)]">✗ failed — please use email instead.</span>}
+          {state === 'sent' && <span className="text-[var(--accent)]">{contactFormContent.sent}</span>}
+          {state === 'error' && <span className="text-[var(--mac-close)]">{errorMessage}</span>}
         </span>
       </div>
+      <p className="text-xs text-[var(--ink-terminal-muted)]">
+        {contactFormContent.privacy}{' '}
+        <a href={contactFormContent.privacyLink.href} target="_blank" rel="noopener noreferrer" className="underline">{contactFormContent.privacyLink.label}</a>{' · '}
+        <a href={contactFormContent.termsLink.href} target="_blank" rel="noopener noreferrer" className="underline">{contactFormContent.termsLink.label}</a>
+      </p>
     </form>
   )
 }
@@ -114,7 +135,7 @@ export function Contact() {
               </li>
             ))}
           </ul>
-          {isBackendConfigured && <MessageForm />}
+          {isPublicInputConfigured && <MessageForm />}
           <Prompt>exit</Prompt>
         </TerminalWindow>
       </div>

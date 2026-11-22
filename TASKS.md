@@ -218,12 +218,13 @@
 ---
 
 ## Phase 15: Perbaikan Keamanan Database Supabase
-> Tindak lanjut pemeriksaan baca-saja production pada 22 November 2026. RLS aktif pada seluruh 10 tabel CMS; poin berikut mencatat risiko penyalahgunaan dan penguatan konfigurasi, bukan bukti kebocoran data. Seluruh perbaikan di fase ini masih belum diterapkan.
+> Tindak lanjut pemeriksaan baca-saja production pada 22 November 2026. RLS aktif pada seluruh 10 tabel CMS; poin berikut mencatat risiko penyalahgunaan dan penguatan konfigurasi, bukan bukti kebocoran data. Status implementasi repository dan penerapan production dicatat terpisah; migrasi/pengaturan production di fase ini belum diubah. Checklist induk tetap terbuka bila masih memerlukan penerapan atau bukti aktif.
 
 - [ ] **Task 15.1:** Lindungi input publik analytics dan kontak:
   - Tambahkan pembatasan permintaan dan validasi anti-bot di server; honeypot browser hanya menjadi pelengkap.
   - Tutup jalur insert langsung `anon`/pengguna biasa yang dapat melewati perlindungan server, sambil mempertahankan akses yang dibutuhkan admin.
   - Perbaiki pembatas kontak agar pergantian email tidak mudah menghabiskan kuota bersama dan menghalangi pengunjung sah.
+  - [x] Implementasi repository: endpoint Worker kontak/analytics dengan Turnstile server-side, bukti analytics HMAC sementara, edge throttle, kuota atomik per sumber, serta migrasi `20261122040000_protect_public_input.sql` untuk menutup insert publik. Tes API/PostgreSQL lokal, build/lint, browser 390px/1440px (mock layanan eksternal), dan canary secret bundle lolos. Aktivasi widget/secrets, backup/restore, staging, dan penerapan production masih menunggu; urutan rollout ada di `docs/SECURITY.md`.
 - [ ] **Task 15.2:** Jadikan waktu analytics otoritatif dari server:
   - Tetapkan `events.created_at` di server/database dan cegah pemanggil publik menentukan waktunya sendiri.
   - Pertahankan validasi jenis event serta batas panjang label/path.
