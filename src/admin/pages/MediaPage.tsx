@@ -4,6 +4,7 @@ import { deleteMedia, formatBytes, listMedia, updateAlt, uploadMedia } from '../
 import { useAsync } from '../lib/useAsync'
 import { useToast } from '../components/Toast'
 import { Empty, ErrorNote, PageHeader, Skeleton } from '../components/ui'
+import { mediaPickerContent } from '../../data/media'
 
 export function MediaPage() {
   const toast = useToast()
@@ -35,6 +36,7 @@ export function MediaPage() {
   return (
     <>
       <PageHeader title="Media library" path="~/admin/media" />
+      <p className="mb-4 text-sm text-[var(--ink-secondary)]">{mediaPickerContent.publicAccessNotice}</p>
       <label
         onDragOver={(e) => { e.preventDefault(); setDragging(true) }}
         onDragLeave={() => setDragging(false)}

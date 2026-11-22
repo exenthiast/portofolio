@@ -238,9 +238,10 @@
   - Tinjau/cabut izin `EXECUTE` yang tidak diperlukan pada fungsi trigger internal `guard_message_rate()` dan `write_audit()`, termasuk grant melalui `PUBLIC`.
   - Pertahankan akses `is_admin()` yang diperlukan policy dan backend; peringatan `SECURITY DEFINER` tidak otomatis berarti fungsi dapat dieksploitasi.
   - [x] Implementasi repository: migrasi `20261122030000_lock_internal_functions.sql` mengunci search path dan mencabut EXECUTE helper trigger, termasuk grant PUBLIC; tes PostgreSQL lokal membuktikan trigger audit/update tetap bekerja dan `is_admin()` tetap tersedia untuk RLS/backend, build/lint lolos. Belum diterapkan ke database aktif; advisor live masih mencerminkan konfigurasi lama.
-- [ ] **Task 15.5:** Tinjau pemisahan aset publik dan berkas privat:
+- [x] **Task 15.5:** Tinjau pemisahan aset publik dan berkas privat:
   - Pertahankan bucket `media` untuk aset yang memang boleh diunduh publik; status draft konten tidak membuat file di bucket publik menjadi privat.
   - Jika ada kebutuhan berkas rahasia, gunakan bucket privat dengan policy admin dan akses sementara yang sesuai; jangan menganggap penyembunyian URL sebagai kontrol akses.
+  - Bukti: inspeksi baca-saja bucket/policy aktif dan keputusan batas akses tercatat di `docs/SECURITY.md`; belum ada kebutuhan fitur berkas privat. Media manager dan picker menjelaskan unggahan langsung publik, termasuk draft. Build/lint serta browser 390px/1440px lolos dengan request eksternal disimulasikan; tidak mengubah bucket atau berkas production.
 - [ ] **Task 15.6:** Periksa konfigurasi Supabase Auth yang aktif:
   - Verifikasi provider login, pendaftaran akun, konfirmasi email, dan perlindungan akun admin; UI saat ini memakai Google OAuth.
   - Jika login password diaktifkan, evaluasi perlindungan password bocor sesuai dukungan paket Supabase; catat bila tidak relevan atau tidak tersedia.
