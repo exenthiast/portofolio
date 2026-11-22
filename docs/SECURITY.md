@@ -54,6 +54,17 @@ tokens server-side. Dummy tokens and mocks prove local behavior only.
 | `PUBLIC_INPUT_ORIGIN` | Exact browser origin, e.g. `https://alfizdesta.dev`; separate for previews |
 | `PUBLIC_INPUT_LIMITER` | Native binding in `wrangler.jsonc`; choose a namespace ID unused by other apps |
 
+Configuration progress on 23 November 2026: Alfiz confirmed the dashboard build
+site key and runtime Supabase/Turnstile/signing secrets and allowed origin are
+filled. This is owner-reported configuration; secret values were not retrieved or
+recorded, and dashboard variables are not automatically copied into local env
+files. Runtime bindings and successful verification still need deployment checks.
+A read-only production check returned HTTP 200 for `/` and HTTP 404 for
+`/api/contact`. Database catalog checks found no `events_server_time` trigger,
+`consume_public_input` RPC, private rate table, or admin Storage SELECT policy;
+the old public insert policies remain. These observations confirm that preparing
+environment values has not deployed the repository changes or migrations.
+
 1. Record backup and successful isolated restore (Task 16.1). Capture current
    grants/policies/function definitions for rollback. The live project currently
    reports no migration history despite having the base tables: reconcile that
