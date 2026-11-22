@@ -243,6 +243,7 @@
   - Pertahankan bucket `media` untuk aset yang memang boleh diunduh publik; status draft konten tidak membuat file di bucket publik menjadi privat.
   - Jika ada kebutuhan berkas rahasia, gunakan bucket privat dengan policy admin dan akses sementara yang sesuai; jangan menganggap penyembunyian URL sebagai kontrol akses.
   - Bukti: inspeksi baca-saja bucket/policy aktif dan keputusan batas akses tercatat di `docs/SECURITY.md`; belum ada kebutuhan fitur berkas privat. Media manager dan picker menjelaskan unggahan langsung publik, termasuk draft. Build/lint serta browser 390px/1440px lolos dengan request eksternal disimulasikan; tidak mengubah bucket atau berkas production.
+  - Tindak lanjut uji role lokal: migrasi `20261122050000_preserve_admin_storage_access.sql` menambahkan SELECT metadata bucket `media` khusus admin agar update/delete bekerja. Uji batas bucket dan penolakan pengguna biasa tersedia; penerapan policy ke production masih menunggu backup/staging.
 - [ ] **Task 15.6:** Periksa konfigurasi Supabase Auth yang aktif:
   - Verifikasi provider login, pendaftaran akun, konfirmasi email, dan perlindungan akun admin; UI saat ini memakai Google OAuth.
   - Jika login password diaktifkan, evaluasi perlindungan password bocor sesuai dukungan paket Supabase; catat bila tidak relevan atau tidak tersedia.

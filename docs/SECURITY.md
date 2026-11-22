@@ -63,9 +63,9 @@ tokens server-side. Dummy tokens and mocks prove local behavior only.
    with `VITE_TURNSTILE_SITE_KEY` initially unset. The public email link works while
    form/analytics are disabled during this maintenance step. Do not use the legacy
    frontend that still writes directly after revoking its database access.
-3. Apply only the four new `20261122*` migrations in order, after verifying the
+3. Apply only the five new `20261122*` migrations in order, after verifying the
    existing schema matches the base migrations. They must execute as the expected
-   migration owner (`postgres`). The last migration requires the protected server
+   migration owner (`postgres`). The protected-input migration requires the protected server
    path; it intentionally closes the former browser write path.
 4. Set the matching public site key and rebuild. Verify contact, rate limits,
    analytics, admin operations and publish with synthetic staging data. Confirm
@@ -110,6 +110,13 @@ does not certify that every existing document contains only public information.
 Never upload credentials, environment files, or private personal documents to the
 public library. Removing an accidentally exposed file cannot revoke copies that
 have already been downloaded or cached.
+
+Local role-based testing also reproduced a missing admin metadata-read policy on
+`storage.objects`: UPDATE/DELETE could not see their target rows. Migration
+`20261122050000_preserve_admin_storage_access.sql` adds SELECT for authenticated
+allowlisted admins, scoped only to `media`. It does not grant other users access
+or allow reading other buckets. This migration is prepared and tested locally;
+it has not been applied to the active project.
 
 ## Active Auth review — Task 15.6
 
