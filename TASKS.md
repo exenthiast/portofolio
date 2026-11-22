@@ -298,7 +298,12 @@
   - Rekonsiliasi status Task 10.7/11.1 dengan bukti deployment dan OAuth aktual; perbarui panduan hosting utama ke Cloudflare Workers dan jelaskan posisi adapter Vercel.
   - Selaraskan versi `package.json` dan lockfile ke target v1.1.0 saat rilis siap; catat perubahan dari v1.0.0, konfigurasi baru, migrasi, dan langkah pemulihan.
   - Pastikan contoh environment bersih dan panduan setup/publish bisa diikuti tanpa kredensial yang tertanam di repository.
-- [ ] **Task 16.10:** Verifikasi dan rilis satu paket v1.1.0:
-  - Pastikan Phase 15 dan Task 16.1–16.9 selesai dengan bukti aktual; jalankan build, lint, tes relevan, serta QA publik/admin pada 390px/1440px.
+- [ ] **Task 16.10:** Ganti favicon portfolio agar konsisten dengan logo navbar:
+  - Gunakan aset logo navbar dari sumber konten profil (`navbarLogo`) yang sama; sediakan fallback inisial AD jika logo belum diatur atau tidak dapat digunakan sebagai favicon.
+  - Pastikan ikon tetap terbaca pada ukuran 16px/32px dengan rasio dan ruang aman yang sesuai, tanpa mendistorsi atau mengubah aset logo navbar asli.
+  - Perbarui referensi favicon publik/admin melalui alur snapshot/build/publish yang ada; tangani cache agar favicon baru dapat terlihat setelah perubahan logo dipublish.
+  - Verifikasi favicon di browser desktop/mobile, fallback, dan akses langsung `/admin`; jalankan build/lint serta pastikan tidak ada request aset ikon yang gagal.
+- [ ] **Task 16.11:** Verifikasi dan rilis satu paket v1.1.0:
+  - Pastikan Phase 15 dan Task 16.1–16.10 selesai dengan bukti aktual; jalankan build, lint, tes relevan, serta QA publik/admin pada 390px/1440px.
   - Verifikasi alur simpan → publish → deployment berhasil → konten publik sesuai, pesan masuk/notifikasi, analytics, halaman proyek, dan akses media; catat hasil pemeriksaan staging serta pemeriksaan production yang aman.
   - Ikuti alur PR branch fitur → `dev` → `main`, buat release/tag v1.1.0 sesuai hasil yang sudah diverifikasi, dan catat deployment serta versi konten yang aktif.
