@@ -26,3 +26,44 @@ does not certify that every existing document contains only public information.
 Never upload credentials, environment files, or private personal documents to the
 public library. Removing an accidentally exposed file cannot revoke copies that
 have already been downloaded or cached.
+
+## Active Auth review — Task 15.6
+
+Read-only checks on 22 November 2026:
+
+| Setting / account evidence | Observed value |
+| --- | --- |
+| Google provider | Enabled |
+| Email provider (including password flows) | Enabled |
+| Phone provider | Disabled |
+| Public signup | Enabled (`disable_signup=false`) |
+| Email auto-confirm | Disabled; confirmation required |
+| Allowlisted admin accounts | One, with confirmed email and Google as provider |
+| Allowlisted admin accounts with a stored password | Zero |
+| Supabase verified MFA factors for allowlisted admins | Zero |
+| Security Advisor leaked-password protection | Disabled |
+
+The UI only exposes Google OAuth, but that does not disable other Auth API login
+methods. Database allowlisting remains the authorization control: registration
+does not grant admin access. Do not add a self-service allowlist mutation policy.
+
+Owner-side decisions still needed before closing Task 15.6:
+
+1. If email/password is unused, disable the Email provider in the Supabase Auth
+   dashboard, then verify the existing Google admin can still sign in.
+2. If passwords are retained, check the project's plan and enable leaked-password
+   protection when supported; record an unavailable-plan exception explicitly.
+3. Review public signup against the intended admin-only login model. Do not disable
+   signup blindly: a first-time Google admin also needs account creation. Confirm
+   recovery and onboarding paths before changing this setting.
+4. Verify Google account two-step verification and recovery with the owner. An
+   absence of Supabase MFA factors does not establish whether Google MFA is enabled.
+5. Verify Site URL and the exact redirect allowlist for production/staging in the
+   dashboard. The public Auth settings endpoint does not expose these or plan data.
+
+These checks used only configuration fields and aggregate account counts; no user
+emails, password hashes, session tokens, or credentials are retained here. No Auth
+settings or accounts were modified. The available connector has no Auth settings
+management tool, so the remaining dashboard checks are not claimed as complete.
+
+Reference: [Supabase password security](https://supabase.com/docs/guides/auth/password-security).

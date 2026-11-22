@@ -245,6 +245,7 @@
 - [ ] **Task 15.6:** Periksa konfigurasi Supabase Auth yang aktif:
   - Verifikasi provider login, pendaftaran akun, konfirmasi email, dan perlindungan akun admin; UI saat ini memakai Google OAuth.
   - Jika login password diaktifkan, evaluasi perlindungan password bocor sesuai dukungan paket Supabase; catat bila tidak relevan atau tidak tersedia.
+  - [x] Pemeriksaan baca-saja aktif: Google dan Email aktif, signup terbuka, konfirmasi email wajib; satu admin memakai Google tanpa password tersimpan. Advisor menyatakan proteksi password bocor nonaktif. Rincian ada di `docs/SECURITY.md`; provider Email, dukungan paket, Google MFA/recovery, serta redirect allowlist masih memerlukan keputusan/verifikasi pemilik melalui dashboard sebelum checklist induk ditutup.
 - [ ] **Task 15.7:** Verifikasi perbaikan sebelum menandai fase selesai:
   - Uji di lingkungan terisolasi/staging memakai data sintetis sebagai pengunjung, pengguna biasa, dan admin; jangan mengandalkan koneksi berhak istimewa untuk membuktikan RLS.
   - Buktikan data privat/draft dan operasi admin ditolak untuk pihak yang tidak berhak, sementara konten publik, pesan sah, analytics, serta alur publish tetap berfungsi.
