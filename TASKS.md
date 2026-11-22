@@ -227,6 +227,7 @@
 - [ ] **Task 15.2:** Jadikan waktu analytics otoritatif dari server:
   - Tetapkan `events.created_at` di server/database dan cegah pemanggil publik menentukan waktunya sendiri.
   - Pertahankan validasi jenis event serta batas panjang label/path.
+  - [x] Implementasi repository: migrasi `20261122010000_server_analytics_time.sql` menimpa timestamp insert/update; tes PostgreSQL lokal untuk timestamp palsu, jenis event, dan panjang label/path lolos, build/lint lolos. Penerapan dan pembuktian pada database aktif masih menunggu prasyarat backup/staging.
 - [ ] **Task 15.3:** Cabut izin database yang tidak dibutuhkan aplikasi:
   - Hapus `TRUNCATE`, `TRIGGER`, dan `REFERENCES` dari role `anon` dan `authenticated` pada tabel CMS yang diperiksa; tinjau izin tambahan lain berdasarkan kebutuhan nyata.
   - Rapikan default privileges agar tabel baru tidak mewarisi izin berlebih, tanpa mengubah objek internal yang dikelola Supabase.
