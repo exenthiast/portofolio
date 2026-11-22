@@ -232,6 +232,7 @@
   - Hapus `TRUNCATE`, `TRIGGER`, dan `REFERENCES` dari role `anon` dan `authenticated` pada tabel CMS yang diperiksa; tinjau izin tambahan lain berdasarkan kebutuhan nyata.
   - Rapikan default privileges agar tabel baru tidak mewarisi izin berlebih, tanpa mengubah objek internal yang dikelola Supabase.
   - Pertahankan RLS dan izin minimum untuk konten publik, input yang telah dilindungi, serta operasi admin.
+  - [x] Implementasi repository: migrasi `20261122020000_least_privilege_cms.sql` menetapkan grant CMS eksplisit dan default privileges; tes PostgreSQL lokal membuktikan pencabutan izin berlebih dan izin minimum tetap tersedia, build/lint lolos. Default milik `supabase_admin` hanya diubah bila role migrasi berwenang; jika tidak, perlu review pemilik sebelum checklist induk selesai. Belum diterapkan ke database aktif.
 - [ ] **Task 15.4:** Rapikan keamanan fungsi database:
   - Kunci `search_path` pada `public.touch_updated_at()` dan gunakan referensi objek yang eksplisit bila diperlukan.
   - Tinjau/cabut izin `EXECUTE` yang tidak diperlukan pada fungsi trigger internal `guard_message_rate()` dan `write_audit()`, termasuk grant melalui `PUBLIC`.
