@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import type { ExperiencePhoto } from '../../types'
 import { Modal } from './Modal'
+import { usePublicContent } from '../../hooks/useLocale'
 
 interface LightboxProps {
   photos: ExperiencePhoto[]
@@ -10,8 +11,10 @@ interface LightboxProps {
 }
 
 export default function Lightbox({ photos, startIndex, onClose }: LightboxProps) {
+  const { experienceData, copy } = usePublicContent()
   const [index, setIndex] = useState(startIndex)
-  const photo = photos[index]
+  const originalPhoto = photos[index]
+  const photo = experienceData.flatMap((item) => item.photos).find((item) => item.src === originalPhoto?.src) ?? originalPhoto
   const go = (delta: number) => setIndex((i) => (i + delta + photos.length) % photos.length)
 
   useEffect(() => {
@@ -36,9 +39,9 @@ export default function Lightbox({ photos, startIndex, onClose }: LightboxProps)
           </span>
           {photos.length > 1 && (
             <span className="flex items-center gap-2">
-              <button type="button" onClick={() => go(-1)} aria-label="Previous photo" className="rounded-full p-2 hover:bg-[var(--surface-terminal-header)] cursor-pointer"><ChevronLeft className="h-4 w-4" /></button>
+              <button type="button" onClick={() => go(-1)} aria-label={copy.previousPhoto} className="rounded-full p-2 hover:bg-[var(--surface-terminal-header)] cursor-pointer"><ChevronLeft className="h-4 w-4" /></button>
               <span className="tabular-nums text-[var(--ink-terminal-muted)]">{index + 1}/{photos.length}</span>
-              <button type="button" onClick={() => go(1)} aria-label="Next photo" className="rounded-full p-2 hover:bg-[var(--surface-terminal-header)] cursor-pointer"><ChevronRight className="h-4 w-4" /></button>
+              <button type="button" onClick={() => go(1)} aria-label={copy.nextPhoto} className="rounded-full p-2 hover:bg-[var(--surface-terminal-header)] cursor-pointer"><ChevronRight className="h-4 w-4" /></button>
             </span>
           )}
         </figcaption>

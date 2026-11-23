@@ -32,3 +32,8 @@ dist-ssr
 .wrangler
 .dev.vars
 .dev.vars.*
+
+# Private CMS/database exports (never commit production data or media archives)
+backups/
+*.dump
+*.backup

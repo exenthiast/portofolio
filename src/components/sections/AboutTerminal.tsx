@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
 import { ArrowUpRight } from 'lucide-react'
-import { profileData } from '../../data/profile'
+import { usePublicContent } from '../../hooks/useLocale'
 import { TrafficLightDots } from '../ui/TrafficLightDots'
 import { SmartImage } from '../ui/SmartImage'
 
@@ -11,6 +11,7 @@ interface AboutTerminalProps {
 }
 
 export function AboutTerminal({ className = '', isEmbedded = false }: AboutTerminalProps) {
+  const { profileData } = usePublicContent()
   const { about } = profileData
   const reducedMotion = useReducedMotion()
   const [timeString, setTimeString] = useState('')

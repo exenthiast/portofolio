@@ -5,6 +5,7 @@ import type { Project } from '../../types'
 import { useMediaQuery } from '../../hooks/useMediaQuery'
 import { SmartImage } from '../ui/SmartImage'
 import { TerminalWindow, Prompt } from '../ui/TerminalWindow'
+import { usePublicContent } from '../../hooks/useLocale'
 
 interface ProjectDrawerProps {
   project: Project
@@ -14,6 +15,7 @@ interface ProjectDrawerProps {
 }
 
 export function ProjectCaseStudy({ project }: { project: Project }) {
+  const { copy } = usePublicContent()
   const [copied, setCopied] = useState(false)
 
   const copyLink = async () => {
@@ -37,17 +39,17 @@ export function ProjectCaseStudy({ project }: { project: Project }) {
         <div className="flex flex-wrap gap-2 pt-2">
           {project.liveDemoUrl && (
             <a href={project.liveDemoUrl} target="_blank" rel="noopener noreferrer" className="inline-flex h-10 items-center gap-2 rounded-full bg-[var(--surface-terminal)] px-4 text-sm font-medium text-white hover:bg-[#1f2029]">
-              Live demo <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
+              {copy.demo} <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
             </a>
           )}
           {project.githubUrl && (
             <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" className="inline-flex h-10 items-center gap-2 rounded-full bg-[var(--surface-raised)] px-4 text-sm font-medium hover:bg-[var(--bg-subtle)]">
-              <Github className="h-4 w-4" aria-hidden="true" /> Repository
+              <Github className="h-4 w-4" aria-hidden="true" /> {copy.repository}
             </a>
           )}
           <button type="button" onClick={copyLink} className="inline-flex h-10 items-center gap-2 rounded-full px-4 text-sm font-medium text-[var(--ink-secondary)] hover:text-[var(--ink)] cursor-pointer">
             {copied ? <Check className="h-4 w-4 text-[var(--accent)]" aria-hidden="true" /> : <Link2 className="h-4 w-4" aria-hidden="true" />}
-            <span aria-live="polite">{copied ? 'Link copied' : 'Copy link'}</span>
+            <span aria-live="polite">{copied ? copy.copied : copy.copyLink}</span>
           </button>
         </div>
       </header>
@@ -57,7 +59,7 @@ export function ProjectCaseStudy({ project }: { project: Project }) {
       )}
 
       <section aria-labelledby="stack-h" className="flex flex-col gap-3">
-        <h3 id="stack-h" className="text-[length:var(--step-lead)] font-semibold tracking-tight">Tech stack</h3>
+        <h3 id="stack-h" className="text-[length:var(--step-lead)] font-semibold tracking-tight">{copy.stack}</h3>
         <ul className="flex flex-wrap gap-1.5">
           {project.techStack.map((t) => (
             <li key={t} className="rounded-full bg-[var(--surface-raised)] px-3 py-1 text-sm font-medium">{t}</li>
@@ -67,7 +69,7 @@ export function ProjectCaseStudy({ project }: { project: Project }) {
 
       {project.architecture && (
         <section aria-labelledby="arch-h" className="flex flex-col gap-3">
-          <h3 id="arch-h" className="text-[length:var(--step-lead)] font-semibold tracking-tight">Architecture</h3>
+          <h3 id="arch-h" className="text-[length:var(--step-lead)] font-semibold tracking-tight">{copy.architecture}</h3>
           <TerminalWindow title={`~/projects/${project.slug}/ARCHITECTURE.md`} bodyClassName="p-5 flex flex-col gap-3">
             <Prompt>cat ARCHITECTURE.md</Prompt>
             <p className="text-[length:var(--step-small)] leading-relaxed text-[var(--ink-terminal)]">{project.architecture.overview}</p>
@@ -89,7 +91,7 @@ export function ProjectCaseStudy({ project }: { project: Project }) {
 
       {project.keyFeatures && project.keyFeatures.length > 0 && (
         <section aria-labelledby="feat-h" className="flex flex-col gap-3">
-          <h3 id="feat-h" className="text-[length:var(--step-lead)] font-semibold tracking-tight">Key features</h3>
+          <h3 id="feat-h" className="text-[length:var(--step-lead)] font-semibold tracking-tight">{copy.features}</h3>
           <ol className="flex flex-col gap-3">
             {project.keyFeatures.map((f, i) => (
               <li key={f} className="flex gap-4 rounded-xl bg-[var(--surface-raised)] p-4 text-[length:var(--step-body)] leading-relaxed">
@@ -106,6 +108,7 @@ export function ProjectCaseStudy({ project }: { project: Project }) {
 
 /** Slide-over from the right on desktop, bottom sheet on mobile (Vaul). Page behind stays put. */
 export default function ProjectDrawer({ project, onClose }: ProjectDrawerProps) {
+  const { copy } = usePublicContent()
   const isDesktop = useMediaQuery('(min-width: 768px)')
 
   return (
@@ -122,11 +125,11 @@ export default function ProjectDrawer({ project, onClose }: ProjectDrawerProps) 
           }
         >
           {!isDesktop && <div aria-hidden="true" className="mx-auto mt-3 h-1.5 w-12 shrink-0 rounded-full bg-[var(--surface-raised)]" />}
-          <Drawer.Title className="sr-only">{project.title} case study</Drawer.Title>
+          <Drawer.Title className="sr-only">{project.title} — {copy.caseStudyTitle}</Drawer.Title>
           <button
             type="button"
             onClick={onClose}
-            aria-label="Close case study"
+            aria-label={copy.closeCaseStudy}
             className="absolute right-4 top-4 z-10 inline-flex h-9 w-9 items-center justify-center rounded-full bg-[var(--surface-raised)] cursor-pointer hover:bg-[var(--bg-subtle)]"
           >
             <X className="h-4 w-4" aria-hidden="true" />

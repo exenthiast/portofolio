@@ -9,6 +9,12 @@
 import { z } from 'zod'
 
 const url = z.string().trim().url()
+export const translationsSchema = z.record(z.string(), z.object({
+  source: z.string(),
+  en: z.string().trim().min(1).optional(),
+  id: z.string().trim().min(1).optional(),
+}))
+export type Translations = z.infer<typeof translationsSchema>
 /** Site-relative path ("/badges/x.webp") or absolute URL (Supabase Storage). */
 const assetPath = z
   .string()
@@ -31,6 +37,7 @@ export const socialLinkSchema = z.object({
 })
 
 export const profileSchema = z.object({
+  translations: translationsSchema.optional(),
   firstName: z.string().trim().min(1),
   lastName: z.string().trim().min(1),
   title: z.string().trim().min(1),
@@ -43,6 +50,7 @@ export const profileSchema = z.object({
   statusText: z.string().trim().min(1),
   email: z.string().trim().email(),
   resumeUrl: assetPath,
+  resumeEnglishUrl: assetPath.refine((value) => /\.pdf(?:[?#]|$)/i.test(value), 'Choose a PDF for the English CV').optional(),
   photo: imageSchema.optional(),
   navbarLogo: imageSchema.extend({
     src: assetPath.refine((value) => /\.(?:webp|svg)(?:[?#]|$)/i.test(value), 'Choose a WebP or SVG logo, or upload a PNG/JPEG for automatic conversion'),
@@ -51,6 +59,7 @@ export const profileSchema = z.object({
 })
 
 export const projectSchema = z.object({
+  translations: translationsSchema.optional(),
   id: z.string().trim().min(1),
   slug: z
     .string()
@@ -76,6 +85,7 @@ export const projectSchema = z.object({
 })
 
 export const badgeSchema = z.object({
+  translations: translationsSchema.optional(),
   // Existing Credly rows have no kind; they remain valid without a data migration.
   kind: z.literal('badge').optional(),
   id: z.string().trim().min(1),
@@ -110,6 +120,7 @@ export const experiencePhotoSchema = imageSchema.extend({
 })
 
 export const experienceSchema = z.object({
+  translations: translationsSchema.optional(),
   id: z.string().trim().min(1),
   category: experienceCategorySchema,
   role: z.string().trim().min(1),

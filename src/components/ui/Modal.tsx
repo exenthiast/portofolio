@@ -1,6 +1,7 @@
 import * as Dialog from '@radix-ui/react-dialog'
 import { X } from 'lucide-react'
 import type { ReactNode } from 'react'
+import { usePublicContent } from '../../hooks/useLocale'
 
 interface ModalProps {
   open: boolean
@@ -15,6 +16,7 @@ interface ModalProps {
 
 /** Centered dialog. The only resting-state shadow is allowed here because it physically floats. */
 export function Modal({ open, onOpenChange, title, description, children, hideTitle, className = '' }: ModalProps) {
+  const { copy } = usePublicContent()
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
       <Dialog.Portal>
@@ -33,7 +35,7 @@ export function Modal({ open, onOpenChange, title, description, children, hideTi
           )}
           {children}
           <Dialog.Close
-            aria-label="Close"
+            aria-label={copy.close}
             className="absolute right-3 top-3 inline-flex h-9 w-9 items-center justify-center rounded-full bg-[var(--surface-raised)] text-[var(--ink)] cursor-pointer hover:bg-[var(--bg-subtle)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)]"
           >
             <X className="h-4 w-4" aria-hidden="true" />
