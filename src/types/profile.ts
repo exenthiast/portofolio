@@ -1,4 +1,13 @@
-import type { ImageAsset, ProfileContent } from '../schemas/content'
+import type { ImageAsset, ProfileContent } from '../schemas/content.ts'
+
+export type CvLanguage = 'id' | 'en'
+
+export interface CvDocument {
+  language: CvLanguage
+  label: string
+  url: string
+  downloadName: string
+}
 
 export interface NavbarBrandProps {
   firstName: string

@@ -113,6 +113,7 @@ No intermediate mushy sizes. Each step is clearly distinct:
 ## 5. Section-by-Section Blueprints & Compositions
 
 ### Navbar identity
+* **EN/ID control:** A compact, solid tone-step button with a 44px minimum touch target and visible focus switches page language. Keep both codes visible and emphasize the active one. It replaces the tablet/mobile CV shortcut below 1280px, beside the menu toggle; desktop keeps the language control alongside the existing social actions. Preserve hero access to CV and the CV viewer's independent document-language choice. Navigation labels and readable page copy change without changing anchor IDs, drawer links, or the established section geometry.
 * The optional **Navbar logo** in admin Profile & CV replaces only the AD mark. Fit the WebP or SVG image with `object-contain` in the existing 32px mobile / 36px desktop square, preserving its aspect ratio and explicit dimensions/alt text. SVG uploads keep their original vector format and render through an image element. Keep the profile name and title beside it. Missing or failed images fall back to AD. The admin preview reuses the public brand component, and changes follow Save profile → Publish.
 
 ### 5.1 Hero Section: The Quad-Terminal Overview
@@ -123,6 +124,7 @@ No intermediate mushy sizes. Each step is clearly distinct:
   * CTA Group: 
     * Primary Button: Solid black pill/rounded-xl: *"See What I've Built"* (smooth scrolls to Projects).
     * Secondary Button: Solid subtle surface: *"Download CV"*.
+  * **CV viewer:** Keep Indonesian/English document selection separate from page language. When both PDFs are published, show two compact, labelled choices with at least 44px touch targets, visible focus, and a clear selected state. Preview and open/download actions follow the selected file. Wrap viewer controls on mobile; retain the direct PDF action when embedding is unavailable. Show only the existing document until the English version is supplied.
   * **The 4 Neofetch Cards:**
     * **Card 1 (Top Left, angled -4°):** `~/project/2025-2026` · Metric: 4 Active Projects · Tech badge stack.
     * **Card 2 (Top Right, angled +4°):** `~/badges/alfiz` · Metric: 10 Credly Badges · Verified Cloud & Security.

@@ -1,7 +1,4 @@
-import { profileData } from '../data/profile'
-import { projectsData } from '../data/projects'
-import { badgesData, certificatesData } from '../data/badges'
-import { experienceData } from '../data/experience'
+import { getPublicContent } from '../data/public-content'
 import { emit, scrollToSection } from './events'
 import type { VFSDir, VFSFile, VFSNode } from '../types'
 
@@ -14,7 +11,8 @@ const dir = (name: string, nodes: VFSNode[], action?: () => void): VFSDir => ({
 })
 
 /** The VFS is generated from src/data so terminal and page can never disagree. */
-export function buildVfs(): VFSDir {
+export function buildVfs(content = getPublicContent('en')): VFSDir {
+  const { profileData, projectsData, badgesData, certificatesData, experienceData } = content
   const p = profileData
 
   const projects = projectsData.map((pr) =>

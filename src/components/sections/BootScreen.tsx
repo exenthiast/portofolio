@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
+import { usePublicContent } from '../../hooks/useLocale'
 
 const STEPS = [
   './boot --portfolio',
@@ -22,6 +23,7 @@ function shouldBoot(): boolean {
 
 /** First-visit boot sequence (< 2s). Skipped on repeat visits within a session and for reduced motion. */
 export function BootScreen() {
+  const { copy } = usePublicContent()
   const [visible, setVisible] = useState(shouldBoot)
   const [step, setStep] = useState(0)
 
@@ -51,7 +53,7 @@ export function BootScreen() {
         <motion.div
           data-ui="terminal"
           role="status"
-          aria-label="Loading portfolio"
+          aria-label={copy.loading}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.35 }}
           className="fixed inset-0 z-[200] flex items-center justify-center bg-[var(--bg)] px-6 font-mono"

@@ -211,4 +211,16 @@
 - [x] **Task 14.1:** Contact form → inbox admin (honeypot + rate limit di trigger DB). *Turnstile & notifikasi email: iterasi berikutnya.*
 - [x] **Task 14.2:** Analytics ringan & privacy-friendly: CV dibuka/diunduh, drawer proyek dibuka, top 10 perintah terminal.
 - [x] **Task 14.3:** Audit log perubahan konten (siapa, kapan, apa).
-- [ ] **Task 14.4:** (Opsional) Konten bilingual ID/EN.
+- [ ] **Task 14.4:** Konten bilingual ID/EN (diminta pemilik, 24 November 2026):
+  - Implementasi repository: tombol EN/ID di navbar desktop dan pengganti tombol CV di navbar tablet/HP (layout ringkas di bawah 1280px), state bahasa tersimpan lokal, `html.lang` sesuai pilihan, dan teks publik/terminal berasal dari sumber data lokal/CMS.
+  - JSONB konten menerima `translations` opsional per field dengan teks sumber serta nilai EN/ID; editor Profile & CV dan koleksi memakai save/publish yang ada. Terjemahan dari sumber lama diabaikan jika teks dasarnya berubah. ID, slug, tautan, nama resmi kredensial, teknologi, serta pilihan file CV dipertahankan.
+  - Build fallback, lint, dan 61 tes regresi lulus, termasuk render EN/ID, round-trip schema/publish, terjemahan usang, tautan/slug stabil, dan pemisahan CV/bahasa halaman. Pola statis tombol bahasa lolos; inspector visual tidak menemukan Chrome/Chromium dan Safari remote automation tidak aktif. QA browser 390px/768px/1024px/1440px, save/publish CMS serta verifikasi deployment aktif masih pending; jangan menganggap tes render sebagai bukti viewport.
+
+
+---
+
+## Deploy EN/ID + CV terpisah dari Phase 15
+
+- Rilis ini membawa fitur PR #15 ke baseline production `dcd9462`, dengan alur kontak/analytics dan Worker production yang ada. Tidak menerapkan SQL, konfigurasi runtime, atau jalur protected input Phase 15.
+- Roadmap Phase 15/16, tooling backup, serta bukti audit lengkap tetap berasal dari branch `dev` pada [`e313367`](https://github.com/exenthiast/portofolio/tree/e3133672f4a31dabf937831be8750e8230189a07). Catatan 61 tes pada sumber tersebut tidak dianggap sebagai pengujian ulang rilis selektif ini.
+- Kandidat rilis selektif lulus build fallback, lint, dan 40 tes tanpa skip. QA browser serta save/publish CMS tetap pending; lihat `docs/DEPLOYMENT.md`. Tidak menandai Task 14.4/16.2 atau v1.1.0 selesai hanya karena kode dideploy.
