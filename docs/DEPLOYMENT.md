@@ -9,8 +9,10 @@ not the v1.1.0 release or a Phase 15 rollout.
 - EN/ID page switch, replacing the navbar CV shortcut on tablet/mobile.
 - Optional CMS translations with source matching and separate Indonesian/English
   PDF selectors; original records remain compatible.
-- Existing production Worker, Wrangler configuration and analytics transport
-  remain byte-identical to the baseline. Contact retains the existing PostgREST
+- Existing production Worker and analytics transport remain byte-identical to
+  the baseline. Wrangler adds only an empty `previews` block required by the
+  configured `wrangler preview` command; production settings remain unchanged.
+  Contact retains the existing PostgREST
   transport and field limits; only its copy is localized. The form element is
   retained across the asynchronous request so a successful send can reset it.
 - No SQL, grants, policies, runtime variables, Turnstile activation, Storage
