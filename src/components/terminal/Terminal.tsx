@@ -2,6 +2,8 @@ import { useEffect, useRef, type KeyboardEvent } from 'react'
 import { useTerminal } from '../../hooks/useTerminal'
 import { TerminalWindow } from '../ui/TerminalWindow'
 import type { OutputLine } from '../../types'
+import { useLocale, usePublicContent } from '../../hooks/useLocale'
+import { translateText } from '../../data/localization'
 
 const toneClass = {
   default: 'text-[var(--ink-terminal)]',
@@ -12,7 +14,8 @@ const toneClass = {
 
 const PILLS = ['help', 'ls -l', 'cat about.md', 'ls projects', 'whoami --stats', 'neofetch', 'tail -f experience.log', 'contact', 'clear']
 
-function Line({ line, onRun }: { line: OutputLine; onRun: (cmd: string) => void }) {
+function Line({ line, onRun, localize = false }: { line: OutputLine; onRun: (cmd: string) => void; localize?: boolean }) {
+  const { locale } = useLocale()
   return (
     <div className="min-h-[1.5em] whitespace-pre-wrap break-words">
       {line.map((seg, i) => {
@@ -28,13 +31,14 @@ function Line({ line, onRun }: { line: OutputLine; onRun: (cmd: string) => void 
               {seg.text}
             </a>
           )
-        return <span key={i} className={toneClass[seg.tone ?? 'default']}>{seg.text}</span>
+        return <span key={i} className={toneClass[seg.tone ?? 'default']}>{localize ? translateText(seg.text, locale) : seg.text}</span>
       })}
     </div>
   )
 }
 
 export default function Terminal() {
+  const { copy } = usePublicContent()
   const { items, input, setInput, run, historyUp, historyDown, tab, clear, cwd } = useTerminal()
   const inputRef = useRef<HTMLInputElement>(null)
   const scrollRef = useRef<HTMLDivElement>(null)
@@ -68,7 +72,7 @@ export default function Terminal() {
         className="h-[420px] overflow-y-auto p-4 sm:p-6 text-[13px] leading-relaxed sm:text-sm"
         role="log"
         aria-live="polite"
-        aria-label="Terminal output"
+        aria-label={copy.terminalOutput}
       >
         {items.map((item) => (
           <div key={item.id} className="mb-2">
@@ -79,11 +83,11 @@ export default function Terminal() {
                 <span>{item.command}</span>
               </div>
             )}
-            {item.result.lines.map((line, i) => <Line key={i} line={line} onRun={runPill} />)}
+            {item.result.lines.map((line, i) => <Line key={i} line={line} onRun={runPill} localize={['help', 'neofetch', 'whoami'].includes(item.command.split(' ')[0])} />)}
           </div>
         ))}
         <label className="flex items-baseline">
-          <span className="sr-only">Terminal command</span>
+          <span className="sr-only">{copy.terminalCommand}</span>
           <span aria-hidden="true" className="shrink-0">
             <span className="text-[var(--accent)]">alfizdesta</span>
             <span className="text-[var(--ink-terminal-muted)]">:{cwd}$&nbsp;</span>
@@ -102,7 +106,7 @@ export default function Terminal() {
           />
         </label>
       </div>
-      <div className="flex gap-2 overflow-x-auto bg-[var(--surface-terminal-header)] px-4 py-3" aria-label="Quick commands">
+      <div className="flex gap-2 overflow-x-auto bg-[var(--surface-terminal-header)] px-4 py-3" aria-label={copy.quickCommands}>
         {PILLS.map((p) => (
           <button key={p} type="button" onClick={() => runPill(p)} className="shrink-0 rounded-full bg-[var(--surface-terminal)] px-3 py-1.5 text-xs text-[var(--ink-terminal)] hover:text-[var(--accent)] cursor-pointer">
             {p}

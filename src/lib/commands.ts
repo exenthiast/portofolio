@@ -2,6 +2,7 @@ import { profileData } from '../data/profile'
 import { projectsData } from '../data/projects'
 import { badgesData } from '../data/badges'
 import { experienceData } from '../data/experience'
+import type { getPublicContent } from '../data/public-content'
 import { allPaths, closest, formatPath, resolvePath } from './vfs'
 import type { CommandResult, OutputLine, OutputSegment, VFSDir } from '../types'
 
@@ -11,6 +12,7 @@ export interface ShellContext {
   history: string[]
   setCwd: (cwd: string[]) => void
   clear: () => void
+  content?: ReturnType<typeof getPublicContent>
 }
 
 type Handler = (args: string[], ctx: ShellContext) => CommandResult
@@ -156,13 +158,13 @@ const specs: Record<string, CommandSpec> = {
   whoami: {
     usage: 'whoami [--stats]',
     summary: 'Who is behind this shell',
-    run: (args) => {
-      const p = profileData
+    run: (args, ctx) => {
+      const p = ctx.content?.profileData ?? profileData
       if (args.includes('--stats')) {
         return ok([
-          [t('projects   ', 'muted'), t(String(projectsData.length))],
-          [t('badges     ', 'muted'), t(String(badgesData.length))],
-          [t('experience ', 'muted'), t(String(experienceData.length))],
+          [t('projects   ', 'muted'), t(String((ctx.content?.projectsData ?? projectsData).length))],
+          [t('badges     ', 'muted'), t(String((ctx.content?.badgesData ?? badgesData).length))],
+          [t('experience ', 'muted'), t(String((ctx.content?.experienceData ?? experienceData).length))],
           [t('status     ', 'muted'), t(p.availableForWork ? 'available for work' : 'busy', p.availableForWork ? 'accent' : 'default')],
         ])
       }
@@ -172,9 +174,11 @@ const specs: Record<string, CommandSpec> = {
   neofetch: {
     usage: 'neofetch',
     summary: 'System summary',
-    run: () => {
-      const p = profileData
-      const stacks = [...new Set(projectsData.flatMap((pr) => pr.techStack))].slice(0, 8).join(', ')
+    run: (_args, ctx) => {
+      const p = ctx.content?.profileData ?? profileData
+      const projects = ctx.content?.projectsData ?? projectsData
+      const badges = ctx.content?.badgesData ?? badgesData
+      const stacks = [...new Set(projects.flatMap((pr) => pr.techStack))].slice(0, 8).join(', ')
       return ok([
         [t('alfiz@portfolio', 'accent')],
         [t('---------------', 'muted')],
@@ -183,8 +187,8 @@ const specs: Record<string, CommandSpec> = {
         [t('Role:      ', 'muted'), t(p.title)],
         [t('Location:  ', 'muted'), t(`${p.location} (GMT+7)`)],
         [t('Stack:     ', 'muted'), t(stacks)],
-        [t('Projects:  ', 'muted'), t(String(projectsData.length))],
-        [t('Badges:    ', 'muted'), t(String(badgesData.length))],
+        [t('Projects:  ', 'muted'), t(String(projects.length))],
+        [t('Badges:    ', 'muted'), t(String(badges.length))],
       ])
     },
   },
@@ -193,9 +197,10 @@ const specs: Record<string, CommandSpec> = {
     summary: 'How to reach me',
     run: (args, ctx) => {
       if (args.includes('--open-channel')) specs.open.run(['~/contact.txt'], ctx)
+      const profile = ctx.content?.profileData ?? profileData
       return ok([
-        [t('email     ', 'muted'), { kind: 'link', text: profileData.email, href: `mailto:${profileData.email}` }],
-        ...profileData.socialLinkList.map((s): OutputLine => [t(s.name.toLowerCase().padEnd(10), 'muted'), { kind: 'link', text: s.url, href: s.url }]),
+        [t('email     ', 'muted'), { kind: 'link', text: profile.email, href: `mailto:${profile.email}` }],
+        ...profile.socialLinkList.map((s): OutputLine => [t(s.name.toLowerCase().padEnd(10), 'muted'), { kind: 'link', text: s.url, href: s.url }]),
       ])
     },
   },

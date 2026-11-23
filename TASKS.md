@@ -8,7 +8,7 @@
 
 > **Urutan besar (disepakati):** Fondasi → Section publik → QA & Launch v1 → Backend Supabase → Pipeline publish → Admin Dashboard → V2.
 
-> **Target rilis berikutnya (disepakati): v1.1.0.** v1.0.0 sudah dirilis. Phase 15 (keamanan Supabase) dan Phase 16 (peningkatan di bawah) menjadi satu target rilis, dikerjakan satu sub-task per giliran. Perubahan dapat ditinjau lewat PR terpisah; tidak perlu digabung menjadi satu PR besar. Siapkan backup dan bukti pemulihan (Task 16.1) sebelum menerapkan perubahan database Phase 15. Blog, bilingual ID/EN, dark mode, dan PWA tetap backlog opsional di luar target ini.
+> **Target rilis berikutnya (disepakati): v1.1.0.** v1.0.0 sudah dirilis. Phase 15 (keamanan Supabase) dan Phase 16 (peningkatan di bawah) menjadi satu target rilis, dikerjakan satu sub-task per giliran. Perubahan dapat ditinjau lewat PR terpisah; tidak perlu digabung menjadi satu PR besar. Siapkan backup dan bukti pemulihan (Task 16.1) sebelum menerapkan perubahan database Phase 15. Bilingual Task 14.4 mulai dikerjakan atas permintaan eksplisit pemilik pada 24 November 2026, terkait pilihan bahasa Task 16.2. Blog, dark mode, dan PWA tetap backlog opsional di luar target ini.
 
 ---
 
@@ -213,7 +213,10 @@
 - [x] **Task 14.1:** Contact form → inbox admin (honeypot + rate limit di trigger DB). *Turnstile & notifikasi email: iterasi berikutnya.*
 - [x] **Task 14.2:** Analytics ringan & privacy-friendly: CV dibuka/diunduh, drawer proyek dibuka, top 10 perintah terminal.
 - [x] **Task 14.3:** Audit log perubahan konten (siapa, kapan, apa).
-- [ ] **Task 14.4:** (Opsional) Konten bilingual ID/EN.
+- [ ] **Task 14.4:** Konten bilingual ID/EN (diminta pemilik, 24 November 2026):
+  - Implementasi repository: tombol EN/ID di navbar desktop dan pengganti tombol CV di navbar tablet/HP (layout ringkas di bawah 1280px), state bahasa tersimpan lokal, `html.lang` sesuai pilihan, dan teks publik/terminal berasal dari sumber data lokal/CMS.
+  - JSONB konten menerima `translations` opsional per field dengan teks sumber serta nilai EN/ID; editor Profile & CV dan koleksi memakai save/publish yang ada. Terjemahan dari sumber lama diabaikan jika teks dasarnya berubah. ID, slug, tautan, nama resmi kredensial, teknologi, serta pilihan file CV dipertahankan.
+  - Build fallback, lint, dan 61 tes regresi lulus, termasuk render EN/ID, round-trip schema/publish, terjemahan usang, tautan/slug stabil, dan pemisahan CV/bahasa halaman. Pola statis tombol bahasa lolos; inspector visual tidak menemukan Chrome/Chromium dan Safari remote automation tidak aktif. QA browser 390px/768px/1024px/1440px, save/publish CMS serta verifikasi deployment aktif masih pending; jangan menganggap tes render sebagai bukti viewport.
 
 ---
 
@@ -275,8 +278,12 @@
   - [ ] Penguatan operasional: tujuan salinan tambahan belum dipilih dan jadwal rutin belum diaktifkan. Pengujian Supabase staging dengan layanan Auth/Storage serta akses CV/PDF aktual tetap diperlukan sebelum rollout Phase 15. Pisahkan penguatan ini dari kriteria awal Task 16.1 yang meminta backup, lokasi/jadwal/retensi dan bukti restore terisolasi; checklist induk belum diubah pada konfirmasi ini. Keberhasilan restore database/file lokal tidak dianggap sebagai QA layanan staging.
 - [ ] **Task 16.2:** Selesaikan audit kebenaran konten bersama Alfiz (lanjutan Task 5.4):
   - Konfirmasi stack/versi, peran, tanggal, metadata kredensial, dan tautan demo/repository; tandai klaim yang belum memiliki bukti untuk dikonfirmasi atau diperbaiki.
-  - Seragamkan konten publik ke bahasa yang disepakati; bilingual tetap Task 14.4, bukan prasyarat rilis ini.
+  - Bahasa publik disepakati EN/ID dengan tombol pengganti bahasa (24 November 2026); implementasi bilingual dicatat di Task 14.4. CV tetap berupa dua dokumen pemilik yang dipilih terpisah dari bahasa halaman.
   - Perbarui melalui sumber konten yang ada dan verifikasi snapshot publik setelah publish; jangan mengarang angka dampak atau menaruh konten di komponen.
+  - Audit awal (24 November 2026): konten published CMS identik dengan snapshot Git (4 proyek, 10 badge, 6 sertifikat, 10 pengalaman). Perbandingan empat repository proyek, CV, 10 halaman verifikasi publik Credly, lima PDF dan satu gambar sertifikat dicatat di [`docs/CONTENT-AUDIT.md`](./docs/CONTENT-AUDIT.md), termasuk perbedaan versi/peran/tanggal, klaim yang belum didukung, serta bahasa yang belum disepakati. Belum mengubah atau publish konten; Task 5.4/16.2 tetap terbuka sampai konfirmasi Alfiz, koreksi CMS, dan verifikasi konten aktif selesai.
+  - Sinkronisasi setelah PR #14 (24 November 2026): branch `feature/content-truth-audit` di-fast-forward ke `origin/dev` pada `ddc7ab7` setelah audit diamankan; pemulihan perubahan mempertahankan seluruh bukti Task 16.1 dan catatan audit tanpa konflik. Daftar koreksi berbukti dan pertanyaan F1–F8 ada di dokumen audit; belum memperbaiki atau publish konten CMS.
+  - Konfirmasi pemilik (24 November 2026): F2/F4/F5/F7/F8 dinyatakan sesuai; PHP SIA diingat sebagai 8.2 (sudah sama dengan CMS); demo SIA boleh ditautkan publik meski server sedang down. F1 diperjelas menjadi tombol EN/ID untuk pengunjung; F3 koreksi label Lazuardy dari TypeScript ke JavaScript disetujui. Konfirmasi pemilik dibedakan dari bukti implementasi/penerbit. CV dikelola terpisah dalam dua file milik pemilik. Koreksi JavaScript belum disimpan/publish ke CMS karena sesi ini hanya memiliki akses baca; snapshot tidak diubah secara terpisah.
+  - [ ] Dukungan dua CV Indonesia/Inggris (permintaan pemilik): implementasi repository memakai `resumeUrl` lama dan `resumeEnglishUrl` opsional pada JSONB profil, dua pemilih/unggahan PDF, Save profile → Publish, serta pemilih dokumen publik yang mengarahkan preview/open/download ke file sesuai bahasa. Profil lama tetap valid, tanpa terjemahan CV atau dependency/migrasi baru. Build fallback/lint dan 52 tes regresi lolos (termasuk empat tes CV). File Inggris aktual, save/publish, dan verifikasi browser 390px/1440px belum dilakukan; Safari WebDriver menolak sesi karena Allow remote automation tidak aktif, tanpa perubahan pengaturan browser.
 - [ ] **Task 16.3:** Perdalam studi kasus setiap proyek yang dipublikasikan:
   - Jelaskan masalah, kontribusi pribadi dan batas peran tim, keputusan teknis beserta alasannya, bukti implementasi, serta hasil yang bisa diverifikasi.
   - Kaitkan klaim teknis dengan repository, screenshot, diagram, atau pengujian yang relevan; gunakan hasil fungsional jika belum ada metrik terukur.

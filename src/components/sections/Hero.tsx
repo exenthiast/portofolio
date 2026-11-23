@@ -1,7 +1,7 @@
 import { useRef, useState, useEffect } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { ArrowDown, ArrowUpRight } from 'lucide-react'
-import { profileData } from '../../data/profile'
+import { usePublicContent } from '../../hooks/useLocale'
 import { Button } from '../ui/Button'
 import { TrafficLightDots } from '../ui/TrafficLightDots'
 import { HeroCard } from './HeroCard'
@@ -29,6 +29,7 @@ const MORPH_END = 0.58
 const HOLD_END = 0.88
 
 export function Hero({ onOpenCv }: HeroProps) {
+  const { profileData, copy } = usePublicContent()
   const [card1, card2, card3, card4] = profileData.heroCards
 
   const sectionRef = useRef<HTMLElement>(null)
@@ -273,7 +274,7 @@ export function Hero({ onOpenCv }: HeroProps) {
                 href="#projects"
                 iconRight={<ArrowDown className="w-4 h-4" />}
               >
-                See What I've Built
+                {copy.seeProjects}
               </Button>
 
               <Button
@@ -284,7 +285,7 @@ export function Hero({ onOpenCv }: HeroProps) {
                 target={onOpenCv ? undefined : '_blank'}
                 iconRight={<ArrowUpRight className="w-4 h-4" />}
               >
-                View CV
+                {copy.viewCv}
               </Button>
             </div>
           </motion.div>
@@ -428,7 +429,7 @@ export function Hero({ onOpenCv }: HeroProps) {
             iconRight={<ArrowDown className="w-4 h-4" />}
             className="w-full sm:w-auto"
           >
-            See What I've Built
+            {copy.seeProjects}
           </Button>
 
           <Button
@@ -440,7 +441,7 @@ export function Hero({ onOpenCv }: HeroProps) {
             iconRight={<ArrowUpRight className="w-4 h-4" />}
             className="w-full sm:w-auto"
           >
-            View CV
+            {copy.viewCv}
           </Button>
         </div>
 

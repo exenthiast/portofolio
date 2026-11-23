@@ -77,6 +77,50 @@ text, then **Save profile**. **Remove** hides the portrait. Publish when ready t
 update production. Both fields use the existing profile JSONB and media pipeline;
 no database migration is needed.
 
+**Two CV languages:** Profile & CV has separate **Indonesia** and **English**
+PDF selectors. Choose an existing PDF or upload your own file in each selector,
+then **Save profile → Publish**. Selecting a file now stages it with the other
+profile edits; it does not save the profile automatically. The existing
+`resumeUrl` remains the Indonesian document, and optional `resumeEnglishUrl`
+stores the English one in the same profile JSONB; no migration is required.
+Until an English file is supplied, the public viewer keeps the existing CV.
+After both are published, visitors can choose the document language independently
+of the page language; preview and download/open use that choice. **Remove English
+version** clears that profile link after save/publish and keeps the Indonesian
+PDF and Storage file intact. Previous PDF files can be assigned to either
+language; certificate PDFs remain excluded from that history. Deploy this schema
+and viewer support before saving/publishing the new English field; older builds
+do not preserve that field when parsing content. No English CV file is included
+or translated by the application.
+
+**Page translations:** Profile & CV and collection editors have a **Page
+translations** panel. EN/ID selects the text being edited; collection previews
+follow that selection without changing the admin page's language or saved
+visitor preference. **Use prepared translations** stages the existing audited
+copy in both languages; edit it as needed, then use the normal Save → Publish
+flow. Translations are optional JSONB data on the same CMS rows, so existing
+profiles/projects/credentials/experiences need no database migration.
+
+Each translated field records its original `source` text and optional `en`/`id`
+values. A translation applies only while its source matches the field. Changing
+the base text requires reviewing its translation again. The public site also
+has prepared translations in `src/data` keyed by exact source text; unfamiliar
+new text falls back to its base copy until you supply a translation. Official
+names, technology names, IDs/slugs, links, and CV files retain their originals.
+The terminal uses translated portfolio data while command names and file paths
+stay stable. Visitor language is stored in localStorage when available; CV
+document selection stays independent. This feature switches client-side text;
+it does not add separate language URLs or claim bilingual SEO/prerender coverage.
+
+Deploy the compatible schema/editor/viewer code before saving the new translation
+fields, since older builds strip unknown fields when parsing. Then review the
+publish diff and verify both languages on the actual deployment. Browser QA and
+live save/publish are pending in `TASKS.md`; tests use synthetic CMS responses.
+The owner-approved Lazuardy stack correction is **Projects → Bimbel Lazuardy →
+Tech stack: replace TypeScript with JavaScript → Save → Publish**. The operator
+session currently has public read access only, so that fact has not been changed
+in the CMS or generated snapshot independently.
+
 Experience entries have an optional **Organization logo** image field below
 **Period**. Choose an existing image or upload a new one, provide meaningful alt
 text, then save. The logo appears below the period in both the editor preview

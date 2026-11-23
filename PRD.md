@@ -156,6 +156,7 @@ graph TD
     - Logo dengan nama inisial, samping logo: "Alfiz Desta.", bawah nama: "Software Engineer".
     - Navigasi cepat: Overview, About, Projects, Experience, Badges , Contact.
     - CTA Button: Github, Linkedin.
+    - **Pilihan bahasa EN/ID (24 November 2026):** Pengunjung mengganti bahasa teks halaman melalui tombol EN/ID di navbar. Pada tablet/HP, tombol ini menggantikan shortcut CV; CV tetap diakses melalui hero. Layout navbar ringkas berlaku di bawah 1280px, termasuk tablet 1024px; desktop penuh tetap tersedia pada 1440px. Pilihan tersimpan di browser dan `html.lang` mengikuti bahasa. Terjemahan teks yang sama dapat dikelola di Profile & CV serta koleksi CMS memakai field JSONB `translations` opsional; Save → Publish tetap menjadi alurnya. Nama resmi kredensial, ID/slug, teknologi, URL dan file CV tidak diterjemahkan. Dua file CV dipilih secara independen.
 
 ### 4.2 Feature 4: Hero Section / Halaman Overview
     Tampilan dengan background berwarna putih, menampilkan 4 card dengan tema terminal mac neofetch di sisi pojok atas (kiri dan kanan), pojok
@@ -173,6 +174,7 @@ graph TD
     - **Action Buttons:** (dibawah nama besar)
       - Button 1: "See What I've Built" (scroll ke section project).
       - Button 2: "Download CV" (menampilkan live cv, ada tombol download cv jika user ingin melihat tampilan maksimal).
+    - **Dua versi CV (permintaan 24 November 2026):** Admin Profile & CV menyediakan pemilihan/unggahan PDF Indonesia dan Inggris secara terpisah. `resumeUrl` mempertahankan CV Indonesia yang ada; `resumeEnglishUrl` bersifat opsional dan memakai JSONB profil/pipeline media yang sama. Pilihan file baru berlaku setelah Save profile → Publish. Modal publik menyediakan pilihan bahasa jika kedua file tersedia; preview, Open PDF dan unduhan memakai file terpilih. Bahasa CV dipilih terpisah dari bahasa halaman; tidak menerjemahkan atau mengarang file Inggris. Profil lama tetap menampilkan CV yang ada.
 
     *Jika user scroll ke bawah, maka Card 4 akan bergerak menjadi besar menampilkan halaman about.
 

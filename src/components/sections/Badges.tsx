@@ -1,8 +1,7 @@
 import { useEffect, useId, useRef, useState, type KeyboardEvent } from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
 import { ArrowUpRight } from 'lucide-react'
-import { badgesData, certificatesData } from '../../data/badges'
-import { credentialTabs, credentialsCopy } from '../../data/credentials'
+import { usePublicContent } from '../../hooks/useLocale'
 import { on } from '../../lib/events'
 import { track } from '../../lib/analytics'
 import { Modal } from '../ui/Modal'
@@ -15,6 +14,7 @@ export function BadgeDetail({ badge }: { badge: Badge }) {
 }
 
 export function Badges() {
+  const { badgesData, certificatesData, credentialTabs, credentialsCopy } = usePublicContent()
   const [active, setActive] = useState<CredentialKind>('badge')
   const [selected, setSelected] = useState<Credential | null>(null)
   const reduce = useReducedMotion()
@@ -22,6 +22,7 @@ export function Badges() {
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([])
   const items = active === 'badge' ? badgesData : certificatesData
   const counts = { badge: badgesData.length, certificate: certificatesData.length }
+  const selectedCredential = selected ? [...badgesData, ...certificatesData].find((item) => item.id === selected.id) ?? selected : null
 
   const open = (credential: Credential) => {
     setSelected(credential)
@@ -39,7 +40,7 @@ export function Badges() {
       if (certificate) setSelected(certificate)
     })
     return () => { offBadge(); offCertificate() }
-  }, [])
+  }, [badgesData, certificatesData])
 
   const onKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
     const index = credentialTabs.findIndex((tab) => tab.id === active)
@@ -111,8 +112,8 @@ export function Badges() {
           )}
         </div>
       </div>
-      <Modal open={selected !== null} onOpenChange={(isOpen) => !isOpen && setSelected(null)} title={selected?.title ?? credentialsCopy.detailTitle} className={`${selected?.kind === 'certificate' ? 'max-w-4xl' : 'max-w-2xl'} p-6 sm:p-8`}>
-        {selected && <CredentialDetail credential={selected} />}
+      <Modal open={selectedCredential !== null} onOpenChange={(isOpen) => !isOpen && setSelected(null)} title={selectedCredential?.title ?? credentialsCopy.detailTitle} className={`${selectedCredential?.kind === 'certificate' ? 'max-w-4xl' : 'max-w-2xl'} p-6 sm:p-8`}>
+        {selectedCredential && <CredentialDetail credential={selectedCredential} />}
       </Modal>
     </section>
   )
