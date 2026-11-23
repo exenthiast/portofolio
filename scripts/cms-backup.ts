@@ -28,7 +28,7 @@ export type Inventory = z.infer<typeof inventorySchema>
 export function pg(name: string, args: string[], env: NodeJS.ProcessEnv = process.env): string {
   try {
     return execFileSync(env.PG_BIN ? path.join(env.PG_BIN, name) : name, args, {
-      env: { ...env, PGAPPNAME: 'portfolio-backup', PGOPTIONS: '-c default_transaction_read_only=on' },
+      env: { ...env, PGAPPNAME: 'portfolio-backup' },
       encoding: 'utf8', timeout: 300_000, maxBuffer: 64 * 1024 * 1024, stdio: ['ignore', 'pipe', 'pipe'],
     })
   } catch {
@@ -36,18 +36,23 @@ export function pg(name: string, args: string[], env: NodeJS.ProcessEnv = proces
   }
 }
 
+/** Poolers can discard startup PGOPTIONS; enforce read-only in SQL itself. */
+export function readSql(query: string, env: NodeJS.ProcessEnv = process.env): string {
+  return pg('psql', ['-X', '-w', '-qAt', '-v', 'ON_ERROR_STOP=1', '-c',
+    `begin isolation level repeatable read read only; set local statement_timeout = '30s'; ${query}; commit;`,
+  ], env)
+}
+
 /** Row fingerprints include drafts, inbox/audit history and managed Auth/Storage tables. */
 export function inventory(env: NodeJS.ProcessEnv = process.env): Inventory {
   const sql = `
-    begin isolation level repeatable read read only;
     select format('select %L as schema, %L as name, count(*)::float8 as rows, md5(coalesce(string_agg(h, chr(10) order by h collate "C"), %L)) as hash from (select md5(to_jsonb(t)::text) h from %I.%I t) row_hashes',
       schemaname, tablename, '', schemaname, tablename)
     from pg_tables where schemaname in ('public','portfolio_private','auth','storage')
-    order by schemaname collate "C", tablename collate "C";
-    commit;`
-  const queries = pg('psql', ['-X', '-qAt', '-v', 'ON_ERROR_STOP=1', '-c', sql], env).trim().split('\n').filter(Boolean)
-  const tables = queries.map((query) => JSON.parse(pg('psql', ['-X', '-qAt', '-v', 'ON_ERROR_STOP=1', '-c', `select row_to_json(r) from (${query}) r`], env)) as unknown)
-  const details = JSON.parse(pg('psql', ['-X', '-qAt', '-v', 'ON_ERROR_STOP=1', '-c', `
+    order by schemaname collate "C", tablename collate "C";`
+  const queries = readSql(sql, env).trim().split('\n').filter(Boolean)
+  const tables = queries.map((query) => JSON.parse(readSql(`select row_to_json(r) from (${query}) r`, env)) as unknown)
+  const details = JSON.parse(readSql(`
     select json_build_object(
       'roles', (select coalesce(json_agg(rolname order by rolname collate "C"), '[]') from pg_roles where rolname !~ '^pg_'),
       'buckets', (select coalesce(json_agg(json_build_object('id', id, 'public', public) order by id collate "C"), '[]') from storage.buckets),
@@ -57,7 +62,7 @@ export function inventory(env: NodeJS.ProcessEnv = process.env): Inventory {
         select data from public.profile union all select data from public.projects
         union all select data from public.badges union all select data from public.experiences
         union all select to_jsonb(m) from public.media m) d),
-      'mediaPaths', (select coalesce(json_agg(path order by path collate "C"), '[]') from public.media));`], env)) as Record<string, unknown>
+      'mediaPaths', (select coalesce(json_agg(path order by path collate "C"), '[]') from public.media));`, env)) as Record<string, unknown>
   return inventorySchema.parse({ ...details, tables })
 }
 

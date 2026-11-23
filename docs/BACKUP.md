@@ -65,6 +65,23 @@ credential-bearing connection URL on the command line. These scripts do not load
 the application `.env` automatically. Ensure the database connection belongs to
 the project specified by `BACKUP_SOURCE_URL`.
 
+Download the project CA certificate from **Database → Settings → SSL
+Configuration → Download certificate**. The local operator configuration uses
+`backups/prod-ca-2021.crt` through `PGSSLROOTCERT`, retaining
+`PGSSLMODE=verify-full`. `backups/.pgpass` contains the password; the ignored
+`.env.backup.local` contains exported connection parameters and that file's path.
+Load only the trusted local configuration into the shell that runs the commands:
+
+```sh
+source .env.backup.local
+```
+
+Inventory queries start an explicit `REPEATABLE READ READ ONLY` transaction with
+a 30-second statement timeout. Do not depend on startup `PGOPTIONS` for read-only
+enforcement: the observed session pooler did not apply that setting. Each query
+has its own transaction; a maintenance window still synchronizes the inventory,
+dump and file capture. `pg_dump` manages its own consistent read transaction.
+
 1. Pause CMS edits/uploads/deletes, publish jobs, public contact/analytics writes
    and Auth/account changes for the backup window. Keep the statically built
    portfolio and email fallback available. Arrange a maintenance window so no
@@ -148,18 +165,34 @@ drill. Actual disaster recovery needs a separately reviewed target/cutover plan.
 
 ## Evidence and remaining gate
 
-Repository tools/tests use synthetic principals/content and temporary databases.
-Production inspection above exported counts/metadata only. Local environment has
-public Supabase build credentials but no privileged PostgreSQL connection or
-private-bucket key; connected SQL tools are not a complete `pg_dump` transport.
-No production archive, off-device transfer, schedule or real Supabase restore has
-been performed. Task 16.1 and the Phase 15 rollout gate remain open until the owner
-records all of the following, without secrets:
+Repository regression tests use synthetic principals/content and temporary
+databases. On 23 November 2026 the owner supplied a local password file and the
+dashboard CA certificate. The operator connection reached PostgreSQL **17.12**
+through the session pooler with `verify-full`; an explicit read-only transaction
+reported `transaction_read_only=on`. Certificate/hostname verification covers
+client → pooler. The server's `pg_stat_ssl` value was false for the pooler's
+upstream session; that query does not establish end-to-end TLS.
+
+Privileged read-only inventory succeeded for 10 public CMS, 27 Auth and 10 Storage
+tables. All 50 files (10,437,676 bytes) and 101 current Storage URL references
+resolved against the catalog; no private bucket was present. This verifies
+metadata relationships, not HTTP file downloads or file bytes. Schema and role
+export commands also succeeded, writing only private local preflight artifacts
+under `backups/preflight-2026-11-23T07-34-20-152Z/` (`schema.sql`, `roles.sql`, with
+no role password hashes). No production rows/policies/settings were modified.
+
+Those schema/role artifacts are **not a complete production backup**: full row
+data and Storage file bytes have not been captured. The maintenance window is not
+yet arranged. No off-device transfer, schedule or real Supabase restore has been
+performed. The owner confirmed no second backup destination is available yet.
+Task 16.1 and the Phase 15 rollout gate remain open until all remaining evidence
+below is recorded, without secrets:
 
 | Evidence | Status |
 | --- | --- |
 | Repository backup + corruption/concurrent-write tests + isolated synthetic restore | See validation recorded in `TASKS.md` |
-| Production archive ID/time, source DB version, revision and maintenance window | Pending |
+| Production connection, explicit read-only access and schema/role export capability | Verified 23 November 2026, PostgreSQL 17.12; preflight only |
+| Complete production archive ID/time, revision and maintenance window | Pending |
 | Database tables/drafts/history, all Storage objects and reference/hash comparison | Pending real archive |
 | Encrypted second-copy location and successful verify | Pending owner location |
 | Isolated staging target, actual Storage/Auth/CV/PDF checks, measured RTO | Pending |
@@ -167,5 +200,6 @@ records all of the following, without secrets:
 
 References: [Supabase database backups](https://supabase.com/docs/guides/platform/backups),
 [Supabase backup and restore](https://supabase.com/docs/guides/platform/migrating-within-supabase/backup-restore),
+[Supabase SSL configuration](https://supabase.com/docs/guides/platform/ssl-enforcement),
 [PostgreSQL pg_dump](https://www.postgresql.org/docs/current/app-pgdump.html),
 [PostgreSQL pg_restore](https://www.postgresql.org/docs/current/app-pgrestore.html).

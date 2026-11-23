@@ -6,7 +6,7 @@ import { createServer } from 'node:http'
 import { tmpdir } from 'node:os'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { checkRelations, createBackup, objectFile, verifyBackup } from './cms-backup.ts'
+import { checkRelations, createBackup, objectFile, readSql, verifyBackup } from './cms-backup.ts'
 import { postgresBin, restoreDrill } from './cms-restore-drill.ts'
 
 const root = fileURLToPath(new URL('../', import.meta.url))
@@ -56,6 +56,12 @@ test('CMS dump and separate media restore preserve content relations in a new lo
     started = true
     file(path.join(root, 'supabase/tests/bootstrap.sql'))
     for (const name of readdirSync(path.join(root, 'supabase/migrations')).sort()) file(path.join(root, 'supabase/migrations', name))
+    await t.test('inventory transactions remain read-only without startup PGOPTIONS', () => {
+      assert.equal(sql('show default_transaction_read_only').trim(), 'off')
+      assert.equal(readSql("select current_setting('transaction_read_only')", env).trim(), 'on')
+      assert.throws(() => readSql("insert into public.admins(email) values ('readonly@example.test')", env), /psql failed/)
+      assert.equal(sql("select count(*) from public.admins where email = 'readonly@example.test'").trim(), '0')
+    })
     sql('alter table storage.objects add column metadata jsonb')
     sql("insert into storage.buckets(id,name,public) values ('private','private',false)")
     await new Promise<void>((resolve) => server.listen(0, '127.0.0.1', resolve))
