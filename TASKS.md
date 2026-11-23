@@ -261,12 +261,15 @@
 ---
 
 ## Phase 16: v1.1.0 — Kualitas Konten & Keandalan Operasional
-> Seluruh task berikut masih berupa rencana. Pertahankan arsitektur publik statis, sumber konten CMS yang ada, dan kompatibilitas fitur v1.0.0. Penambahan dependensi atau layanan baru yang memerlukannya tetap mengikuti persetujuan Alfiz; kredensial hanya di environment server.
+> Status implementasi repository dan bukti operasional dicatat terpisah; checklist induk hanya ditutup setelah seluruh bukti task terpenuhi. Pertahankan arsitektur publik statis, sumber konten CMS yang ada, dan kompatibilitas fitur v1.0.0. Penambahan dependensi atau layanan baru yang memerlukannya tetap mengikuti persetujuan Alfiz; kredensial hanya di environment server.
 
 - [ ] **Task 16.1:** Siapkan backup database dan media yang terbukti bisa dipulihkan:
   - Inventarisasi konten, schema/migrasi, dan file Storage yang perlu dicadangkan, termasuk CV, sertifikat, serta gambar; snapshot konten di Git bukan backup lengkap CMS.
   - Cadangkan file Storage secara terpisah karena backup database Supabase hanya menyertakan metadata file; tentukan lokasi salinan, jadwal, dan retensi sesuai kebutuhan.
   - Dokumentasikan dan uji pemulihan di lingkungan terisolasi; buktikan relasi konten dan file kembali berfungsi tanpa menimpa production.
+  - [x] Persiapan repository (23 November 2026): `scripts/cms-backup.ts` untuk dump database/schema/roles tanpa password, salinan seluruh objek Storage dengan checksum, aset lokal/migrasi/snapshot, dan penolakan data berubah/referensi media hilang; `scripts/cms-restore-drill.ts` memulihkan hanya ke cluster PostgreSQL lokal baru dan membandingkan data serta pengiriman byte media. Panduan inventaris, lokasi salinan, jadwal/retensi, dan staging ada di [`docs/BACKUP.md`](./docs/BACKUP.md). Tidak menambah dependensi atau mengubah UI.
+  - [x] Bukti lokal: `npm run build`, `npm run lint`, dan `node --test scripts/*.test.ts` lolos (46 tes, tanpa skip). Restore sintetis mempertahankan draft/published, inbox/audit/publish history, metadata Storage, serta 6 file public/private (WebP, PDF CV/sertifikat, SVG, dan file belum tertaut). Salinan rusak/tidak lengkap, unduhan gagal, dan perubahan data saat backup ditolak. Peringatan ukuran chunk PDF yang sudah ada tetap tercatat; tes ini tidak membuktikan Auth/Storage production atau QA browser staging.
+  - [ ] Bukti operasional: koneksi PostgreSQL privat dan maintenance window belum disiapkan; belum ada arsip production, salinan terenkripsi kedua, aktivasi jadwal, atau restore Supabase staging dengan akses CV/PDF/Auth/Storage aktual. Inventaris baca-saja production: 10 tabel CMS, 50 objek/10.437.676 byte, termasuk 5 PDF dan 1 SVG. Task 16.1 dan gate penerapan Phase 15 tetap terbuka.
 - [ ] **Task 16.2:** Selesaikan audit kebenaran konten bersama Alfiz (lanjutan Task 5.4):
   - Konfirmasi stack/versi, peran, tanggal, metadata kredensial, dan tautan demo/repository; tandai klaim yang belum memiliki bukti untuk dikonfirmasi atau diperbaiki.
   - Seragamkan konten publik ke bahasa yang disepakati; bilingual tetap Task 14.4, bukan prasyarat rilis ini.
