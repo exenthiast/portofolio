@@ -6,13 +6,40 @@ import { createServer } from 'node:http'
 import { tmpdir } from 'node:os'
 import path from 'node:path'
 import { pathToFileURL } from 'node:url'
-import { checkRelations, inventory, objectFile, verifyBackup } from './cms-backup.ts'
+import { checkRelations, inventory, objectFile, verifyBackup, type Inventory } from './cms-backup.ts'
 
 export function postgresBin(): string {
   const candidates = [process.env.PG_BIN, '/Library/PostgreSQL/18/bin', '/opt/homebrew/opt/postgresql@18/bin', '/usr/lib/postgresql/18/bin', '/usr/lib/postgresql/17/bin']
   const bin = candidates.find((dir) => dir && existsSync(path.join(dir, 'initdb')))
   if (!bin) throw new Error('Set PG_BIN to an installed PostgreSQL 17+ bin directory')
   return bin
+}
+
+export async function verifyMediaDelivery(dir: string, data: Inventory): Promise<void> {
+  const server = createServer((request, response) => {
+    const object = data.objects.find((item) =>
+      request.url === `/${[item.bucket, ...item.name.split('/')].map(encodeURIComponent).join('/')}`)
+    if (!object) { response.writeHead(404).end(); return }
+    response.setHeader('Content-Type', object.mime)
+    response.end(readFileSync(path.join(dir, objectFile(object.bucket, object.name))))
+  })
+  try {
+    await new Promise<void>((resolve, reject) => {
+      server.once('error', reject)
+      server.listen(0, '127.0.0.1', resolve)
+    })
+    const address = server.address()
+    if (!address || typeof address === 'string') throw new Error('Local media server unavailable')
+    for (const object of data.objects) {
+      const key = [object.bucket, ...object.name.split('/')].map(encodeURIComponent).join('/')
+      const response = await fetch(`http://127.0.0.1:${address.port}/${key}`, { signal: AbortSignal.timeout(10_000) })
+      assert.equal(response.status, 200)
+      assert.equal(response.headers.get('content-type'), object.mime)
+      assert.deepEqual(Buffer.from(await response.arrayBuffer()), readFileSync(path.join(dir, objectFile(object.bucket, object.name))))
+    }
+  } finally {
+    if (server.listening) await new Promise<void>((resolve) => { server.close(() => resolve()); server.closeAllConnections() })
+  }
 }
 
 export async function restoreDrill(dir: string): Promise<{ tables: number; objects: number; references: number }> {
@@ -30,13 +57,6 @@ export async function restoreDrill(dir: string): Promise<{ tables: number; objec
   }
   const data = path.join(scratch, 'data')
   let started = false
-  const server = createServer((request, response) => {
-    const object = manifest.inventory.objects.find((item) =>
-      request.url === `/${[item.bucket, ...item.name.split('/')].map(encodeURIComponent).join('/')}`)
-    if (!object) { response.writeHead(404).end(); return }
-    response.setHeader('Content-Type', object.mime)
-    response.end(readFileSync(path.join(dir, objectFile(object.bucket, object.name))))
-  })
   try {
     run('initdb', ['-D', data, '-U', 'postgres', '--auth=trust', '--no-locale', '-E', 'UTF8'])
     // Scratch path comes from tmpdir/mkdtemp, quoted for PostgreSQL's option parser.
@@ -51,24 +71,10 @@ export async function restoreDrill(dir: string): Promise<{ tables: number; objec
     const restored = inventory(env)
     assert.deepEqual(restored, manifest.inventory, 'Restored rows, drafts, history or Storage metadata differ')
     const references = checkRelations(manifest.source, restored)
-    // Exercise byte delivery locally, with the original object key and MIME type.
-    await new Promise<void>((resolve, reject) => {
-      server.once('error', reject)
-      server.listen(0, '127.0.0.1', resolve)
-    })
-    const address = server.address()
-    if (!address || typeof address === 'string') throw new Error('Local media server unavailable')
-    for (const object of restored.objects) {
-      const key = [object.bucket, ...object.name.split('/')].map(encodeURIComponent).join('/')
-      const response = await fetch(`http://127.0.0.1:${address.port}/${key}`, { signal: AbortSignal.timeout(10_000) })
-      assert.equal(response.status, 200)
-      assert.equal(response.headers.get('content-type'), object.mime)
-      assert.deepEqual(Buffer.from(await response.arrayBuffer()), readFileSync(path.join(dir, objectFile(object.bucket, object.name))))
-    }
+    await verifyMediaDelivery(dir, restored)
     return { tables: restored.tables.length, objects: restored.objects.length, references }
   } finally {
     try {
-      if (server.listening) await new Promise<void>((resolve) => { server.close(() => resolve()); server.closeAllConnections() })
       if (started) run('pg_ctl', ['-D', data, '-m', 'immediate', '-w', 'stop'])
     } finally {
       rmSync(scratch, { recursive: true, force: true })

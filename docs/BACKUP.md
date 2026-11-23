@@ -82,6 +82,41 @@ enforcement: the observed session pooler did not apply that setting. Each query
 has its own transaction; a maintenance window still synchronizes the inventory,
 dump and file capture. `pg_dump` manages its own consistent read transaction.
 
+### Maintenance runner
+
+For an owner-authorized maintenance window, use the runner that actually holds
+temporary database locks, rather than declaring the pause by setting a flag:
+
+```sh
+source .env.backup.local
+node scripts/cms-backup-maintenance.ts backups/<new-UTC-archive-id>
+```
+
+It acquires `SHARE` locks in one transaction on application, Auth and Storage
+tables, allowing reads while writes wait or hit their client timeout. Ask the
+owner to stop edits/uploads/publish/sign-in first; no Storage file overwrite or
+delete should run during capture. It does not deploy a maintenance notice, change
+policies/grants, or run migrations. Lock acquisition uses `NOWAIT` so a conflicting
+writer causes an immediate failure. PostgreSQL enforces an eight-minute maximum
+transaction lifetime; success, failure or connection close rolls back the guard
+transaction and releases its locks. The completed backup is certified only if
+the guard still holds its locks at the end. Loss of the guard renames a completed
+manifest to `manifest.uncertified.json`; the ordinary verify command rejects it.
+
+The observed hosted `postgres` role cannot lock four provider-managed tables:
+`auth.schema_migrations`, `storage.migrations`, `storage.buckets_vectors` and
+`storage.vector_indexes`. Those four are deliberately excluded from application
+locks; their row fingerprints are still captured and compared before/after.
+Do not run platform migrations or vector-bucket changes during the window.
+Unexpected lock-privilege failures abort rather than silently skip more tables.
+This is a supervised maintenance capture, not an atomic PostgreSQL/S3 snapshot.
+The normal before/after check still rejects changed rows/metadata and missing
+files. Public requests attempted during the pause can time out; preserve the
+email fallback and arrange the window accordingly.
+
+For an externally managed pause, the lower-level `cms-backup.ts create` command
+still supports the following procedure:
+
 1. Pause CMS edits/uploads/deletes, publish jobs, public contact/analytics writes
    and Auth/account changes for the backup window. Keep the statically built
    portfolio and email fallback available. Arrange a maintenance window so no
@@ -163,6 +198,33 @@ content snapshot, archive and deployment identity. Never use `seed.sql` as a
 production recovery mechanism and never restore a dump over production during a
 drill. Actual disaster recovery needs a separately reviewed target/cutover plan.
 
+### Production archive with Supabase extensions
+
+Use the compatible Supabase PostgreSQL runtime for production archives. The
+container runner uses a fresh cluster, a read-only archive mount, no network and
+no published ports. It compares all inventoried database rows/metadata and uses
+the same loopback byte/MIME checks as the native drill. It never accepts a remote
+database target or forwards source connection variables/password files.
+
+```sh
+docker pull supabase/postgres:17.12.0.002
+node scripts/cms-restore-container.ts backups/<archive-id>
+```
+
+The code pins the tested image digest, not the mutable tag. A production source
+on PostgreSQL 17.12 emits `pg_attver` column metadata when dumped by the installed
+older client; the old 17.6 image rejects it. Keep the archive intact and restore
+with the compatible 17.12 runtime. Do not remove metadata to conceal restore
+errors. Container removal and temporary-cluster cleanup run on success/failure;
+private failure diagnostics remain under the ignored backup directory. Role names
+are recreated without production logins/passwords. Source superuser owners (needed
+for event triggers) retain that attribute only inside the network-disabled local
+cluster, based on declarative `ALTER ROLE ... WITH SUPERUSER` entries in
+`roles.sql`. The source role SQL/configuration is never executed wholesale.
+Other role attributes/memberships,
+real Google Auth/Storage service behavior and encryption-key recovery remain
+separate checks; a successful database restore does not certify those services.
+
 ## Evidence and remaining gate
 
 Repository regression tests use synthetic principals/content and temporary
@@ -181,19 +243,60 @@ export commands also succeeded, writing only private local preflight artifacts
 under `backups/preflight-2026-11-23T07-34-20-152Z/` (`schema.sql`, `roles.sql`, with
 no role password hashes). No production rows/policies/settings were modified.
 
-Those schema/role artifacts are **not a complete production backup**: full row
-data and Storage file bytes have not been captured. The maintenance window is not
-yet arranged. No off-device transfer, schedule or real Supabase restore has been
-performed. The owner confirmed no second backup destination is available yet.
-Task 16.1 and the Phase 15 rollout gate remain open until all remaining evidence
-below is recorded, without secrets:
+### Production capture and isolated database/file recovery
+
+Alfiz authorized maintenance immediately on 23 November 2026. Complete capture
+ran from **09:31:05 to 09:35:43 UTC** (16:31–16:35 WIB, 278.4 seconds including
+verification). The guard acquired application locks, captured and compared all
+47 inventoried tables (including the four unlocked provider-managed tables), and
+confirmed the locks still existed at completion. Its connection then rolled back
+and closed. A subsequent activity check found no maintenance transaction.
+Production reads remained available; no rows, policies, grants or migrations were
+changed. The first lock attempt had failed on managed-table privileges and closed
+without changing anything; it produced no certified archive.
+
+| Archive evidence | Observed result |
+| --- | --- |
+| Private local directory | `backups/production-2026-11-23T09-31-05-440Z/` |
+| Captured repository revision | `8712da2697a491b5daa05f3a6ca5b263421ab64f` |
+| Database custom archive | 541,384 bytes, plus schema SQL and role SQL without password hashes |
+| Inventoried rows/metadata | All 47 public/Auth/Storage tables, including CMS drafts and history |
+| Storage files | 50 objects, 10,437,676 bytes: 44 WebP, 5 PDF, 1 SVG |
+| File inventory | 71 checksummed artifacts including local assets, migrations and fallback snapshot |
+| Current Storage URL references | 101, all resolved against captured object keys |
+| Manifest SHA-256 | `91e5a33ca58f8b7ba65ee5e80345ac391550373724a386712d54240727956467` |
+| Private capture receipt | `backups/production-2026-11-23T09-31-05-440Z-receipt.json` |
+
+The original archive was restored successfully into a fresh Supabase PostgreSQL
+17.12 container with no network, no published ports and a read-only archive
+mount. Every inventoried table's row count/fingerprint and captured documents
+matched, all 101 media references resolved, and all 50 files passed loopback HTTP
+byte/MIME comparisons. The temporary container was removed. The image digest is
+`sha256:0b64586fb84124b9070525a6528616594a1aa84a75d84cd4c3d43acc8de3ba92`.
+The restore runner saves a private JSON proof (including actual server version and
+local drill duration) alongside the archive; this duration is not a production
+recovery-time guarantee. The older 17.6 runtime had rejected `pg_attver`, and the
+first 17.12 attempt revealed the event-trigger-owner requirement above. Neither
+failure was ignored or repaired by editing the archive.
+
+Final proof: `backups/restore-proof-ae89acf3-595d-4ef3-9eca-edf6f0320201.json`
+records PostgreSQL 17.12, a 122.3-second successful local drill (excluding image
+downloads/earlier attempts), and comparison/cleanup from the final runner.
+This proof and the actual archive stay outside Git; only this summary,
+the runbook and tooling are committed.
+
+The local archive is access-restricted and ignored by Git. Volume encryption was
+not established by the available host check. No off-device transfer, recurring
+schedule or real Supabase Auth/Storage-service restore has been performed. The
+owner confirmed no second backup destination is available yet. Task 16.1 and the
+Phase 15 rollout gate remain open pending the remaining evidence below:
 
 | Evidence | Status |
 | --- | --- |
 | Repository backup + corruption/concurrent-write tests + isolated synthetic restore | See validation recorded in `TASKS.md` |
 | Production connection, explicit read-only access and schema/role export capability | Verified 23 November 2026, PostgreSQL 17.12; preflight only |
-| Complete production archive ID/time, revision and maintenance window | Pending |
-| Database tables/drafts/history, all Storage objects and reference/hash comparison | Pending real archive |
+| Complete production archive ID/time, revision and maintenance window | Verified; archive and receipt above |
+| Database tables/drafts/history, all Storage objects and reference/hash comparison | Verified from the real archive in isolated PostgreSQL 17.12 and local HTTP delivery |
 | Encrypted second-copy location and successful verify | Pending owner location |
 | Isolated staging target, actual Storage/Auth/CV/PDF checks, measured RTO | Pending |
 | Daily schedule, retained-copy inventory and failure alert recipient | Policy documented; activation pending |
@@ -201,5 +304,7 @@ below is recorded, without secrets:
 References: [Supabase database backups](https://supabase.com/docs/guides/platform/backups),
 [Supabase backup and restore](https://supabase.com/docs/guides/platform/migrating-within-supabase/backup-restore),
 [Supabase SSL configuration](https://supabase.com/docs/guides/platform/ssl-enforcement),
+[Supabase PostgreSQL 17.12 release](https://github.com/supabase/postgres/releases/tag/17.12.0.002),
+[PostgreSQL table locks](https://www.postgresql.org/docs/17/explicit-locking.html),
 [PostgreSQL pg_dump](https://www.postgresql.org/docs/current/app-pgdump.html),
 [PostgreSQL pg_restore](https://www.postgresql.org/docs/current/app-pgrestore.html).

@@ -8,12 +8,14 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { checkRelations, createBackup, objectFile, readSql, verifyBackup } from './cms-backup.ts'
 import { postgresBin, restoreDrill } from './cms-restore-drill.ts'
+import { createMaintenanceBackup, withWritePause } from './cms-backup-maintenance.ts'
 
 const root = fileURLToPath(new URL('../', import.meta.url))
 const literal = (value: string) => `'${value.replace(/'/g, "''")}'`
 
 test('backup refuses unpaused writers and missing database configuration', async () => {
   await assert.rejects(createBackup('/unused', {}), /PGHOST/)
+  await assert.rejects(createMaintenanceBackup('/unused', {}), /PGHOST/)
   await assert.rejects(createBackup('/unused', { PGHOST: 'unused' }), /Pause all writers/)
   await assert.rejects(createBackup('/unused', { PGHOST: 'unused', BACKUP_WRITES_PAUSED: 'yes', BACKUP_SOURCE_URL: 'https://user:secret@example.test' }), /HTTPS origin/)
 })
@@ -62,6 +64,22 @@ test('CMS dump and separate media restore preserve content relations in a new lo
       assert.throws(() => readSql("insert into public.admins(email) values ('readonly@example.test')", env), /psql failed/)
       assert.equal(sql("select count(*) from public.admins where email = 'readonly@example.test'").trim(), '0')
     })
+    await t.test('maintenance allows reads, blocks other writers and releases locks on success/failure', async () => {
+      sql('create table auth.schema_migrations(id integer)')
+      await withWritePause(env, async () => {
+        assert.equal(sql('select count(*) from public.admins').trim(), '0')
+        assert.throws(() => sql("set lock_timeout='100ms'; insert into public.admins(email) values ('paused@example.test')"), /lock timeout/)
+        // Supabase-managed migration tables remain outside application locks.
+        sql("set lock_timeout='100ms'; insert into auth.schema_migrations values (1)")
+      })
+      sql("insert into public.admins(email) values ('resumed@example.test'); delete from public.admins where email='resumed@example.test'")
+      await assert.rejects(withWritePause(env, async () => { throw new Error('Synthetic capture failure') }), /Synthetic capture failure/)
+      sql("insert into public.admins(email) values ('after-failure@example.test'); delete from public.admins where email='after-failure@example.test'")
+      await assert.rejects(withWritePause(env, async () => {
+        sql("select pg_terminate_backend(pid) from pg_stat_activity where application_name like 'portfolio-backup-%' and pid<>pg_backend_pid()")
+      }), /Maintenance locks were lost/)
+      sql("insert into public.admins(email) values ('after-loss@example.test'); delete from public.admins where email='after-loss@example.test'")
+    })
     sql('alter table storage.objects add column metadata jsonb')
     sql("insert into storage.buckets(id,name,public) values ('private','private',false)")
     await new Promise<void>((resolve) => server.listen(0, '127.0.0.1', resolve))
@@ -100,6 +118,8 @@ test('CMS dump and separate media restore preserve content relations in a new lo
 
     await t.test('refuses incomplete copies, missing references and overwritten directories', async () => {
       await assert.rejects(createBackup(backup, access), /EEXIST/)
+      await assert.rejects(createMaintenanceBackup(backup, access), /already exists/)
+      verifyBackup(backup)
       assert.throws(() => checkRelations(source, { ...manifest.inventory, objects: [] }), /no Storage object/)
       const documents = [{ url: `${source}/storage/v1/object/public/media/deleted.pdf` }]
       assert.throws(() => checkRelations(source, { ...manifest.inventory, documents }), /missing Storage object/)
