@@ -34,11 +34,17 @@ the repository ignores `backups/`, `*.dump` and `*.backup`. The CLI creates priv
 directories/files and never prints rows or credentials. Dumps include personal
 messages and Auth data: Git ignore is not encryption or an off-device copy.
 
-Before closing Task 16.1, Alfiz must record an actual second location: an existing
-encrypted external disk or private encrypted backup destination, with access and
-recovery keys stored separately. No new service is provisioned by these scripts.
-Copy the complete directory, verify its checksums at the second location, and
-record only a non-secret archive identifier in the evidence log.
+The production database/Storage live in Supabase; the verified archive lives on
+the owner's Mac, already separate from production. A second independent backup
+copy is a recommended additional safeguard. The original Task 16.1 checklist does
+not require buying an external disk or a particular storage product; the earlier
+runbook incorrectly made that an unconditional completion gate. The owner
+confirmed on 24 November 2026 that no external disk is available. An encrypted
+archive in an existing private cloud account can also serve as an additional
+copy once the owner selects a destination. No destination has been selected and
+no upload or new service is authorized by this note. Keep recovery keys separate
+from the copy, transfer the complete archive and verify its checksums at the
+destination; record only a non-secret archive identifier in the evidence log.
 
 Operational policy to activate: daily backup at 02:00 WIB; also immediately before
 database/Storage changes. Retain 7 daily and 4 weekly verified copies and the latest
@@ -285,11 +291,16 @@ downloads/earlier attempts), and comparison/cleanup from the final runner.
 This proof and the actual archive stay outside Git; only this summary,
 the runbook and tooling are committed.
 
-The local archive is access-restricted and ignored by Git. Volume encryption was
-not established by the available host check. No off-device transfer, recurring
-schedule or real Supabase Auth/Storage-service restore has been performed. The
-owner confirmed no second backup destination is available yet. Task 16.1 and the
-Phase 15 rollout gate remain open pending the remaining evidence below:
+The local archive is access-restricted and ignored by Git. On **24 November 2026**,
+Alfiz confirmed that macOS Settings shows **FileVault On**. This is owner-reported
+UI evidence; the earlier CLI volume check failed and has not independently
+verified that status. Encryption confirmation is no longer awaiting the owner.
+No off-device archive transfer, recurring schedule or real Supabase Auth/Storage
+service restore has been performed. No second backup destination is available
+yet. The Task 16.1 parent remains open in `TASKS.md`; additional-copy planning,
+scheduler activation and full staging-service QA must be distinguished from its
+original backup/isolated-restore acceptance conditions. Real-service staging QA
+is still required before Phase 15 rollout. The evidence and follow-ups are:
 
 | Evidence | Status |
 | --- | --- |
@@ -297,7 +308,8 @@ Phase 15 rollout gate remain open pending the remaining evidence below:
 | Production connection, explicit read-only access and schema/role export capability | Verified 23 November 2026, PostgreSQL 17.12; preflight only |
 | Complete production archive ID/time, revision and maintenance window | Verified; archive and receipt above |
 | Database tables/drafts/history, all Storage objects and reference/hash comparison | Verified from the real archive in isolated PostgreSQL 17.12 and local HTTP delivery |
-| Encrypted second-copy location and successful verify | Pending owner location |
+| Local Mac FileVault status | On, owner-confirmed 24 November 2026; earlier CLI verification unavailable |
+| Additional encrypted backup copy and successful verify | Recommended follow-up; destination pending, no external disk available |
 | Isolated staging target, actual Storage/Auth/CV/PDF checks, measured RTO | Pending |
 | Daily schedule, retained-copy inventory and failure alert recipient | Policy documented; activation pending |
 
