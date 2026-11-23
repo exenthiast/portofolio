@@ -2,13 +2,10 @@ import { useState, useEffect, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import type { Transition } from 'framer-motion'
 import { ArrowUpRight, Menu, X } from 'lucide-react'
-import { profileData } from '../../data/profile'
+import { usePublicContent } from '../../hooks/useLocale'
 import { Button } from '../ui/Button'
 import { NavbarBrand } from '../ui/NavbarBrand'
-
-interface NavbarProps {
-  onOpenCv?: () => void
-}
+import { LanguageToggle } from '../ui/LanguageToggle'
 
 const navbarSpring: Transition = {
   type: 'spring',
@@ -16,7 +13,8 @@ const navbarSpring: Transition = {
   damping: 30,
 }
 
-export function Navbar({ onOpenCv }: NavbarProps) {
+export function Navbar() {
+  const { profileData, copy } = usePublicContent()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
   const [activeSection, setActiveSection] = useState('#overview')
@@ -106,15 +104,15 @@ export function Navbar({ onOpenCv }: NavbarProps) {
           href="#overview"
           onClick={() => setActiveSection('#overview')}
           className="flex items-center gap-2.5 sm:gap-3 group focus-visible:outline-2 focus-visible:outline-[var(--accent)] rounded-lg p-1 -m-1"
-          aria-label="Alfiz Desta Home"
+          aria-label={`${profileData.firstName} ${copy.home}`}
         >
           <NavbarBrand firstName={profileData.firstName} title={profileData.title} logo={profileData.navbarLogo} />
         </a>
 
         {/* Center: Navigation Links with Active Gray Capsule */}
         <nav
-          className="hidden lg:flex items-center gap-1 p-1 rounded-full"
-          aria-label="Main Navigation"
+          className="hidden xl:flex items-center gap-1 p-1 rounded-full"
+          aria-label={copy.navigation}
         >
           {profileData.navLinks.map((link) => {
             const isActive = activeSection === link.href
@@ -145,7 +143,8 @@ export function Navbar({ onOpenCv }: NavbarProps) {
         </nav>
 
         {/* Right: Quick Action CTAs (Desktop) */}
-        <div className="hidden lg:flex items-center gap-2">
+        <div className="hidden xl:flex items-center gap-2">
+          <LanguageToggle />
           <Button
             variant="ghost"
             size="sm"
@@ -168,23 +167,14 @@ export function Navbar({ onOpenCv }: NavbarProps) {
           </Button>
         </div>
 
-        {/* Mobile Right: CV Quick Button + Menu Toggle */}
-        <div className="flex lg:hidden items-center gap-1.5">
-          <Button
-            variant="secondary"
-            size="sm"
-            onClick={onOpenCv}
-            href={onOpenCv ? undefined : profileData.resumeUrl}
-            target={onOpenCv ? undefined : '_blank'}
-            iconRight={<ArrowUpRight className="w-3 h-3" />}
-          >
-            CV
-          </Button>
+        {/* Tablet/mobile: page language replaces the former CV shortcut. */}
+        <div className="flex xl:hidden items-center gap-1.5">
+          <LanguageToggle />
           <button
             type="button"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="p-1.5 text-[var(--ink)] hover:bg-slate-100 rounded-lg focus-visible:outline-2 focus-visible:outline-[var(--accent)]"
-            aria-label={mobileMenuOpen ? 'Close Menu' : 'Open Menu'}
+            aria-label={mobileMenuOpen ? copy.closeMenu : copy.openMenu}
             aria-expanded={mobileMenuOpen}
           >
             {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -200,7 +190,7 @@ export function Navbar({ onOpenCv }: NavbarProps) {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.2 }}
-            className={`pointer-events-auto lg:hidden bg-[#ffffff]/95 backdrop-blur-md border border-slate-200/80 shadow-lg px-5 py-4 space-y-2 w-full ${
+            className={`pointer-events-auto xl:hidden bg-[#ffffff]/95 backdrop-blur-md border border-slate-200/80 shadow-lg px-5 py-4 space-y-2 w-full ${
               isScrolled
                 ? 'max-w-sm mx-auto mt-2 rounded-2xl'
                 : 'border-t-0 border-x-0 border-b border-slate-200/80'

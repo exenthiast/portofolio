@@ -11,9 +11,14 @@ import { ProjectCaseStudy } from '../../components/sections/ProjectDrawer'
 import { CredentialDetail } from '../../components/sections/CredentialDetail'
 import { credentialsCopy } from '../../data/credentials'
 import { ExperienceEntry } from '../../components/sections/Experience'
+import { TranslationFields } from '../components/TranslationFields'
+import type { Translations } from '../../schemas/content'
+import { LocaleProvider } from '../../hooks/useLocale'
+import { localizeDocument } from '../../data/localization'
+import type { Locale } from '../../types/locale'
 import type { Credential, Experience, ExperiencePhoto, ImageAsset, Project } from '../../types'
 
-type AnyDoc = { id: string }
+type AnyDoc = { id: string; translations?: Translations }
 
 const draftKey = (collection: string, id: string) => `admin-draft:${collection}:${id}`
 
@@ -54,7 +59,8 @@ function Field({ field, doc, error, onChange }: { field: FieldDef; doc: AnyDoc; 
   }
 }
 
-function Preview({ collection, doc }: { collection: string; doc: AnyDoc }) {
+function Preview({ collection, doc: source, locale }: { collection: string; doc: AnyDoc; locale: Locale }) {
+  const doc = localizeDocument(source, locale)
   // Previews reuse the real public components, so what you see is what ships.
   if (collection === 'projects') return <ProjectCaseStudy project={doc as Project} />
   if (collection === 'badges') {
@@ -89,6 +95,7 @@ export function CollectionEditor() {
   const [showErrors, setShowErrors] = useState(false)
   const [restorable, setRestorable] = useState<AnyDoc | null>(null)
   const [preview, setPreview] = useState(true)
+  const [previewLocale, setPreviewLocale] = useState<Locale>('id')
 
   // Load
   useEffect(() => {
@@ -257,12 +264,15 @@ export function CollectionEditor() {
           {def.fields.filter((field) => !field.credentialKind || field.credentialKind === (getAt(doc, 'kind') ?? 'badge')).map((f) => (
             <Field key={f.path} field={f} doc={doc} error={showErrors ? errors[f.path] : undefined} onChange={onChange} />
           ))}
+          <TranslationFields document={doc} value={doc.translations} onChange={(value) => onChange('translations', value)} onLocaleChange={setPreviewLocale} />
         </form>
         {preview && (
           <aside aria-label="Live preview" className="hidden xl:block">
             <div className="sticky top-20 max-h-[calc(100dvh-6rem)] overflow-y-auto rounded-2xl bg-[var(--surface)] p-6">
               <p className="mb-4 font-mono text-xs text-[var(--ink-secondary)]">live preview · real public component</p>
-              {validation?.success ? <Preview collection={collection} doc={validation.data} /> : <Preview collection={collection} doc={doc} />}
+              <LocaleProvider key={previewLocale} initialLocale={previewLocale}>
+                <Preview collection={collection} doc={validation?.success ? validation.data : doc} locale={previewLocale} />
+              </LocaleProvider>
             </div>
           </aside>
         )}

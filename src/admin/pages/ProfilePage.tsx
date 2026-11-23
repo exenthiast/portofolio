@@ -4,6 +4,8 @@ import { profileSchema, type Credential, type ProfileContent } from '../../schem
 import { content as bundled } from '../../data/content'
 import { aboutContent } from '../../data/about'
 import { navbarBrandContent } from '../../data/branding'
+import { cvContent, cvLanguages, getCvDocuments } from '../../data/cv'
+import type { CvLanguage } from '../../types/profile'
 import { NavbarBrand } from '../../components/ui/NavbarBrand'
 import { repo } from '../lib/repo'
 import { usePending } from '../lib/pending'
@@ -13,6 +15,7 @@ import { useToast } from '../components/Toast'
 import { Btn, Card, ErrorNote, PageHeader, Skeleton } from '../components/ui'
 import { timeAgo } from '../lib/time'
 import { ImageField, MediaPicker, TextArea, TextField } from '../components/Fields'
+import { TranslationFields } from '../components/TranslationFields'
 
 export function ProfilePage() {
   const toast = useToast()
@@ -25,7 +28,7 @@ export function ProfilePage() {
   }, [])
   const [edited, setDoc] = useState<ProfileContent | null>(null)
   const [saving, setSaving] = useState(false)
-  const [pickCv, setPickCv] = useState(false)
+  const [pickCv, setPickCv] = useState<CvLanguage | null>(null)
 
   // Local edits win; otherwise show the DB row (or the bundled snapshot before the first save).
   const doc = edited ?? data?.data ?? (loading ? null : bundled.profile)
@@ -63,12 +66,15 @@ export function ProfilePage() {
     await save(next)
   }
 
-  const applyCv = async (row: MediaRow) => {
-    const next = { ...doc, resumeUrl: row.url }
-    setDoc(next)
-    await save(next)
+  const applyCv = (row: MediaRow, language: CvLanguage) => {
+    if (row.mime !== 'application/pdf') throw new Error(cvContent.pdfRequired)
+    const key = language === 'id' ? 'resumeUrl' : 'resumeEnglishUrl'
+    setDoc((previous) => ({ ...(previous ?? doc), [key]: row.url }))
     cvs.reload()
   }
+
+  const selectedCvs = getCvDocuments(doc)
+  const previousCvs = cvs.data?.filter((file) => !selectedCvs.some((cv) => cv.url === file.url)) ?? []
 
   return (
     <>
@@ -88,6 +94,7 @@ export function ProfilePage() {
           <TextField label="Status text" value={doc.statusText} onChange={(v) => set('statusText', v)} error={errors.statusText} />
           <TextArea label="Short bio" value={doc.bio} onChange={(v) => set('bio', v)} error={errors.bio} />
           <TextArea label="About story" hint="Shown in the About terminal and cat ./about.md. Separate paragraphs with a blank line. Save profile, then Publish to update the live site." rows={8} value={doc.aboutBio ?? aboutContent.defaultBio} onChange={(v) => set('aboutBio', v)} error={errors.aboutBio} />
+          <TranslationFields document={doc} value={doc.translations} onChange={(value) => set('translations', value)} />
           <ImageField label={navbarBrandContent.logoLabel} hint={navbarBrandContent.logoHint} error={errors['navbarLogo.alt'] ?? errors['navbarLogo.src'] ?? errors['navbarLogo.width'] ?? errors['navbarLogo.height']} value={doc.navbarLogo} onChange={(value) => {
             const next = { ...doc }
             if (value) next.navbarLogo = value
@@ -139,26 +146,49 @@ export function ProfilePage() {
           </Card>
 
           <Card className="flex flex-col gap-3">
-            <div className="flex items-center justify-between">
-              <p className="text-sm text-[var(--ink-secondary)]">Curriculum vitae</p>
-              <Btn onClick={() => setPickCv(true)}><Plus className="h-4 w-4" /> New version</Btn>
-            </div>
-            <a href={doc.resumeUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 truncate rounded-xl bg-[var(--bg-subtle)] p-3 font-mono text-xs hover:bg-[var(--surface-raised)]">
-              <FileText className="h-4 w-4 shrink-0" /> <span className="truncate">{doc.resumeUrl.split('/').pop()}</span>
-              <span className="ml-auto shrink-0 rounded-full bg-[var(--accent)] px-2 py-0.5 font-sans text-[10px] font-semibold text-white">current</span>
-            </a>
-            {cvs.data && cvs.data.filter((c) => c.url !== doc.resumeUrl).length > 0 && (
-              <ul className="flex flex-col gap-1" aria-label="CV history">
-                {cvs.data.filter((c) => c.url !== doc.resumeUrl).map((c) => (
-                  <li key={c.id} className="flex items-center justify-between gap-2 rounded-lg px-3 py-2 text-xs hover:bg-[var(--bg-subtle)]">
-                    <a href={c.url} target="_blank" rel="noopener noreferrer" className="truncate font-mono">{c.path.split('/').pop()}</a>
-                    <span className="shrink-0 text-[var(--ink-secondary)]">{timeAgo(c.created_at)}</span>
-                    <button type="button" onClick={() => void applyCv(c)} className="shrink-0 font-medium underline cursor-pointer">use</button>
+            <p className="text-sm font-medium">{cvContent.heading}</p>
+            <p className="text-sm text-[var(--ink-secondary)]">{cvContent.saveHint}</p>
+            {cvLanguages.map(({ id, label }) => {
+              const selected = selectedCvs.find((cv) => cv.language === id)
+              return (
+                <fieldset key={id} className="flex min-w-0 flex-col gap-3 rounded-xl bg-[var(--bg-subtle)] p-3">
+                  <legend className="px-1 text-sm font-semibold">{label}</legend>
+                  {selected ? (
+                    <a href={selected.url} target="_blank" rel="noopener noreferrer" className="flex min-h-11 min-w-0 items-center gap-2 text-sm underline">
+                      <FileText aria-hidden="true" className="h-4 w-4 shrink-0" />
+                      <span className="truncate">{selected.url.split('/').pop()}</span>
+                    </a>
+                  ) : <p className="text-sm text-[var(--ink-secondary)]">{cvContent.missingEnglish}</p>}
+                  <Btn disabled={saving} onClick={() => setPickCv(id)}><Plus aria-hidden="true" className="h-4 w-4" /> {cvContent.choose}</Btn>
+                  {id === 'en' && selected && (
+                    <Btn disabled={saving} onClick={() => setDoc((previous) => {
+                      const next = { ...(previous ?? doc) }
+                      delete next.resumeEnglishUrl
+                      return next
+                    })}>{cvContent.removeEnglish}</Btn>
+                  )}
+                  {errors[id === 'id' ? 'resumeUrl' : 'resumeEnglishUrl'] && (
+                    <p role="alert" className="text-sm text-[#b42318]">{errors[id === 'id' ? 'resumeUrl' : 'resumeEnglishUrl']}</p>
+                  )}
+                </fieldset>
+              )
+            })}
+            {previousCvs.length > 0 && (
+              <ul className="flex flex-col gap-3" aria-label={cvContent.history}>
+                {previousCvs.map((file) => (
+                  <li key={file.id} className="flex min-w-0 flex-col gap-2 rounded-lg bg-[var(--bg-subtle)] p-3 text-sm">
+                    <a href={file.url} target="_blank" rel="noopener noreferrer" className="truncate underline">{file.path.split('/').pop()}</a>
+                    <span className="text-[var(--ink-secondary)]">{timeAgo(file.created_at)}</span>
+                    <div className="flex flex-wrap gap-2">
+                      {cvLanguages.map(({ id, label }) => (
+                        <Btn key={id} disabled={saving} onClick={() => applyCv(file, id)}>{cvContent.useFor} {label}</Btn>
+                      ))}
+                    </div>
                   </li>
                 ))}
               </ul>
             )}
-            <MediaPicker open={pickCv} accept="pdf" onClose={() => setPickCv(false)} onPick={(m) => void applyCv(m)} />
+            <MediaPicker open={pickCv !== null} accept="pdf" onClose={() => setPickCv(null)} onPick={(file) => { if (pickCv) applyCv(file, pickCv) }} />
           </Card>
         </div>
       </div>

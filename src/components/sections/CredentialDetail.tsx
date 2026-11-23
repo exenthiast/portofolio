@@ -1,9 +1,10 @@
 import { ArrowUpRight } from 'lucide-react'
-import { credentialsCopy } from '../../data/credentials'
+import { usePublicContent } from '../../hooks/useLocale'
 import type { Credential } from '../../types'
 import { CredentialMedia } from './CredentialMedia'
 
 export function CredentialDetail({ credential }: { credential: Credential }) {
+  const { credentialsCopy } = usePublicContent()
   const certificate = credential.kind === 'certificate'
   const verificationUrl = certificate ? credential.verificationUrl : credential.credlyUrl
 

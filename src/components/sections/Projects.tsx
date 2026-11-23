@@ -1,7 +1,7 @@
 import { lazy, Suspense } from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
 import { ArrowUpRight, FolderGit2 as Github } from 'lucide-react'
-import { projectsData } from '../../data/projects'
+import { usePublicContent } from '../../hooks/useLocale'
 import { useProjectDeepLink } from '../../hooks/useProjectDeepLink'
 import { springPhysics } from '../../lib/motion'
 import { SmartImage } from '../ui/SmartImage'
@@ -18,6 +18,7 @@ const scatter = [
 ]
 
 function ProjectCard({ project, index, onOpen }: { project: Project; index: number; onOpen: (slug: string) => void }) {
+  const { copy } = usePublicContent()
   const reduce = useReducedMotion()
   const from = scatter[index % scatter.length]
 
@@ -47,10 +48,10 @@ function ProjectCard({ project, index, onOpen }: { project: Project; index: numb
             </h3>
           </div>
           <p className="text-[length:var(--step-small)] text-[var(--ink-secondary)]">
-            Web app · {project.role} · {project.category}
+            {copy.webApp} · {project.role} · {project.category}
           </p>
           <p className="text-[length:var(--step-body)] leading-relaxed text-[var(--ink)] line-clamp-3">{project.description}</p>
-          <ul className="flex flex-wrap gap-1.5" aria-label="Tech stack">
+          <ul className="flex flex-wrap gap-1.5" aria-label={copy.stack}>
             {project.techStack.map((t) => (
               <li key={t} className="rounded-full bg-[var(--bg-subtle)] px-2.5 py-1 text-xs font-medium text-[var(--ink-secondary)] group-hover:bg-[var(--surface)]">
                 {t}
@@ -60,15 +61,15 @@ function ProjectCard({ project, index, onOpen }: { project: Project; index: numb
           <div className="relative z-10 mt-auto flex flex-wrap gap-4 pt-2 text-[length:var(--step-small)] font-medium">
             {project.githubUrl && (
               <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 rounded hover:text-[var(--accent)]">
-                <Github className="h-4 w-4" aria-hidden="true" /> Repository
+                <Github className="h-4 w-4" aria-hidden="true" /> {copy.repository}
               </a>
             )}
             {project.liveDemoUrl && (
               <a href={project.liveDemoUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 rounded hover:text-[var(--accent)]">
-                Live demo <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
+                {copy.demo} <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
               </a>
             )}
-            <span className="ml-auto hidden text-[var(--ink-secondary)] sm:inline">Read case study →</span>
+            <span className="ml-auto hidden text-[var(--ink-secondary)] sm:inline">{copy.caseStudy}</span>
           </div>
         </div>
         {project.preview && (
@@ -84,6 +85,7 @@ function ProjectCard({ project, index, onOpen }: { project: Project; index: numb
 }
 
 export function Projects() {
+  const { projectsData, copy } = usePublicContent()
   const { project, open, close } = useProjectDeepLink()
 
   return (
@@ -91,10 +93,10 @@ export function Projects() {
       <div className="mx-auto max-w-6xl">
         <div className="mb-12 flex flex-col gap-4 sm:mb-16 md:flex-row md:items-end md:justify-between">
           <h2 id="projects-heading" className="max-w-2xl text-[length:var(--step-head)] font-bold leading-[1.05] tracking-[-0.03em]">
-            Things I've built and shipped
+            {copy.projectsHeading}
           </h2>
           <p className="max-w-md text-[length:var(--step-body)] text-[var(--ink-secondary)]">
-            Real repositories, real users. Open any project for its architecture and key decisions.
+            {copy.projectsIntro}
           </p>
         </div>
         <ol className="flex flex-col gap-4">

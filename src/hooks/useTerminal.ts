@@ -3,6 +3,8 @@ import { buildVfs, formatPath } from '../lib/vfs'
 import { complete, execute, type ShellContext } from '../lib/commands'
 import { track } from '../lib/analytics'
 import type { TerminalHistoryItem } from '../types'
+import { usePublicContent } from './useLocale'
+import { publicCopy } from '../data/public-copy'
 
 const WELCOME: TerminalHistoryItem = {
   id: 0,
@@ -11,9 +13,9 @@ const WELCOME: TerminalHistoryItem = {
   result: {
     status: 'info',
     lines: [
-      [{ kind: 'text', text: 'Welcome to alfizdesta.dev — a real shell over my portfolio.', tone: 'accent' }],
+      [{ kind: 'text', text: publicCopy.terminalWelcome, tone: 'accent' }],
       [
-        { kind: 'text', text: 'Type or tap: ' },
+        { kind: 'text', text: publicCopy.terminalHint },
         { kind: 'command', text: 'help', command: 'help' },
         { kind: 'text', text: ' ' },
         { kind: 'command', text: 'ls -l', command: 'ls -l' },
@@ -27,7 +29,8 @@ const WELCOME: TerminalHistoryItem = {
 }
 
 export function useTerminal() {
-  const root = useMemo(() => buildVfs(), [])
+  const content = usePublicContent()
+  const root = useMemo(() => buildVfs(content), [content])
   const [cwd, setCwd] = useState<string[]>([])
   const [items, setItems] = useState<TerminalHistoryItem[]>([WELCOME])
   const [commands, setCommands] = useState<string[]>([])
@@ -36,8 +39,8 @@ export function useTerminal() {
   const nextId = useRef(1)
 
   const ctx = useCallback(
-    (): ShellContext => ({ root, cwd, history: commands, setCwd, clear: () => setItems([]) }),
-    [root, cwd, commands],
+    (): ShellContext => ({ root, cwd, history: commands, setCwd, clear: () => setItems([]), content }),
+    [root, cwd, commands, content],
   )
 
   const run = useCallback(

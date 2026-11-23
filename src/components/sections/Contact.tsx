@@ -1,17 +1,17 @@
 import { useState, type FormEvent } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Mail } from 'lucide-react'
-import { profileData } from '../../data/profile'
+import { usePublicContent } from '../../hooks/useLocale'
 import { track } from '../../lib/analytics'
 import { getBotToken, isPublicInputConfigured } from '../../lib/bot-check'
-import { contactFormContent } from '../../data/contact'
 import { TerminalWindow, Prompt } from '../ui/TerminalWindow'
 
 type SendState = 'idle' | 'sending' | 'sent' | 'error'
 
 function MessageForm() {
+  const { contactFormContent, copy } = usePublicContent()
   const [state, setState] = useState<SendState>('idle')
-  const [errorMessage, setErrorMessage] = useState(contactFormContent.error)
+  const [errorMessage, setErrorMessage] = useState<'error' | 'verification' | 'limited'>('error')
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -20,17 +20,17 @@ function MessageForm() {
     // Honeypot: real people never see or fill this field.
     if (String(form.get('website') ?? '')) return setState('sent')
     setState('sending')
-    setErrorMessage(contactFormContent.error)
+    setErrorMessage('error')
     let botToken: string
     try { botToken = await getBotToken('contact') }
-    catch { setErrorMessage(contactFormContent.verification); setState('error'); return }
+    catch { setErrorMessage('verification'); setState('error'); return }
     try {
       const response = await fetch('/api/contact', {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name: String(form.get('name') ?? ''), email: String(form.get('email') ?? ''), body: String(form.get('body') ?? ''), botToken }),
       })
       if (!response.ok) {
-        if (response.status === 429) setErrorMessage(contactFormContent.limited)
+        if (response.status === 429) setErrorMessage('limited')
         setState('error')
         return
       }
@@ -49,16 +49,16 @@ function MessageForm() {
       <div className="grid gap-3 sm:grid-cols-2">
         <label className="flex flex-col gap-1.5 text-xs text-[var(--ink-terminal-muted)]">
           --name
-          <input name="name" required maxLength={120} autoComplete="name" className={field} placeholder="Your name" />
+          <input name="name" required maxLength={120} autoComplete="name" className={field} placeholder={copy.namePlaceholder} />
         </label>
         <label className="flex flex-col gap-1.5 text-xs text-[var(--ink-terminal-muted)]">
           --email
-          <input name="email" type="email" required maxLength={200} autoComplete="email" className={field} placeholder="you@company.com" />
+          <input name="email" type="email" required maxLength={200} autoComplete="email" className={field} placeholder={copy.emailPlaceholder} />
         </label>
       </div>
       <label className="flex flex-col gap-1.5 text-xs text-[var(--ink-terminal-muted)]">
         --body
-        <textarea name="body" required minLength={10} maxLength={4000} rows={4} className={`${field} resize-y`} placeholder="Hi Alfiz, we'd love to talk about…" />
+        <textarea name="body" required minLength={10} maxLength={4000} rows={4} className={`${field} resize-y`} placeholder={copy.messagePlaceholder} />
       </label>
       <input name="website" tabIndex={-1} autoComplete="off" aria-hidden="true" className="hidden" />
       <div className="flex items-center gap-4">
@@ -67,7 +67,7 @@ function MessageForm() {
         </button>
         <span aria-live="polite" className="text-xs">
           {state === 'sent' && <span className="text-[var(--accent)]">{contactFormContent.sent}</span>}
-          {state === 'error' && <span className="text-[var(--mac-close)]">{errorMessage}</span>}
+          {state === 'error' && <span className="text-[var(--mac-close)]">{contactFormContent[errorMessage]}</span>}
         </span>
       </div>
       <p className="text-xs text-[var(--ink-terminal-muted)]">
@@ -80,9 +80,10 @@ function MessageForm() {
 }
 
 export function Contact() {
+  const { profileData, copy } = usePublicContent()
   const [copied, setCopied] = useState(false)
 
-  const copy = async () => {
+  const copyEmail = async () => {
     try {
       await navigator.clipboard.writeText(profileData.email)
       setCopied(true)
@@ -97,7 +98,7 @@ export function Contact() {
     <section id="contact" aria-labelledby="contact-heading" className="px-4 sm:px-6 py-24 sm:py-32">
       <div className="mx-auto flex max-w-4xl flex-col gap-10">
         <h2 id="contact-heading" className="text-center text-[length:var(--step-head)] font-bold leading-[1.05] tracking-[-0.03em]">
-          Let's build something together
+          {copy.contactHeading}
         </h2>
         <TerminalWindow title="alfizdesta — ~/contact — zsh" bodyClassName="flex flex-col gap-6 p-5 sm:p-8 text-[length:var(--step-small)]">
           <Prompt>./contact</Prompt>
@@ -105,21 +106,21 @@ export function Contact() {
             <p className="text-[var(--ink-terminal-muted)]">email:</p>
             <motion.button
               type="button"
-              onClick={copy}
+              onClick={copyEmail}
               whileHover={{ x: 4 }}
               className="w-fit text-left text-[clamp(1.1rem,0.8rem+1.6vw,2rem)] font-semibold text-white underline decoration-[var(--accent)] decoration-2 underline-offset-8 cursor-copy"
-              aria-label={`Copy email address ${profileData.email}`}
+              aria-label={`${copy.copyEmail} ${profileData.email}`}
             >
               {profileData.email}
             </motion.button>
             <div className="flex flex-wrap items-center gap-4">
               <a href={`mailto:${profileData.email}`} className="inline-flex h-10 items-center gap-2 rounded-full bg-white px-4 font-sans text-sm font-medium text-[var(--ink)] hover:bg-[var(--surface-raised)]">
-                <Mail className="h-4 w-4" aria-hidden="true" /> Open in email app
+                <Mail className="h-4 w-4" aria-hidden="true" /> {copy.emailApp}
               </a>
               <span className="text-[var(--ink-terminal-muted)]" aria-live="polite">
                 <AnimatePresence mode="wait" initial={false}>
                   <motion.span key={copied ? 'c' : 'i'} initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -4 }}>
-                    {copied ? <span className="text-[var(--accent)]">$ copied to clipboard!</span> : '$ click the address to copy it'}
+                    {copied ? <span className="text-[var(--accent)]">{copy.copySuccess}</span> : copy.copyHint}
                   </motion.span>
                 </AnimatePresence>
               </span>

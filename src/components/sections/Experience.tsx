@@ -1,12 +1,13 @@
 import { lazy, Suspense, useId, useRef, useState, type KeyboardEvent } from 'react'
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
-import { experienceCategories, experienceData } from '../../data/experience'
+import { usePublicContent } from '../../hooks/useLocale'
 import { SmartImage } from '../ui/SmartImage'
 import type { Experience as ExperienceItem, ExperienceCategory, ExperiencePhoto } from '../../types'
 
 const Lightbox = lazy(() => import('../ui/Lightbox'))
 
 export function ExperienceEntry({ item, onOpenPhoto }: { item: ExperienceItem; onOpenPhoto?: (photos: ExperiencePhoto[], index: number) => void }) {
+  const { copy } = usePublicContent()
   return (
     <li className="grid gap-3 rounded-2xl bg-[var(--surface)] p-5 sm:grid-cols-[180px_1fr] sm:gap-8 sm:p-7">
       <div className="flex flex-col items-start gap-4">
@@ -30,21 +31,21 @@ export function ExperienceEntry({ item, onOpenPhoto }: { item: ExperienceItem; o
         </div>
         <p className="text-[length:var(--step-body)] leading-relaxed">{item.description}</p>
         {item.skills && item.skills.length > 0 && (
-          <ul className="flex flex-wrap gap-1.5" aria-label="Skills">
+          <ul className="flex flex-wrap gap-1.5" aria-label={copy.skills}>
             {item.skills.map((s) => (
               <li key={s} className="rounded-full bg-[var(--bg-subtle)] px-2.5 py-1 text-xs font-medium text-[var(--ink-secondary)]">{s}</li>
             ))}
           </ul>
         )}
         {item.photos.length > 0 && (
-          <ul className="flex gap-2 overflow-x-auto pt-1" aria-label="Documentation photos">
+          <ul className="flex gap-2 overflow-x-auto pt-1" aria-label={copy.photos}>
             {item.photos.map((photo, i) => (
               <li key={photo.src} className="shrink-0">
                 <button
                   type="button"
                   onClick={() => onOpenPhoto?.(item.photos, i)}
                   className="block overflow-hidden rounded-lg cursor-zoom-in"
-                  aria-label={`Open photo: ${photo.caption ?? photo.alt}`}
+                  aria-label={`${copy.openPhoto} ${photo.caption ?? photo.alt}`}
                 >
                   <SmartImage image={photo} fallbackLabel={item.organization} className="h-20 w-28 object-cover transition-transform hover:scale-105" />
                 </button>
@@ -58,6 +59,7 @@ export function ExperienceEntry({ item, onOpenPhoto }: { item: ExperienceItem; o
 }
 
 export function Experience() {
+  const { experienceData, experienceCategories, copy } = usePublicContent()
   const [active, setActive] = useState<ExperienceCategory>('organization')
   const [lightbox, setLightbox] = useState<{ photos: ExperiencePhoto[]; index: number } | null>(null)
   const reduce = useReducedMotion()
@@ -85,9 +87,9 @@ export function Experience() {
       <div className="mx-auto max-w-6xl">
         <div className="mb-10 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
           <h2 id="experience-heading" className="max-w-2xl text-[length:var(--step-head)] font-bold leading-[1.05] tracking-[-0.03em]">
-            Journey beyond the codebase
+            {copy.journey}
           </h2>
-          <div role="tablist" aria-label="Experience category" onKeyDown={onKeyDown} className="inline-flex self-start rounded-full bg-[var(--surface)] p-1 md:self-auto">
+          <div role="tablist" aria-label={copy.experienceCategory} onKeyDown={onKeyDown} className="inline-flex self-start rounded-full bg-[var(--surface)] p-1 md:self-auto">
             {experienceCategories.map((c, i) => {
               const selected = c.id === active
               const count = experienceData.filter((e) => e.category === c.id).length

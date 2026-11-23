@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import { projectsData } from '../data/projects'
+import { usePublicContent } from './useLocale'
 import { on } from '../lib/events'
 import { track } from '../lib/analytics'
 
@@ -17,6 +18,7 @@ function slugFromHash(): string | null {
  * Back button closes the drawer; closing restores `#projects` without adding history.
  */
 export function useProjectDeepLink() {
+  const { projectsData: localizedProjects } = usePublicContent()
   const [slug, setSlug] = useState<string | null>(() => (typeof window === 'undefined' ? null : slugFromHash()))
 
   useEffect(() => {
@@ -52,6 +54,6 @@ export function useProjectDeepLink() {
     if (slugFromHash()) document.getElementById('projects')?.scrollIntoView({ block: 'start' })
   }, [])
 
-  const project = slug ? (projectsData.find((p) => p.slug === slug) ?? null) : null
+  const project = slug ? (localizedProjects.find((p) => p.slug === slug) ?? null) : null
   return { project, open, close }
 }

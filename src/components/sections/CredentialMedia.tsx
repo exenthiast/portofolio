@@ -1,9 +1,10 @@
 import { FileText } from 'lucide-react'
-import { credentialsCopy } from '../../data/credentials'
+import { usePublicContent } from '../../hooks/useLocale'
 import type { CredentialMediaProps } from '../../types'
 import { SmartImage } from '../ui/SmartImage'
 
 export function CredentialMedia({ credential, thumbnail = false }: CredentialMediaProps) {
+  const { credentialsCopy } = usePublicContent()
   const certificate = credential.kind === 'certificate'
   if (credential.image?.src) {
     const className = thumbnail

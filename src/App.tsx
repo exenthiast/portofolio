@@ -15,12 +15,14 @@ import { Footer } from './components/sections/Footer'
 import { BootScreen } from './components/sections/BootScreen'
 import { NotFound } from './components/sections/NotFound'
 import { GithubGridBackground } from './components/ui/GithubGridBackground'
+import { usePublicContent } from './hooks/useLocale'
 
 const CvModal = lazy(() => import('./components/ui/CvModal'))
 
 const isKnownRoute = (path: string) => path === '/' || path === '/index.html'
 
 export default function App() {
+  const { copy } = usePublicContent()
   const [isCvOpen, setIsCvOpen] = useState(false)
   // The cursor-follow grid only makes sense with a precise pointer (no touch devices).
   const hasFinePointer = useMediaQuery('(pointer: fine)')
@@ -43,14 +45,14 @@ export default function App() {
   return (
     <div className="min-h-screen bg-[var(--bg)] text-[var(--ink)] flex flex-col font-sans selection:bg-[var(--accent)] selection:text-white relative">
       <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[300] focus:rounded-full focus:bg-[var(--surface-terminal)] focus:px-4 focus:py-2 focus:text-white">
-        Skip to content
+        {copy.skip}
       </a>
       <BootScreen />
       {hasFinePointer && <GithubGridBackground />}
 
       <Suspense fallback={null}>{isCvOpen && <CvModal isOpen={isCvOpen} onClose={() => setIsCvOpen(false)} />}</Suspense>
 
-      <Navbar onOpenCv={openCv} />
+      <Navbar />
 
       <main id="main" className="relative flex-1 flex flex-col">
         <Hero onOpenCv={openCv} />
