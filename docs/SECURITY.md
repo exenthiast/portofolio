@@ -65,7 +65,8 @@ A read-only production check returned HTTP 200 for `/` and HTTP 404 for
 the old public insert policies remain. These observations confirm that preparing
 environment values has not deployed the repository changes or migrations.
 
-1. Record backup and successful isolated restore (Task 16.1). Capture current
+1. Record backup and successful isolated restore (Task 16.1; see
+   [backup runbook](./BACKUP.md)). Capture current
    grants/policies/function definitions for rollback. The live project currently
    reports no migration history despite having the base tables: reconcile that
    baseline before using automated migration tools; do not rerun CREATE TABLE
